@@ -641,3 +641,42 @@ body::after {
     text-decoration: none !important;
     font-weight: 600;
 }
+
+.back-home-floating {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    text-decoration: none;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 15px;
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.back-home-floating i {
+    font-size: 0.8rem;
+}
+
+.back-home-floating:hover {
+    background: white;
+    color: #1f2937;
+    transform: translateX(2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 900px) {
+    .back-home-floating {
+        top: 15px;
+        left: 15px;
+    }
+}

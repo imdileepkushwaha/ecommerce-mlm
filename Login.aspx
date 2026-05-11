@@ -16,6 +16,9 @@
             <div class="auth-wrapper">
                 <!-- Left Banner Section -->
                 <div class="auth-banner">
+                    <a href="index.aspx" class="back-home-floating">
+                        <i class="fas fa-arrow-left"></i> Back to Home
+                    </a>
                     <div class="logo-auth">
                         <img src="assets/images/logo.svg" alt="Kartify Logo" />
                     </div>
