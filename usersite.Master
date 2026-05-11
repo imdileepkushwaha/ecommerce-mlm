@@ -1,0 +1,275 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="usersite.master.cs" Inherits="ecommerce_mlm.usersite" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Ecommerce Store</title>
+    <!-- Link to custom CSS -->
+    <link href="~/assets/css/style.css" rel="stylesheet" />
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="assets/fonts/fontawesome/css/all.min.css" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <!-- HEADER -->
+        <!-- 3-TIER HEADER -->
+        <header class="kartify-header">
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <div class="container top-bar-inner">
+                    <div class="top-left">
+                        <span class="social-icons">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </span>
+                    </div>
+                    <div class="top-center">
+                        FREE RETURNS. STANDARD SHIPPING ORDERS $99+
+                    </div>
+                    <div class="top-right">
+                        <a href="#">My Account</a>
+                        <a href="#">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN HEADER (MIDDLE BAR) -->
+            <div class="main-header">
+                <div class="container main-header-inner">
+                    <div class="mobile-menu-btn">
+                        <i class="fa fa-bars"></i>
+                    </div>
+                    <div class="logo">
+                        <a href="index.aspx">
+                            <img src="assets/images/logo.svg" alt="Logo"  />
+                        </a>
+                    </div>
+
+                    <div class="search-wrapper">
+                        <div class="search-category">
+                            All Category <i class="fa fa-angle-down"></i>
+                        </div>
+                        <input type="text" class="search-input" placeholder="I'm searching for..." />
+                        <button type="button" class="search-btn"><i class="fa fa-search"></i></button>
+                    </div>
+
+                    <div class="header-right-actions">
+                        
+
+                        <a href="#" class="action-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 21.6516C11.69 21.6516 11.39 21.6116 11.14 21.5216C7.32 20.2116 1.25 15.5616 1.25 8.69156C1.25 5.19156 4.08 2.35156 7.56 2.35156C9.25 2.35156 10.83 3.01156 12 4.19156C13.17 3.01156 14.75 2.35156 16.44 2.35156C19.92 2.35156 22.75 5.20156 22.75 8.69156C22.75 15.5716 16.68 20.2116 12.86 21.5216C12.61 21.6116 12.31 21.6516 12 21.6516ZM7.56 3.85156C4.91 3.85156 2.75 6.02156 2.75 8.69156C2.75 15.5216 9.32 19.3216 11.63 20.1116C11.81 20.1716 12.2 20.1716 12.38 20.1116C14.68 19.3216 21.26 15.5316 21.26 8.69156C21.26 6.02156 19.1 3.85156 16.45 3.85156C14.93 3.85156 13.52 4.56156 12.61 5.79156C12.33 6.17156 11.69 6.17156 11.41 5.79156C10.48 4.55156 9.08 3.85156 7.56 3.85156Z" fill="#ffffff"></path>
+</svg>
+                            <span class="cart-badge">0</span>
+                        </a>
+                        <a href="#" class="action-icon cart-icon-box">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.5 7.67001V6.70001C7.5 4.45001 9.31 2.24001 11.56 2.03001C14.24 1.77001 16.5 3.88001 16.5 6.51001V7.89001" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M8.99999 22H15C19.02 22 19.74 20.39 19.95 18.43L20.7 12.43C20.97 9.99 20.27 8 16 8H7.99999C3.72999 8 3.02999 9.99 3.29999 12.43L4.04999 18.43C4.25999 20.39 4.97999 22 8.99999 22Z" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15.4955 12H15.5045" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M8.49451 12H8.50349" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+                            <span class="cart-badge">5</span>
+                        </a>
+
+                        <!-- USER LOGIN / LOGOUT -->
+                        <div class="user-action">
+                            <asp:Panel ID="pnlLoggedOut" runat="server" CssClass="logged-out-actions">
+                                <a href="Login.aspx" class="action-icon login-btn">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 12.75C8.83 12.75 6.25 10.17 6.25 7C6.25 3.83 8.83 1.25 12 1.25C15.17 1.25 17.75 3.83 17.75 7C17.75 10.17 15.17 12.75 12 12.75ZM12 2.75C9.66 2.75 7.75 4.66 7.75 7C7.75 9.34 9.66 11.25 12 11.25C14.34 11.25 16.25 9.34 16.25 7C16.25 4.66 14.34 2.75 12 2.75Z" fill="#ffffff"></path>
+<path d="M20.5901 22.75C20.1801 22.75 19.8401 22.41 19.8401 22C19.8401 18.55 16.3202 15.75 12.0002 15.75C7.68015 15.75 4.16016 18.55 4.16016 22C4.16016 22.41 3.82016 22.75 3.41016 22.75C3.00016 22.75 2.66016 22.41 2.66016 22C2.66016 17.73 6.85015 14.25 12.0002 14.25C17.1502 14.25 21.3401 17.73 21.3401 22C21.3401 22.41 21.0001 22.75 20.5901 22.75Z" fill="#ffffff"></path>
+</svg>
+                                    <span class="action-text">Login</span>
+                                </a>
+                                <a href="Register.aspx" class="action-icon signup-btn">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 8c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 4c1.36-.71 4.08-2 6-2s4.64 1.29 6 2H9zm-3-3v-3h3v-2H6V5H4v3H1v2h3v3h2z" fill="#ffffff"></path>
+</svg>
+                                    <span class="action-text">Sign Up</span>
+                                </a>
+                            </asp:Panel>
+                            <asp:Panel ID="pnlLoggedIn" runat="server" Visible="false" CssClass="logged-in-action">
+                                <div class="user-dropdown">
+                                    <div class="user-profile-display">
+                                        <div class="user-icon-circle">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 12.75C8.83 12.75 6.25 10.17 6.25 7C6.25 3.83 8.83 1.25 12 1.25C15.17 1.25 17.75 3.83 17.75 7C17.75 10.17 15.17 12.75 12 12.75ZM12 2.75C9.66 2.75 7.75 4.66 7.75 7C7.75 9.34 9.66 11.25 12 11.25C14.34 11.25 16.25 9.34 16.25 7C16.25 4.66 14.34 2.75 12 2.75Z" fill="#ffffff"></path>
+<path d="M20.5901 22.75C20.1801 22.75 19.8401 22.41 19.8401 22C19.8401 18.55 16.3202 15.75 12.0002 15.75C7.68015 15.75 4.16016 18.55 4.16016 22C4.16016 22.41 3.82016 22.75 3.41016 22.75C3.00016 22.75 2.66016 22.41 2.66016 22C2.66016 17.73 6.85015 14.25 12.0002 14.25C17.1502 14.25 21.3401 17.73 21.3401 22C21.3401 22.41 21.0001 22.75 20.5901 22.75Z" fill="#ffffff"></path>
+</svg>
+                                        </div>
+                                        <div class="user-text-info">
+                                            <span class="welcome-text">Welcome:</span>
+                                            <span class="user-name"><asp:Label ID="lblUsername" runat="server"></asp:Label></span>
+                                        </div>
+                                    </div>
+                                    <div class="user-dropdown-content">
+                                        <asp:LinkButton ID="btnLogout" runat="server" Text="Logout" OnClick="btnLogout_Click" style="display:block; padding:10px; color:#d9534f; font-weight:bold; text-decoration:none;" />
+                                    </div>
+                                </div>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTTOM NAVIGATION -->
+            <div class="bottom-nav">
+                <div class="container bottom-nav-inner">
+                    <div class="shop-categories">
+                        <i class="fa fa-bars"></i> Shop By Categories
+                    </div>
+                    <nav class="main-menu">
+                        <ul>
+                            <li><a href="index.aspx">Home <i class="fa fa-angle-down"></i></a></li>
+                            <li><a href="#">Shop <i class="fa fa-angle-down"></i></a></li>
+                            <li><a href="#">Product <i class="fa fa-angle-down"></i></a></li>
+                            <li><a href="#">Sales <i class="fa fa-angle-down"></i></a></li>
+                            <li><a href="#">Features <i class="fa fa-angle-down"></i></a></li>
+                            <li><a href="#">Pages <i class="fa fa-angle-down"></i></a></li>
+                            <li><a href="#">Seller <i class="fa fa-angle-down"></i></a></li>
+                            <li><a href="#">Blog <i class="fa fa-angle-down"></i></a></li>
+                            <li><a href="#">Recent Viewer <i class="fa fa-angle-down"></i></a></li>
+                            <li class="order-tracking"><a href="#">Order Tracking</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <div class="">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <!-- MOBILE OFFCANVAS MENU -->
+        <div class="mobile-overlay"></div>
+        <div class="mobile-offcanvas">
+            <div class="offcanvas-header">
+                <img src="assets/images/logo-dark.svg" alt="Kartify Logo" class="offcanvas-logo" />
+                <button type="button" class="offcanvas-close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="offcanvas-body">
+                <!-- User Action and Main Menu will be moved here by JS on mobile -->
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="kartify-footer">
+            <div class="container">
+                <div class="footer-main">
+                    <!-- Column 1: Contact Info -->
+                    <div class="footer-widget">
+                        <h4 class="widget-title">Contact Info</h4>
+                        <div class="contact-widget">
+                            <div class="contact-item phone-item">
+                                <i class="fa fa-headset"></i>
+                                <span class="phone-number">(603) 555-0123</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fa fa-map-marker-alt"></i>
+                                <span>3228 Bicetown Road Huntington, NY 11743</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="far fa-envelope"></i>
+                                <span>kartify@contact.com</span>
+                            </div>
+                            <div class="stay-connected">
+                                <span>Stay Connected :</span>
+                                <div class="social-links">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-instagram"></i></a>
+                                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Information -->
+                    <div class="footer-widget">
+                        <h4 class="widget-title">Information</h4>
+                        <ul class="widget-links">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Collection</a></li>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Blogs</a></li>
+                            <li><a href="#">Offer</a></li>
+                            <li><a href="#">Search</a></li>
+                            <li><a href="#">FAQ's</a></li>
+                            <li><a href="#">Contact us</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 3: Our Services -->
+                    <div class="footer-widget">
+                        <h4 class="widget-title">Our Services</h4>
+                        <ul class="widget-links">
+                            <li><a href="#">Mobile Phones</a></li>
+                            <li><a href="#">Television</a></li>
+                            <li><a href="#">Washing Machine</a></li>
+                            <li><a href="#">Women Fashion</a></li>
+                            <li><a href="#">Laptop</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 4: My Account -->
+                    <div class="footer-widget">
+                        <h4 class="widget-title">My Account</h4>
+                        <ul class="widget-links">
+                            <li><a href="#">My Account</a></li>
+                            <li><a href="#">My Shop</a></li>
+                            <li><a href="#">My Cart</a></li>
+                            <li><a href="#">Checkout</a></li>
+                            <li><a href="#">My Wishlist</a></li>
+                            <li><a href="#">Tracking Order</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 5: Get Shopping App -->
+                    <div class="footer-widget">
+                        <h4 class="widget-title">Get Shopping App</h4>
+                        <div class="app-widget">
+                            <p>Quick & Direct ordering</p>
+                            <p>Shop smarter, save time & Simply</p>
+                            <p>Save more on app</p>
+                            <div class="app-buttons">
+                                <a href="#" class="app-btn play-store">
+                                    <img src="assets/images/google-play.svg" alt="Play Store" />
+                                   
+                                </a>
+                                <a href="#" class="app-btn app-store">
+                                    <img src="assets/images/app-store.svg" alt="App Store" />
+                                   
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Bottom -->
+                <div class="footer-bottom">
+                    <div class="footer-logo">
+                        <img src="assets/images/logo-dark.svg" alt="Kartify Logo" />
+                    </div>
+                    <div class="payment-methods">
+                        <img src="assets/images/payment/1.svg" alt="Visa" />
+                        <img src="assets/images/payment/2.svg" alt="Mastercard" />
+                        <img src="assets/images/payment/3.svg" alt="PayPal" />
+                        <img src="assets/images/payment/5.svg" alt="Amazon" />
+                        <img src="assets/images/payment/7.svg" alt="Gpay" />
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </form>
+    
+    <script src="assets/js/theme.js" type="text/javascript"></script>
+</body>
+</html>
