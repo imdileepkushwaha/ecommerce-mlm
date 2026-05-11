@@ -98,7 +98,7 @@
         </section>
 
         <!-- SCROLLING TICKER -->
-        <div class="scrolling-ticker">
+        <section class="scrolling-ticker">
             <div class="ticker-track">
                 <!-- Repeat items to create an infinite scroll effect -->
                 <div class="ticker-item"><i class="fas fa-bahai"></i> <span>JACKETS</span></div>
@@ -115,7 +115,7 @@
                 <div class="ticker-item"><i class="fas fa-bahai"></i> <span>WOMEN</span></div>
                 <div class="ticker-item"><i class="fas fa-bahai"></i> <span>SNEAKERS</span></div>
             </div>
-        </div>
+        </section>
 
         <!-- FEATURES SECTION -->
         <section class="features-section">
@@ -184,18 +184,15 @@
                         </div>
                         <h2 class="category-main-title">Browse Top Category</h2>
                     </div>
-                    <div class="category-arrows">
-                        <button class="cat-arrow prev-cat" type="button"><i class="fa fa-arrow-left"></i></button>
-                        <button class="cat-arrow next-cat" type="button"><i class="fa fa-arrow-right"></i></button>
-                    </div>
+
                 </div>
 
                 <div class="category-slider-wrapper">
-                    <div class="category-slider-track" id="categorySliderTrack">
+                    <div class="category-slider-track">
                         <!-- Item 1 -->
                         <div class="category-item-container">
                             <div class="category-item">
-                                <img src="https://placehold.co/400x400/eeeeee/333333?text=Shirts" alt="Man Shirts" />
+                                <h2>Shirts</h2>
                                 <div class="category-label">Man Shirts</div>
                             </div>
                         </div>
@@ -204,7 +201,7 @@
                         <!-- Item 2 -->
                         <div class="category-item-container">
                             <div class="category-item">
-                                <img src="https://placehold.co/400x400/eeeeee/333333?text=Jeans" alt="Denim Jeans" />
+                                <h2>Jeans</h2>
                                 <div class="category-label">Denim Jeans</div>
                             </div>
                         </div>
@@ -213,7 +210,7 @@
                         <!-- Item 3 -->
                         <div class="category-item-container">
                             <div class="category-item">
-                                <img src="https://placehold.co/400x400/eeeeee/333333?text=Suit" alt="Casual Suit" />
+                                <h2>Suit</h2>
                                 <div class="category-label">Casual Suit</div>
                             </div>
                         </div>
@@ -222,7 +219,7 @@
                         <!-- Item 4 -->
                         <div class="category-item-container">
                             <div class="category-item">
-                                <img src="https://placehold.co/400x400/eeeeee/333333?text=Dress" alt="Summer Dress" />
+                                <h2>Dress</h2>
                                 <div class="category-label">Summer Dress</div>
                             </div>
                         </div>
@@ -231,7 +228,7 @@
                         <!-- Item 5 -->
                         <div class="category-item-container">
                             <div class="category-item">
-                                <img src="https://placehold.co/400x400/eeeeee/333333?text=Sweaters" alt="Sweaters" />
+                                <h2>Sweaters</h2>
                                 <div class="category-label">Sweaters</div>
                             </div>
                         </div>
@@ -240,13 +237,54 @@
                         <!-- Item 6 -->
                         <div class="category-item-container">
                             <div class="category-item">
-                                <img src="https://placehold.co/400x400/eeeeee/333333?text=Jackets" alt="Jackets" />
+                                <h2>Jackets</h2>
                                 <div class="category-label">Jackets</div>
                             </div>
                         </div>
 
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="banner-section">
+            <div class="container">
+
+                <div class="banner-section-inner">
+                    <!--=== Banner Item ===-->
+                    <div class="banner-item style-one bg-one">
+                        <div class="shape shape-one"><span><img src="assets/images/banner/discount.png"
+                                    alt="shape"></span>
+                        </div>
+                        <div class="shape shape-two"><span><img src="assets/images/banner/line.png" alt="shape"></span>
+                        </div>
+                        <div class="banner-img"><img src="assets/images/banner/banner-1.png" alt="banner image">
+                        </div>
+                        <div class="banner-content">
+                            <span>UP TO <span class="off">50%</span></span>
+                            <h4>Exclusive Kids &amp; Adults Summer Outfits</h4>
+                            <a href="shops.html" class="theme-btn style-one">Shop Now</a>
+                        </div>
+                    </div>
+
+                    <!--=== Banner Item ===-->
+                    <div class="banner-item style-one bg-two">
+                        <div class="shape shape-one"><span><img src="assets/images/banner/discount.png"
+                                    alt="shape"></span>
+                        </div>
+                        <div class="shape shape-two"><span><img src="assets/images/banner/line.png" alt="shape"></span>
+                        </div>
+                        <div class="banner-img"><img src="assets/images/banner/banner-2.png" alt="banner image">
+                        </div>
+                        <div class="banner-content">
+                            <span>UP TO <span class="off">70%</span></span>
+                            <h4>Exclusive Kids &amp; Adults Summer Outfits</h4>
+                            <a href="shops.html" class="theme-btn style-one">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
             </div>
         </section>
 

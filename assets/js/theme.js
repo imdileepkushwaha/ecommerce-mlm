@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const offcanvas = document.querySelector('.mobile-offcanvas');
     const overlay = document.querySelector('.mobile-overlay');
     const closeBtn = document.querySelector('.offcanvas-close');
-    
+
     const offcanvasBody = document.querySelector('.offcanvas-body');
     const userAction = document.querySelector('.user-action');
     const mainMenu = document.querySelector('.main-menu');
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Restore Main Menu to Desktop
             if (mainMenu && mainMenu.classList.contains('in-offcanvas')) {
                 // Assuming it goes into .shop-categories sibling or container
-                if(bottomNav) bottomNav.appendChild(mainMenu);
+                if (bottomNav) bottomNav.appendChild(mainMenu);
                 mainMenu.classList.remove('in-offcanvas');
             }
         }
@@ -89,66 +89,5 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', handleResize);
     handleResize(); // Run on load
 
-    /* ========================
-       TOP CATEGORIES SLIDER
-       ======================== */
-    const catTrack = document.getElementById('categorySliderTrack');
-    const catPrev = document.querySelector('.prev-cat');
-    const catNext = document.querySelector('.next-cat');
-    
-    if(catTrack && catPrev && catNext) {
-        let currentCatIndex = 0;
-        
-        function slideCategories(direction) {
-            const items = catTrack.querySelectorAll('.category-item-container');
-            if(!items.length) return;
-            
-            // To get accurate step, measure distance between start of item 1 and item 2
-            let step = 252; // Fallback
-            if(items.length > 1) {
-                step = items[1].offsetLeft - items[0].offsetLeft;
-            }
-            
-            // How many items can we slide?
-            // Depends on visible area width
-            const visibleWidth = catTrack.parentElement.offsetWidth;
-            const trackScrollWidth = catTrack.scrollWidth;
-            
-            // Calculate max offset
-            const maxOffset = trackScrollWidth - visibleWidth;
-            
-            // Calculate current translation
-            let currentOffset = currentCatIndex * step;
-            
-            if(direction === 'next') {
-                if(currentOffset + step < maxOffset) {
-                    currentCatIndex++;
-                } else {
-                    // Snap to end if there's a little bit left
-                    currentCatIndex++;
-                    // limit it properly or let it slide normally
-                }
-                
-                // Let's just do simple index
-                // Check if we hit the end
-                if (currentCatIndex >= items.length) {
-                    currentCatIndex = items.length - 1;
-                }
-            } else if (direction === 'prev') {
-                currentCatIndex--;
-                if(currentCatIndex < 0) currentCatIndex = 0;
-            }
-            
-            // To prevent scrolling past the end empty space
-            let targetOffset = currentCatIndex * step;
-            if (targetOffset > maxOffset && maxOffset > 0) {
-                targetOffset = maxOffset;
-            }
-            
-            catTrack.style.transform = `translateX(-${targetOffset}px)`;
-        }
 
-        catNext.addEventListener('click', () => slideCategories('next'));
-        catPrev.addEventListener('click', () => slideCategories('prev'));
-    }
 });
