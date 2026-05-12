@@ -17,32 +17,29 @@
                 <li class='<%= GetActiveClass("userdashboard.aspx") %>'>
                     <a href="userdashboard.aspx"><i class="fas fa-home"></i> Dashboard</a>
                 </li>
-                <li class='<%= GetActiveClass("Orders.aspx") %>'>
-                    <a href="#"><i class="fas fa-box"></i> Order</a>
+                <li class='<%= GetActiveClass("UserOrders.aspx") %>'>
+                    <a href="UserOrders.aspx"><i class="fas fa-box"></i> Order</a>
                 </li>
                 <li class='<%= GetActiveClass("Wishlist.aspx") %>'>
                     <a href="Wishlist.aspx"><i class="fas fa-heart"></i> Wishlist</a>
                 </li>
-                <li>
-                    <a href="#"><i class="fas fa-map-marker-alt"></i> Address</a>
+                <li class='<%= GetActiveClass("userTree.aspx") %>'>
+                    <a href="userTree.aspx"><i class="fas fa-users"></i> My Team</a>
                 </li>
-                <li>
-                    <a href="#"><i class="fas fa-users"></i> My Team</a>
+                <li class='<%= GetActiveClass("userIncome.aspx") %>'>
+                    <a href="userIncome.aspx"><i class="fas fa-wallet"></i> My Income</a>
                 </li>
-                <li>
-                    <a href="#"><i class="fas fa-wallet"></i> My Income</a>
+                <li class='<%= GetActiveClass("userRewards.aspx") %>'>
+                    <a href="userRewards.aspx"><i class="fas fa-trophy"></i> Rewards</a>
                 </li>
-                <li>
-                    <a href="#"><i class="fas fa-trophy"></i> Rewards</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fas fa-star"></i> Reviews</a>
+                <li class='<%= GetActiveClass("MyReviews.aspx") %>'>
+                    <a href="MyReviews.aspx"><i class="fas fa-star"></i> Reviews</a>
                 </li>
                 <li class='<%= GetActiveClass("UserProfile.aspx") %>'>
                     <a href="UserProfile.aspx"><i class="fas fa-user"></i> Profile</a>
                 </li>
-                <li>
-                    <a href="#"><i class="fas fa-shield-alt"></i> Settings</a>
+                <li class='<%= GetActiveClass("UserSettings.aspx") %>'>
+                    <a href="UserSettings.aspx"><i class="fas fa-cog"></i> Settings</a>
                 </li>
             </ul>
         </nav>

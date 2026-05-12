@@ -71,18 +71,13 @@
                             </FooterTemplate>
                         </asp:Repeater>
 
-                        <asp:Panel ID="pnlEmpty" runat="server" Visible="false" CssClass="empty-wishlist" style="box-shadow:none; padding:40px 10px;">
-                            <div style="margin-bottom: 20px;">
-                                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="24" height="24" fill="none"/>
-                                    <circle cx="12" cy="12" r="10" fill="#FEF2F2"/>
-                                    <path d="M12 18.5C11.8 18.5 11.6 18.45 11.43 18.36C9.25 17.27 3 13.43 3 8.5C3 5.74 5.24 3.5 8 3.5C9.33 3.5 10.6 4.02 11.54 4.96C11.79 5.21 12.21 5.21 12.46 4.96C13.4 4.02 14.67 3.5 16 3.5C18.76 3.5 21 5.74 21 8.5C21 13.43 14.75 17.27 12.57 18.36C12.4 18.45 12.2 18.5 12 18.5ZM8 5C6.07 5 4.5 6.57 4.5 8.5C4.5 11.96 9.36 15.36 12 16.71C14.64 15.36 19.5 11.96 19.5 8.5C19.5 6.57 17.93 5 16 5C14.98 5 14.02 5.44 13.38 6.21L12 7.85L10.62 6.21C9.98 5.44 9.02 5 8 5Z" fill="#EF4444"/>
-                                    <path opacity="0.4" d="M16 7C16.83 7 17.5 7.67 17.5 8.5C17.5 9.33 16.83 10 16 10C15.17 10 14.5 9.33 14.5 8.5C14.5 7.67 15.17 7 16 7Z" fill="#EF4444"/>
-                                </svg>
+                        <asp:Panel ID="pnlEmpty" runat="server" Visible="false" CssClass="empty-state-premium">
+                            <div class="empty-state-visual">
+                                <img src="assets/images/empty-wishlist.svg" alt="Wishlist Empty" />
                             </div>
-                            <h4>Your wishlist is empty</h4>
-                            <p>Explore our collection and add your favorites!</p>
-                            <a href="index.aspx" class="btn-shop-now">Shop Now</a>
+                            <h4 class="empty-state-heading">Your wishlist is empty</h4>
+                            <p class="empty-state-sub">Explore our collection and add your absolute favorites!</p>
+                            <a href="index.aspx" class="btn-pill-modern btn-orange-grad" style="text-decoration:none;"><i class="fas fa-shopping-bag"></i> Shop Now</a>
                         </asp:Panel>
 
                     </div>

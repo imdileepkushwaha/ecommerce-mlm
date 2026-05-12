@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="250" height="250">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#eff6ff" />
+      <stop offset="100%" stop-color="#dbeafe" />
+    </linearGradient>
+    <linearGradient id="boxMain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="boxLid" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#93c5fd" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
+      <feOffset dx="0" dy="10"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.1"/></feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background Decorative Soft Circles -->
+  <circle cx="250" cy="250" r="180" fill="url(#bgGradient)" opacity="0.5"/>
+  <circle cx="150" cy="150" r="30" fill="#93c5fd" opacity="0.3" />
+  <circle cx="350" cy="180" r="15" fill="#bfdbfe" opacity="0.4" />
+  <circle cx="320" cy="350" r="20" fill="#60a5fa" opacity="0.2" />
+  
+  <!-- Main Modern Box Group -->
+  <g filter="url(#softShadow)">
+    <!-- Box Front -->
+    <path d="M 180 240 L 320 240 L 300 360 L 200 360 Z" fill="url(#boxMain)" />
+    <!-- Box Interior/Top Lip -->
+    <ellipse cx="250" cy="240" rx="70" ry="25" fill="#1e3a8a" />
+    <!-- Open Left Lid -->
+    <path d="M 180 240 L 130 200 L 200 185 L 250 215 Z" fill="url(#boxLid)" />
+    <!-- Open Right Lid -->
+    <path d="M 320 240 L 370 200 L 300 185 L 250 215 Z" fill="url(#boxLid)" />
+    
+    <!-- Decorative Floating Tags/Items coming from inside box -->
+    <g opacity="0.9">
+      <rect x="230" y="190" width="40" height="40" rx="8" fill="#fff" transform="rotate(15, 250, 210)" stroke="#eff6ff" stroke-width="2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.05))"/>
+      <circle cx="250" cy="210" r="8" fill="#f59e0b" transform="rotate(15, 250, 210)" />
+      
+      <!-- Floating Question/Search Icon above -->
+      <path d="M290,160 C290,145 310,145 310,160 C310,170 300,170 300,180" stroke="#2563eb" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="300" cy="190" r="2.5" fill="#2563eb"/>
+    </g>
+    
+    <!-- Soft Glow Sparkles around -->
+    <path d="M 140 280 L 145 295 L 160 300 L 145 305 L 140 320 L 135 305 L 120 300 L 135 295 Z" fill="#fbbf24" opacity="0.8" />
+    <path d="M 360 280 L 363 290 L 373 293 L 363 296 L 360 306 L 357 296 L 347 293 L 357 290 Z" fill="#fbbf24" opacity="0.6" transform="scale(0.7) translate(160,120)" />
+  </g>
+</svg>

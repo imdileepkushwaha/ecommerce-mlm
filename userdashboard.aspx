@@ -49,7 +49,7 @@
 
                                 <div class="dashboard-grid">
                                     <!-- Card 1: Orders -->
-                                    <a href="#" class="dash-grid-card">
+                                    <a href="UserOrders.aspx" class="dash-grid-card">
                                         <div class="dash-card-illustration">
                                             <img src="assets/images/dashboard/order.svg" alt="Orders" />
                                         </div>
@@ -67,7 +67,7 @@
                                     </a>
 
                                     <!-- Card 3: Reviews -->
-                                    <a href="#" class="dash-grid-card">
+                                    <a href="MyReviews.aspx" class="dash-grid-card">
                                         <div class="dash-card-illustration">
                                             <img src="assets/images/dashboard/notification.svg" alt="Reviews" />
                                         </div>
@@ -76,12 +76,12 @@
                                     </a>
 
                                     <!-- Card 4: Address -->
-                                    <a href="#" class="dash-grid-card">
+                                    <a href="userincome.aspx" class="dash-grid-card">
                                         <div class="dash-card-illustration">
                                             <img src="assets/images/dashboard/address.svg" alt="Address" />
                                         </div>
-                                        <h4>Address</h4>
-                                        <p>Keep track of addresses for all your purchases.</p>
+                                        <h4>My Income</h4>
+                                        <p>Keep track of all your income.</p>
                                     </a>
 
                                     <!-- Card 5: Profile -->
@@ -94,7 +94,7 @@
                                     </a>
 
                                     <!-- Card 6: Privacy -->
-                                    <a href="#" class="dash-grid-card">
+                                    <a href="UserSettings.aspx" class="dash-grid-card">
                                         <div class="dash-card-illustration">
                                             <img src="assets/images/dashboard/settings.svg" alt="Settings" />
                                         </div>

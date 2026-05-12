@@ -96,12 +96,35 @@ namespace ecommerce_mlm
                                 if (ddlGender.Items.FindByValue(gender) != null)
                                     ddlGender.SelectedValue = gender;
 
-                                // Verification Buttons Visibility logic in Form
-                                lnkVerifyEmail.Visible = !isEVerified;
-                                lblEmailVerified.Visible = isEVerified;
+                                // Cache originally verified values on textboxes for instant client comparison
+                                txtEmail.Attributes["data-original"] = email;
+                                txtEmail.Attributes["data-verified"] = isEVerified.ToString().ToLower(); // 'true' or 'false'
+                                
+                                txtMobile.Attributes["data-original"] = mobile;
+                                txtMobile.Attributes["data-verified"] = isMVerified.ToString().ToLower();
 
-                                lnkVerifyMobile.Visible = !isMVerified;
-                                lblMobileVerified.Visible = isMVerified;
+                                // Toggle styles instead of server-side Visible so JS can see them
+                                if (isEVerified)
+                                {
+                                    lnkVerifyEmail.Style["display"] = "none";
+                                    lblEmailVerified.Style["display"] = "inline-block";
+                                }
+                                else
+                                {
+                                    lnkVerifyEmail.Style["display"] = "inline-block";
+                                    lblEmailVerified.Style["display"] = "none";
+                                }
+
+                                if (isMVerified)
+                                {
+                                    lnkVerifyMobile.Style["display"] = "none";
+                                    lblMobileVerified.Style["display"] = "inline-block";
+                                }
+                                else
+                                {
+                                    lnkVerifyMobile.Style["display"] = "inline-block";
+                                    lblMobileVerified.Style["display"] = "none";
+                                }
 
                                 // Image logic
                                 bool exists = false;
