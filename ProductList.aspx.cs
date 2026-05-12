@@ -37,10 +37,10 @@ namespace ecommerce_mlm
                 
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
-                    string q = "SELECT * FROM SellerProducts ";
+                    string q = "SELECT P.*, S.IsActive as SellerActive FROM SellerProducts P INNER JOIN SellerUsers S ON P.SellerId = S.Id ";
                     
                     if (!string.IsNullOrEmpty(searchQ)) {
-                        q += " WHERE (Name LIKE @search OR Brand LIKE @search OR Category LIKE @search) ";
+                        q += " WHERE (P.Name LIKE @search OR P.Brand LIKE @search OR P.Category LIKE @search) ";
                     }
 
                     q += " ORDER BY " + sortOrder;
@@ -94,6 +94,16 @@ namespace ecommerce_mlm
                 return "0%";
             }
             catch { return "0%"; }
+        }
+
+        public bool IsProductAvailable(object isActive, object stock, object sellerActive)
+        {
+            try {
+                bool active = isActive != DBNull.Value && Convert.ToBoolean(isActive);
+                bool sActive = sellerActive != DBNull.Value && Convert.ToBoolean(sellerActive);
+                int stk = stock != DBNull.Value ? Convert.ToInt32(stock) : 0;
+                return active && sActive && stk > 0;
+            } catch { return false; }
         }
     }
 }

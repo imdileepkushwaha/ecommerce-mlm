@@ -2,7 +2,26 @@
     CodeFile="ProductDetails.aspx.cs" Inherits="ecommerce_mlm.ProductDetails" %>
 
     <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-        <!-- Unique styles embedded directly for specificity -->
+        <style>
+            /* Unique styles embedded directly for specificity */
+            .oos-large-banner {
+                background: #fee2e2;
+                color: #ef4444;
+                border: 1px solid #fecaca;
+                padding: 20px;
+                border-radius: 12px;
+                font-weight: 800;
+                text-align: center;
+                font-size: 1.2rem;
+                letter-spacing: 1px;
+                box-shadow: inset 0 0 10px rgba(239,68,68,0.05);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                width: 100%;
+            }
+        </style>
     </asp:Content>
 
     <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -152,22 +171,31 @@
                             </div>
                         </asp:Panel>
 
-                        <div class="pd-stock-alert"><i class="fas fa-fire"></i> Hurry! Only a few units left in stock.
-                        </div>
+                        <% if (isAvailable) { %>
+                        <div class="pd-stock-alert"><i class="fas fa-fire"></i> Hurry! Only a few units left in stock.</div>
+                        <% } else { %>
+                        <div class="pd-stock-alert" style="color:#ef4444; background:#fee2e2;"><i class="fas fa-exclamation-triangle"></i> This product is currently suspended or out of stock.</div>
+                        <% } %>
 
                         <!-- Quantity & Action Buttons -->
                         <div class="pd-actions-wrap">
-                            <div class="qty-ctrl">
-                                <button type="button" class="qty-btn" onclick="updateQty(-1)">-</button>
-                                <input type="text" id="txtQty" value="1" class="qty-input" readonly />
-                                <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>
-                            </div>
+                            <% if (isAvailable) { %>
+                                <div class="qty-ctrl">
+                                    <button type="button" class="qty-btn" onclick="updateQty(-1)">-</button>
+                                    <input type="text" id="txtQty" value="1" class="qty-input" readonly />
+                                    <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>
+                                </div>
 
-                            <button type="button" class="pd-add-to-cart" onclick="processCartAction(false)">
-                                <i class="fas fa-shopping-bag"></i> Add to Cart — ₹ <span id="js-live-total">
-                                    <asp:Literal ID="litActionPrice" runat="server"></asp:Literal>
-                                </span>
-                            </button>
+                                <button type="button" class="pd-add-to-cart" onclick="processCartAction(false)">
+                                    <i class="fas fa-shopping-bag"></i> Add to Cart — ₹ <span id="js-live-total">
+                                        <asp:Literal ID="litActionPrice" runat="server"></asp:Literal>
+                                    </span>
+                                </button>
+                            <% } else { %>
+                                <div class="oos-large-banner">
+                                    <i class="fas fa-ban"></i> CURRENTLY OUT OF STOCK
+                                </div>
+                            <% } %>
 
                             <div class="pd-wish-share">
                                 <div class="pd-icon-circle js-wish-heart" title="Wishlist" onclick="addToWishlist()"><i

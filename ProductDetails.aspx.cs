@@ -19,6 +19,7 @@ namespace ecommerce_mlm
         public decimal productRawPrice = 0;
         public int productId = 0;
         public int dynamicSoldCount = 145;
+        public bool isAvailable = true;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -43,7 +44,7 @@ namespace ecommerce_mlm
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
-                    string q = "SELECT * FROM SellerProducts WHERE Slug = @slug";
+                    string q = "SELECT P.*, S.IsActive AS SellerActive FROM SellerProducts P INNER JOIN SellerUsers S ON P.SellerId = S.Id WHERE P.Slug = @slug";
                     using (SqlCommand cmd = new SqlCommand(q, con))
                     {
                         cmd.Parameters.AddWithValue("@slug", slug);
@@ -53,6 +54,13 @@ namespace ecommerce_mlm
                             // Core details binding
                             productId = Convert.ToInt32(dr["Id"]);
                             string name = dr["Name"].ToString();
+                            
+                             // Aggregate Availability Logic (Product Active + Seller Active + Stock > 0)
+                             bool active = dr["IsActive"] != DBNull.Value && Convert.ToBoolean(dr["IsActive"]);
+                             bool sActive = dr["SellerActive"] != DBNull.Value && Convert.ToBoolean(dr["SellerActive"]);
+                             int stk = dr["Stock"] != DBNull.Value ? Convert.ToInt32(dr["Stock"]) : 0;
+                             isAvailable = active && sActive && stk > 0;
+                            
                             litName.Text = name;
                             litBTitle.Text = name;
                             // litBTitle2.Text = name;

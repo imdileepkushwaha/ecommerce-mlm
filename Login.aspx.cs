@@ -61,6 +61,23 @@ namespace ecommerce_mlm
                             if (reader.HasRows)
                             {
                                 reader.Read();
+
+                                // 4. Block Verification
+                                bool isActive = reader["IsActive"] != DBNull.Value && Convert.ToBoolean(reader["IsActive"]);
+                                if (!isActive)
+                                {
+                                    ShowError("Your account is suspended. Contact to admin department for access.");
+                                    return;
+                                }
+
+                                // 5. Deletion Approval Notice Check
+                                string delStat = reader["DelStatus"] != DBNull.Value ? reader["DelStatus"].ToString() : "";
+                                if(delStat == "APPROVED")
+                                {
+                                    ShowError("Alert: In 48 Hours your account will deleted permanently as approved by system protocols.");
+                                    return;
+                                }
+
                                 Session["UserId"] = reader["Id"].ToString();
                                 Session["Username"] = reader["Username"].ToString();
                                 Session["FullName"] = reader["FullName"].ToString();

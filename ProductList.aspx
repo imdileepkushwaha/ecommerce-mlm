@@ -120,6 +120,24 @@
                 padding: 60px 20px;
                 color: #64748b;
             }
+            .oos-banner {
+                background: #fee2e2;
+                color: #ef4444;
+                font-weight: 800;
+                text-align: center;
+                width: 100%;
+                padding: 10px;
+                border-radius: 8px;
+                font-size: 13px;
+                letter-spacing: 0.5px;
+                border: 1px dashed #fca5a5;
+            }
+            .oos-overlay {
+                position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(255,255,255,0.6);
+                z-index: 2;
+                pointer-events: none;
+            }
         </style>
     </asp:Content>
 
@@ -219,6 +237,7 @@
                             <ItemTemplate>
                                 <div class="product-card">
                                     <div class="product-card-img">
+                                        <%# !IsProductAvailable(Eval("IsActive"), Eval("Stock"), Eval("SellerActive")) ? "<div class='oos-overlay'></div>" : "" %>
                                         <span class="discount-tag">
                                             <%# GetDiscountPercentage(Eval("Price"), Eval("Mrp")) %>
                                         </span>
@@ -253,11 +272,11 @@
                                                     %></span>
                                         </div>
                                         <div class="prod-action-row">
-                                            <a href="javascript:void(0);" class="add-cart-btn js-add-to-cart"
-                                                data-pid='<%# Eval("Id") %>' title="Add to Cart"><i
-                                                    class="fas fa-shopping-basket"></i></a>
-                                            <a href="javascript:void(0);" class="buy-now-btn js-buy-now"
-                                                data-pid='<%# Eval("Id") %>'>Buy Now</a>
+                                            <%# IsProductAvailable(Eval("IsActive"), Eval("Stock"), Eval("SellerActive")) ? 
+                                                @"<a href='javascript:void(0);' class='add-cart-btn js-add-to-cart' data-pid='" + Eval("Id") + @"' title='Add to Cart'><i class='fas fa-shopping-basket'></i></a>
+                                                  <a href='javascript:void(0);' class='buy-now-btn js-buy-now' data-pid='" + Eval("Id") + @"'>Buy Now</a>" : 
+                                                @"<div class='oos-banner'><i class='fas fa-exclamation-circle'></i> OUT OF STOCK</div>" 
+                                            %>
                                         </div>
                                     </div>
                                 </div>
