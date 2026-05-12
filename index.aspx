@@ -40,7 +40,8 @@
                                     Discover our exclusive collection available only in our online store. Shop now for
                                     unique and premium items that you won't find anywhere else.
                                 </p>
-                                <a href="#" class="btn btn-dark-pill">Shop Now <i class="fas fa-arrow-right" style="margin-left:8px; font-size:12px;"></i></a>
+                                <a href="#" class="btn btn-dark-pill">Shop Now <i class="fas fa-arrow-right"
+                                        style="margin-left:8px; font-size:12px;"></i></a>
                             </div>
                             <div class="hero-image-area">
                                 <div class="hero-image-wrapper">
@@ -358,14 +359,15 @@
                         </div>
                         <h2 class="category-main-title">Featured Products</h2>
                     </div>
-                    <a href="#" class="btn-view-all">View All <i class="fas fa-arrow-right"></i></a>
+                    <a href="ProductList.aspx" class="btn-view-all">View All <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="product-grid">
                     <asp:Repeater ID="rptFeaturedProducts" runat="server">
                         <ItemTemplate>
                             <div class="product-card">
                                 <div class="product-card-img">
-                                    <span class="product-badge" runat="server" visible='<%# Eval("BadgeText") != DBNull.Value && !string.IsNullOrEmpty(Eval("BadgeText").ToString()) %>'>
+                                    <span class="product-badge" runat="server"
+                                        visible='<%# Eval("BadgeText") != DBNull.Value && !string.IsNullOrEmpty(Eval("BadgeText").ToString()) %>'>
                                         <%# Eval("BadgeText") %>
                                     </span>
                                     <span class="discount-tag">
@@ -375,9 +377,9 @@
                                         alt='<%# Eval("Name") %>' />
 
                                     <div class="product-actions">
-                                        <a href="#" class="action-btn" title="Add to Wishlist"><i
-                                                class="far fa-heart"></i></a>
-                                        <a href='<%# "ProductDetails.aspx?id=" + Eval("Id") %>' class="action-btn"
+                                        <a href="#" class="action-btn" title="Add to Wishlist"
+                                            data-pid='<%# Eval("Id") %>'><i class="far fa-heart"></i></a>
+                                        <a href='<%# "ProductDetails.aspx?slug=" + Eval("Slug") %>' class="action-btn"
                                             title="Quick View"><i class="far fa-eye"></i></a>
                                     </div>
                                 </div>
@@ -391,17 +393,21 @@
                                     <span class="prod-brand">
                                         <%# Eval("Brand") %>
                                     </span>
-                                    <h3><a href='<%# "ProductDetails.aspx?id=" + Eval("Id") %>'>
+                                    <h3><a href='<%# "ProductDetails.aspx?slug=" + Eval("Slug") %>'>
                                             <%# Eval("Name") %>
                                         </a></h3>
                                     <div class="prod-pricing">
-                                        <span class="current-price">₹<%#
+                                        <span class="current-price">₹ <%#
                                                 Convert.ToDecimal(Eval("Price")).ToString("N2") %></span>
-                                        <span class="old-price">₹<%# Convert.ToDecimal(Eval("Mrp")).ToString("N2")
-                                                %></span>
+                                        <span class="old-price">₹ <%# Convert.ToDecimal(Eval("Mrp")).ToString("N2") %>
+                                        </span>
                                     </div>
-                                    <a href="#" class="add-cart-btn"><i class="fas fa-shopping-basket"></i> Add to
-                                        Cart</a>
+                                    <div class="prod-action-row">
+                                        <a href="javascript:void(0);" class="add-cart-btn" data-pid='<%# Eval("Id") %>'
+                                            title="Add to Cart"><i class="fas fa-shopping-basket"></i></a>
+                                        <a href="javascript:void(0);" class="buy-now-btn js-buy-now"
+                                            data-pid='<%# Eval("Id") %>'>Buy Now</a>
+                                    </div>
                                 </div>
                             </div>
                         </ItemTemplate>
