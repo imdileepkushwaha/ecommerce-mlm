@@ -16,6 +16,10 @@ namespace ecommerce_mlm
         decimal _subtotal = 0;
         int _totalItems = 0;
 
+        public string ConfigMinFreeShipping = "1000";
+        public string ConfigShippingFee = "25";
+        public string ConfigPlatformFee = "5";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -107,9 +111,16 @@ namespace ecommerce_mlm
 
                             litSubtotal.Text = _subtotal.ToString("N0");
                             
-                            // Calculate Total with dynamic shipping based on promo threshold (>= 1000)
-                            decimal shipping = _subtotal >= 1000 ? 0 : 25;
-                            decimal finalTotal = _subtotal + shipping + 5;
+                            // Retrieve runtime configs
+                            LoadRuntimeSettings();
+
+                            decimal minFree = 1000; decimal.TryParse(ConfigMinFreeShipping, out minFree);
+                            decimal shipFee = 25; decimal.TryParse(ConfigShippingFee, out shipFee);
+                            decimal platFee = 5; decimal.TryParse(ConfigPlatformFee, out platFee);
+
+                            // Calculate Total with dynamic shipping based on promo threshold 
+                            decimal shipping = _subtotal >= minFree ? 0 : shipFee;
+                            decimal finalTotal = _subtotal + shipping + platFee;
                             
                             // Set visual indicator (Green FREE or Currency Amount)
                             if (shipping == 0)
@@ -137,6 +148,29 @@ namespace ecommerce_mlm
             {
                 Response.Write("<script>alert('Error: " + ex.Message + "');</script>");
             }
+        }
+
+        private void LoadRuntimeSettings()
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(strcon))
+                {
+                    con.Open();
+                    string sql = "SELECT ConfigKey, ConfigValue FROM SystemSettings WHERE ConfigKey IN ('PlatformFee', 'MinFreeShipping', 'ShippingFee')";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        string key = dr["ConfigKey"].ToString();
+                        string val = dr["ConfigValue"].ToString();
+                        if (key == "MinFreeShipping") ConfigMinFreeShipping = val;
+                        else if (key == "ShippingFee") ConfigShippingFee = val;
+                        else if (key == "PlatformFee") ConfigPlatformFee = val;
+                    }
+                }
+            }
+            catch { }
         }
 
         protected void rptCart_ItemDataBound(object sender, RepeaterItemEventArgs e)

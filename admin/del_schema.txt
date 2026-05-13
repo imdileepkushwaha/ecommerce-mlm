@@ -1,0 +1,6 @@
+Id
+UserId
+RequestDate
+Status
+AdminApprovedDate
+ScheduledDeleteDate

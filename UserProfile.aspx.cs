@@ -315,11 +315,11 @@ namespace ecommerce_mlm
         {
             try
             {
-                string fromEmail = ConfigurationManager.AppSettings["SmtpFrom"];
-                string smtpPass = ConfigurationManager.AppSettings["SmtpPass"];
-                string smtpHost = ConfigurationManager.AppSettings["SmtpHost"];
-                int smtpPort = int.Parse(ConfigurationManager.AppSettings["SmtpPort"]);
-                bool enableSsl = bool.Parse(ConfigurationManager.AppSettings["SmtpEnableSsl"]);
+                string fromEmail = ConfigHelper.GetConfig("SmtpFrom");
+                string smtpPass = ConfigHelper.GetConfig("SmtpPass");
+                string smtpHost = ConfigHelper.GetConfig("SmtpHost", "smtp.gmail.com");
+                int smtpPort = int.Parse(ConfigHelper.GetConfig("SmtpPort", "587"));
+                bool enableSsl = bool.Parse(ConfigHelper.GetConfig("SmtpEnableSsl", "TRUE"));
 
                 MailMessage mail = new MailMessage(fromEmail, toEmail);
                 mail.Subject = "Action Required: Account Identity Verification";

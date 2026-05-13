@@ -1,0 +1,99 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Admin.Master.cs" Inherits="ecommerce_mlm.admin.Admin" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Command Center</title>
+    <link rel="stylesheet" href="../assets/fonts/fontawesome/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/admin.css?v=1.4" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="sb-logo">
+                <i class="fas fa-shield-halved"></i>
+                <span>MLM ADMIN</span>
+            </div>
+            <nav class="sb-nav">
+                <a href="AdminDashboard.aspx" class="nav-item" data-page="admindashboard.aspx">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </a>
+                <a href="ManageUsers.aspx" class="nav-item" data-page="manageusers.aspx">
+                    <i class="fas fa-users"></i> Users
+                </a>
+                <a href="ManageSellers.aspx" class="nav-item" data-page="managesellers.aspx">
+                    <i class="fas fa-store"></i> Sellers
+                </a>
+                <a href="ManageProducts.aspx" class="nav-item" data-page="manageproducts.aspx">
+                    <i class="fas fa-box"></i> Products
+                </a>
+                <a href="ManageOrders.aspx" class="nav-item" data-page="manageorders.aspx">
+                    <i class="fas fa-receipt"></i> Orders
+                </a>
+                <a href="AccountDeletions.aspx" class="nav-item u-j-between" data-page="accountdeletions.aspx">
+                    <div class="u-d-flex u-a-center u-gap-12"><i class="fas fa-user-minus"></i> Deletion Requests</div>
+                    <asp:Literal ID="litDelBadge" runat="server"></asp:Literal>
+                </a>
+                <a href="ManagePayouts.aspx" class="nav-item" data-page="managepayouts.aspx">
+                    <i class="fas fa-money-check-alt"></i> Payout Requests
+                </a>
+                <a href="GenealogyTree.aspx" class="nav-item" data-page="genealogytree.aspx">
+                    <i class="fas fa-sitemap"></i> Genealogy Tree
+                </a>
+                <a href="AdminSettings.aspx" class="nav-item" data-page="adminsettings.aspx">
+                    <i class="fas fa-cog"></i> System Settings
+                </a>
+            </nav>
+            <div class="sb-bottom-pane">
+                <asp:LinkButton ID="lnkLogout" runat="server" CssClass="nav-item nav-item-logout" OnClick="lnkLogout_Click">
+                    <i class="fas fa-sign-out-alt"></i> Secure Logout
+                </asp:LinkButton>
+            </div>
+        </aside>
+
+        <!-- MAIN BODY -->
+        <main class="main-panel">
+            <header class="admin-hdr">
+                <div class="hdr-left">
+                    <h2>System Core Bridge</h2>
+                </div>
+                <div class="hdr-right">
+                    <div class="admin-profile">
+                        <div class="profile-icon"><i class="fas fa-user-shield"></i></div>
+                        <div class="u-admin-info-stack">
+                            <div class="u-admin-name-lbl"><asp:Literal ID="litAdminName" runat="server"></asp:Literal></div>
+                            <div class="u-admin-role-lbl">Super Admin</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </main>
+    </form>
+    
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.toLowerCase();
+            const navItems = document.querySelectorAll('.sb-nav .nav-item');
+            
+            navItems.forEach(item => {
+                item.classList.remove('active'); // Clean first
+                const targetPage = item.getAttribute('data-page');
+                if (targetPage && currentPath.includes(targetPage)) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

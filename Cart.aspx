@@ -8,6 +8,12 @@
     </asp:Content>
 
     <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+        <script type="text/javascript">
+            window.CART_PLATFORM_FEE = <%= ConfigPlatformFee %>;
+            window.CART_MIN_FREE_SHIPPING = <%= ConfigMinFreeShipping %>;
+            window.CART_SHIPPING_FEE = <%= ConfigShippingFee %>;
+        </script>
+
         <div class="cart-page-wrapper">
 
             <!-- Breadcrumb Top Bar -->
@@ -167,7 +173,7 @@
                                 <!-- <div class="icon-wrap"><i class="fas fa-shipping-fast"></i></div> -->
                                 <div class="text-wrap">
                                     <!-- <div class="title">FREE Standard Delivery</div> -->
-                                    <div class="desc" id="js-promo-desc">🎉 FREE delivery on orders above ₹1,000!</div>
+                                    <div class="desc" id="js-promo-desc">🎉 FREE delivery on orders above ₹<%= string.Format("{0:N0}", Convert.ToDecimal(ConfigMinFreeShipping)) %>!</div>
                                 </div>
                             </div>
 
@@ -177,9 +183,9 @@
                                 <div class="section-mini-label"><i class="fas fa-shipping-fast"></i> Delivery Speed
                                 </div>
 
-                                <div class="speed-option js-speed-option selected" data-fee="25">
+                                <div class="speed-option js-speed-option selected" data-fee="<%= ConfigShippingFee %>">
                                     <div class="speed-name">Standard (3-5 days)</div>
-                                    <div class="speed-cost">₹ 25</div>
+                                    <div class="speed-cost">₹ <%= ConfigShippingFee %></div>
                                 </div>
                                 <div class="speed-option js-speed-option" data-fee="89">
                                     <div class="speed-name">Express (1-2 days)</div>
@@ -205,12 +211,12 @@
                                 <div class="billing-row">
                                     <span>Delivery Charges</span>
                                     <span class="bill-val" id="js-delivery-val">
-                                        <asp:Literal ID="litShippingVisual" runat="server">₹ 25</asp:Literal>
+                                        <asp:Literal ID="litShippingVisual" runat="server">₹ <%= ConfigShippingFee %></asp:Literal>
                                     </span>
                                 </div>
                                 <div class="billing-row">
                                     <span>Platform Fee</span>
-                                    <span class="bill-val">₹ <span id="js-platform-val">5</span></span>
+                                    <span class="bill-val">₹ <span id="js-platform-val"><%= ConfigPlatformFee %></span></span>
                                 </div>
                             </div>
                             <hr class="billing-separator" />
