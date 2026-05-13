@@ -46,7 +46,7 @@ namespace ecommerce_mlm.admin
             {
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
-                    string sql = @"SELECT Id, Name, Brand, Category, Price, Mrp, Stock, MainImage, IsActive, CreatedAt 
+                    string sql = @"SELECT Id, Name, Brand, Category, Price, Mrp, Stock, MainImage, IsActive, CreatedAt, Slug 
                                    FROM SellerProducts ORDER BY CreatedAt DESC";
                     SqlCommand cmd = new SqlCommand(sql, con);
                     SqlDataAdapter da = new SqlDataAdapter(cmd);

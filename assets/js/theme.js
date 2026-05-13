@@ -410,11 +410,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const subValEl = document.getElementById('js-subtotal-val');
             if (subValEl) subValEl.innerText = subtotal.toLocaleString('en-IN');
 
-            // 3. Free Delivery Dynamic Presentation
+            // 3. Dynamic Config Threshold Resolvers
+            const cfgMinFree = parseFloat(window.CART_MIN_FREE_SHIPPING) || 1000;
+            const cfgShipFee = parseFloat(window.CART_SHIPPING_FEE) || 25;
+            const cfgPlatFee = parseFloat(window.CART_PLATFORM_FEE) || 5;
+
             const promoDesc = document.getElementById('js-promo-desc');
             const promoBanner = document.getElementById('divFreePromoBanner');
-            const stdOption = document.querySelector('.js-speed-option[data-fee="25"]');
-            let isEligible = subtotal >= 1000;
+            const stdOption = document.querySelector('.js-speed-option[data-fee="' + cfgShipFee + '"]');
+            let isEligible = subtotal >= cfgMinFree;
 
             if (isEligible) {
                 if (promoDesc) promoDesc.innerHTML = '🎉 <span style="color:#047857">Awesome! Your shipping is FREE.</span>';
@@ -424,25 +428,25 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (costNode) costNode.innerText = 'FREE';
                 }
             } else {
-                let diff = 1000 - subtotal;
+                let diff = cfgMinFree - subtotal;
                 if (promoDesc) promoDesc.innerHTML = 'Add <b>₹ ' + diff.toLocaleString('en-IN') + '</b> more for FREE Delivery!';
                 if (promoBanner) promoBanner.classList.remove('unlocked');
                 if (stdOption) {
                     const costNode = stdOption.querySelector('.speed-cost');
-                    if (costNode) costNode.innerText = '₹ 25';
+                    if (costNode) costNode.innerText = '₹ ' + cfgShipFee;
                 }
             }
 
             // 4. Shipping Fee Computations
             const selectedSpeed = document.querySelector('.js-speed-option.selected');
-            let baseFee = 25;
+            let baseFee = cfgShipFee;
             if (selectedSpeed && selectedSpeed.hasAttribute('data-fee')) {
                 baseFee = parseFloat(selectedSpeed.getAttribute('data-fee')) || 0;
             }
 
             let deliveryFee = baseFee;
             // Dynamic wave-off logic if threshold is met on standard option
-            if (baseFee === 25 && isEligible) {
+            if (baseFee === cfgShipFee && isEligible) {
                 deliveryFee = 0;
             }
 
@@ -456,14 +460,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            // Safe retrieval of platform fee to avoid null string replace errors
-            let platformFee = 0;
+            // Use dynamic injected platform fee directly
             const platformEl = document.getElementById('js-platform-val');
-            if (platformEl && platformEl.innerText) {
-                platformFee = parseFloat(platformEl.innerText.replace(/[^0-9.]/g, '')) || 0;
+            if (platformEl) {
+                platformEl.innerText = cfgPlatFee;
             }
 
-            let finalTotal = subtotal > 0 ? (subtotal + deliveryFee + platformFee) : 0;
+            let finalTotal = subtotal > 0 ? (subtotal + deliveryFee + cfgPlatFee) : 0;
 
             const finalEl = document.getElementById('js-final-total');
             if (finalEl) finalEl.innerText = finalTotal.toLocaleString('en-IN');

@@ -75,7 +75,7 @@
                         </td>
                         <td class="u-w-full u-nowrap u-w-auto">
                             <div class="u-d-flex u-gap-8">
-                                <a href='../ProductDetails.aspx?id=<%# Eval("Id") %>' target="_blank" class="action-btn-circle action-btn-view" title="View Product">
+                                <a href='../ProductDetails.aspx?slug=<%# Eval("Slug") %>' target="_blank" class="action-btn-circle action-btn-view" title="View Product">
                                     <i class="fas fa-external-link-alt"></i>
                                 </a>
                                 

@@ -669,11 +669,11 @@ namespace ecommerce_mlm
         {
             try
             {
-                string fromMail = ConfigurationManager.AppSettings["SmtpFrom"];
-                string pass = ConfigurationManager.AppSettings["SmtpPass"];
-                string host = ConfigurationManager.AppSettings["SmtpHost"];
-                int port = int.Parse(ConfigurationManager.AppSettings["SmtpPort"]);
-                bool ssl = bool.Parse(ConfigurationManager.AppSettings["SmtpEnableSsl"]);
+                string fromMail = ConfigHelper.GetConfig("SmtpFrom");
+                string pass = ConfigHelper.GetConfig("SmtpPass");
+                string host = ConfigHelper.GetConfig("SmtpHost", "smtp.gmail.com");
+                int port = int.Parse(ConfigHelper.GetConfig("SmtpPort", "587"));
+                bool ssl = bool.Parse(ConfigHelper.GetConfig("SmtpEnableSsl", "TRUE"));
 
                 MailMessage m = new MailMessage(fromMail, target);
                 m.Subject = "CRITICAL: Bank Account Action Authentication";
