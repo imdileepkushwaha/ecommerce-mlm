@@ -39,7 +39,10 @@ namespace ecommerce_mlm.admin
                     }
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex) 
+            {
+                lblCount.Text = "Fault: " + ex.Message;
+            }
         }
 
         protected void rptSellers_ItemCommand(object source, RepeaterCommandEventArgs e)

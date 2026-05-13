@@ -61,11 +61,12 @@
                             </div>
                             <asp:Repeater ID="rptGallery" runat="server">
                                 <ItemTemplate>
-                                    <div class="pd-thumb-item js-thumb" data-src='<%# Container.DataItem %>'>
-                                        <img src='<%# Container.DataItem %>' alt="Gallery" />
+                                    <div class="pd-thumb-item js-thumb" data-src='<%# ResolveUrl(Container.DataItem.ToString()) %>'>
+                                        <img src='<%# ResolveUrl(Container.DataItem.ToString()) %>' alt="Gallery" />
                                     </div>
                                 </ItemTemplate>
                             </asp:Repeater>
+
                         </div>
                         <div class="pd-main-image">
                             <img src="<%= ResolveUrl(mainImageUrl) %>" id="mainProdImg" alt="Main Image" />

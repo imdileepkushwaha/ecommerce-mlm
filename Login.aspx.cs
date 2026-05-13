@@ -142,7 +142,7 @@ namespace ecommerce_mlm
                                 if (sent) {
                                     mvForgot.SetActiveView(vwStep2);
                                 } else {
-                                    ShowModalError("Wait! Mail dispatch failed, but valid verification code is: " + otpCode + " (Proceeding to verify)");
+                                    ShowModalError("🔔 Dev Mode: Verification code is " + otpCode + " (Mail skipped locally)");
                                     mvForgot.SetActiveView(vwStep2);
                                 }
 

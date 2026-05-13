@@ -9,7 +9,8 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="u-mb-30 u-j-between u-a-center">
+    <div class="u-mb-30 u-d-flex u-j-between u-a-center">
+
         <div>
             <h1 class="u-txt-lg">Inventory Control</h1>
             <p class="u-txt-subtitle u-mt-5">Govern published merchandise assets across infrastructure.</p>
@@ -73,7 +74,8 @@
                                 <%# Convert.ToBoolean(Eval("IsActive")) ? "Approved" : "Pending" %>
                             </span>
                         </td>
-                        <td class="u-w-full u-nowrap u-w-auto">
+                        <td>
+
                             <div class="u-d-flex u-gap-8">
                                 <a href='../ProductDetails.aspx?slug=<%# Eval("Slug") %>' target="_blank" class="action-btn-circle action-btn-view" title="View Product">
                                     <i class="fas fa-external-link-alt"></i>

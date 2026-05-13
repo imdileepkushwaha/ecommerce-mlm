@@ -1,0 +1,95 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Seller.Master.cs" Inherits="EcommerceWebsite.SellerMaster" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merchant Hub</title>
+    
+    <!-- GLOBAL FONTS & ASSETS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- SELLER GLOBAL DESIGN SYSTEM -->
+    <link href="assets/css/seller.css?v=1.0" rel="stylesheet" />
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        
+        <!-- 1. SIDEBAR NAVIGATION CANVAS -->
+        <aside class="sidebar">
+            <div class="sb-brand">
+                <i class="fas fa-store"></i> MLM <span>MERCHANT</span>
+            </div>
+            
+            <nav class="sb-nav">
+                <a href="Dashboard.aspx" class="nav-link">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </a>
+                <a href="Kyc.aspx" class="nav-link">
+                    <i class="fas fa-id-card-clip"></i> KYC & Bank
+                </a>
+                <a href="Products.aspx" class="nav-link">
+                    <i class="fas fa-boxes"></i> My Products
+                </a>
+
+                
+                <!-- LOGOUT ENGINE -->
+                <asp:LinkButton ID="btnLogout" runat="server" CssClass="nav-link nav-link-logout" OnClick="btnLogout_Click" CausesValidation="false">
+                    <i class="fas fa-sign-out-alt"></i> Exit Hub
+                </asp:LinkButton>
+            </nav>
+        </aside>
+
+        <!-- 2. PRIMARY DATA VIEWPORT -->
+        <main class="content-panel">
+            
+            <!-- GLOBAL MERCHANT HEADER -->
+            <header class="hdr-region">
+                <div class="welcome-title">
+                    <h1>Welcome back, <asp:Literal ID="litWelcomeName" runat="server">Merchant</asp:Literal>!</h1>
+                    <p>Real-time analytics and metrics for your commercial storefront.</p>
+                </div>
+                
+                <div class="seller-pill">
+                    <div class="seller-icon">
+                        <asp:Literal ID="litAvatarLetter" runat="server">M</asp:Literal>
+                    </div>
+                    <div class="seller-label">
+                        <asp:Literal ID="litSellerEmail" runat="server"></asp:Literal>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DYNAMIC PAGE CONTENT INJECTOR -->
+            <div class="inner-content-wrapper">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+
+        </main>
+    </form>
+
+    <!-- Active Nav Link Selector JS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var path = window.location.pathname.split("/").pop().toLowerCase();
+            // Fallback for root dir navigation
+            if (!path) path = "dashboard.aspx";
+
+            var links = document.querySelectorAll('.sb-nav a.nav-link');
+            links.forEach(function (lnk) {
+                lnk.classList.remove('active');
+                var href = lnk.getAttribute('href');
+                if (href && href.toLowerCase() === path) {
+                    lnk.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
