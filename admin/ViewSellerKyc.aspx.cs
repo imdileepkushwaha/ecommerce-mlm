@@ -128,18 +128,40 @@ namespace ecommerce_mlm.admin
                             else if (status.Equals("Approved", StringComparison.OrdinalIgnoreCase))
                             {
                                 spnStatus.Attributes["class"] = "badge badge-success";
+                                
+                                // Lock all review controls since case is concluded
                                 btnApprove.Enabled = false;
                                 btnApprove.Text = "✓ Already Approved";
                                 btnApprove.Style["background"] = "#94a3b8";
+                                btnApprove.Style["cursor"] = "not-allowed";
+
+                                btnReject.Enabled = false;
+                                btnReject.Text = "✗ Reject Locked";
+                                btnReject.Style["background"] = "#e2e8f0";
+                                btnReject.Style["color"] = "#94a3b8";
+                                btnReject.Style["cursor"] = "not-allowed";
                             }
                             else if (status.Equals("Rejected", StringComparison.OrdinalIgnoreCase))
                             {
                                 spnStatus.Attributes["class"] = "badge badge-danger";
+
+                                // Lock review controls until next revision cycle triggers
+                                btnApprove.Enabled = false;
+                                btnApprove.Text = "✓ Approve Locked";
+                                btnApprove.Style["background"] = "#e2e8f0";
+                                btnApprove.Style["color"] = "#94a3b8";
+                                btnApprove.Style["cursor"] = "not-allowed";
+
+                                btnReject.Enabled = false;
+                                btnReject.Text = "✗ Already Rejected";
+                                btnReject.Style["background"] = "#94a3b8";
+                                btnReject.Style["cursor"] = "not-allowed";
                             }
                             else if (status.Equals("Pending", StringComparison.OrdinalIgnoreCase))
                             {
                                 spnStatus.Attributes["class"] = "badge badge-warning";
                             }
+
                             else
                             {
                                 spnStatus.Attributes["class"] = "badge";

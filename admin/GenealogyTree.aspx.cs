@@ -122,15 +122,17 @@ namespace ecommerce_mlm.admin
             sb.Append("<ul>");
             
             // Standard 4-level vertical recursive constructor passing rootUser as initial sponsor
-            sb.Append(BuildRecursiveAdminNode(rootUser, 1, dtTreeData, ""));
+            sb.Append(BuildRecursiveAdminNode(rootUser, 1, dtTreeData, "", ""));
+
 
             sb.Append("</ul>");
             litTreeOutput.Text = sb.ToString();
         }
 
-        private string BuildRecursiveAdminNode(string username, int level, DataTable dtSource, string parentSponsor)
+        private string BuildRecursiveAdminNode(string username, int level, DataTable dtSource, string parentSponsor, string position)
         {
             if (level > 4) return "";
+
 
             bool isSlotAvailable = (username == "AVAILABLE");
             bool activeState = false;
@@ -159,14 +161,15 @@ namespace ecommerce_mlm.admin
 
             if (isSlotAvailable)
             {
-                // Clickable vacant slot targeting dynamic sponsor registration modal
+                // Clickable vacant slot targeting dynamic sponsor registration modal with position awareness
                 nodeMarkup.AppendFormat(@"
-                    <a href='javascript:void(0)' onclick=""openQuickRegModal('{0}')"" class='tree-node node-empty' title='Click to Register Direct Member Here!'>
+                    <a href='javascript:void(0)' onclick=""openQuickRegModal('{0}', '{2}')"" class='tree-node node-empty' title='Click to Register Direct Member Here!'>
                         <div class='node-avatar'><i class='fas fa-plus-circle'></i></div>
                         <div class='node-name' style='color:#0ea5e9;'>+ Add Direct</div>
                         <div class='node-role'>{1}</div>
-                    </a>", parentSponsor, "Lvl " + level);
+                    </a>", parentSponsor, "Lvl " + level, position);
             }
+
             else
             {
                 string cssModifier = activeState ? "node-active" : "node-deactive";
@@ -207,18 +210,20 @@ namespace ecommerce_mlm.admin
 
                 if (!isSlotAvailable)
                 {
-                    // Identify downline nodes belonging to this parent inside memory array
-                    DataRow[] downlines = dtSource.Select(string.Format("SponsorId = '{0}' AND Username <> '{0}'", username.Replace("'", "''")), "CreatedAt ASC");
+                    // Match explicit Physical Placement Children on the Left and Right paths from Pre-Fetched data
+                    DataRow[] leftMatch = dtSource.Select(string.Format("ParentId = '{0}' AND Position = 'Left' AND Username <> '{0}'", username.Replace("'", "''")));
+                    DataRow[] rightMatch = dtSource.Select(string.Format("ParentId = '{0}' AND Position = 'Right' AND Username <> '{0}'", username.Replace("'", "''")));
                     
-                    if (downlines.Length > 0) leftLeaf = downlines[0]["Username"].ToString();
-                    if (downlines.Length > 1) rightLeaf = downlines[1]["Username"].ToString();
+                    if (leftMatch.Length > 0) leftLeaf = leftMatch[0]["Username"].ToString();
+                    if (rightMatch.Length > 0) rightLeaf = rightMatch[0]["Username"].ToString();
                 }
 
                 nodeMarkup.Append("<ul>");
-                nodeMarkup.Append(BuildRecursiveAdminNode(leftLeaf, level + 1, dtSource, username)); // Pass current username as parentSponsor for next depth
-                nodeMarkup.Append(BuildRecursiveAdminNode(rightLeaf, level + 1, dtSource, username)); // Pass current username as parentSponsor for next depth
+                nodeMarkup.Append(BuildRecursiveAdminNode(leftLeaf, level + 1, dtSource, username, "Left")); 
+                nodeMarkup.Append(BuildRecursiveAdminNode(rightLeaf, level + 1, dtSource, username, "Right")); 
                 nodeMarkup.Append("</ul>");
             }
+
 
             nodeMarkup.Append("</li>");
             return nodeMarkup.ToString();
@@ -264,20 +269,34 @@ namespace ecommerce_mlm.admin
                     object spRes = cmdSp.ExecuteScalar();
                     string sponsorRealName = spRes != null ? spRes.ToString() : "";
 
-                    // 4. Commit insertion with Active State pre-granted
-                    string sql = @"INSERT INTO Users (SponsorId, SponsorName, FullName, Email, Mobile, Username, Password, CreatedAt, IsActive, IsEmailVerified, IsMobileVerified) 
-                                   VALUES (@SpId, @SpName, @Name, @Mail, @Mob, @User, @Pass, GETDATE(), 1, 1, 1)";
-                    using (SqlCommand cmdIns = new SqlCommand(sql, con))
+                    // 4. Invoke our standard Stored Procedure with full Automated Placement Spillover Execution!
+                    using (SqlCommand cmdIns = new SqlCommand("sp_UserSignup", con))
                     {
-                        cmdIns.Parameters.AddWithValue("@SpId", sponsor);
-                        cmdIns.Parameters.AddWithValue("@SpName", sponsorRealName);
-                        cmdIns.Parameters.AddWithValue("@Name", fullName);
-                        cmdIns.Parameters.AddWithValue("@Mail", string.IsNullOrEmpty(email) ? (object)DBNull.Value : email);
-                        cmdIns.Parameters.AddWithValue("@Mob", mobile);
-                        cmdIns.Parameters.AddWithValue("@User", uname);
-                        cmdIns.Parameters.AddWithValue("@Pass", pass);
-                        cmdIns.ExecuteNonQuery();
+                        cmdIns.CommandType = CommandType.StoredProcedure;
+                        cmdIns.Parameters.AddWithValue("@SponsorId", sponsor);
+                        cmdIns.Parameters.AddWithValue("@SponsorName", sponsorRealName);
+                        cmdIns.Parameters.AddWithValue("@FullName", fullName);
+                        cmdIns.Parameters.AddWithValue("@Dob", DBNull.Value); // Admin quick-add doesn't ask for DOB
+                        cmdIns.Parameters.AddWithValue("@Gender", "Unspecified");
+                        cmdIns.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(email) ? (object)DBNull.Value : email);
+                        cmdIns.Parameters.AddWithValue("@Mobile", mobile);
+                        cmdIns.Parameters.AddWithValue("@Username", uname);
+                        cmdIns.Parameters.AddWithValue("@Password", pass);
+                        cmdIns.Parameters.AddWithValue("@Position", string.IsNullOrEmpty(hfSelectedPosition.Value) ? "Left" : hfSelectedPosition.Value);
+
+                        object result = cmdIns.ExecuteScalar();
+                        if (result == null || Convert.ToInt32(result) == -1)
+                        {
+                            ShowModalMsg("alert-danger", "Enrollment failure: Username conflict or node space occupancy violation.");
+                            return;
+                        }
+                        
+                        // Automatically activate the account immediately for Admin-added members
+                        SqlCommand cmdAct = new SqlCommand("UPDATE Users SET IsActive=1, IsEmailVerified=1, IsMobileVerified=1 WHERE Username=@u", con);
+                        cmdAct.Parameters.AddWithValue("@u", uname);
+                        cmdAct.ExecuteNonQuery();
                     }
+
                 }
 
                 // Trigger tree refresh instantly
