@@ -124,7 +124,8 @@ namespace ecommerce_mlm
             int fillPercent = 0;
             if (status == "placed" || status == "pending") fillPercent = 5;
             else if (status == "processing" || status == "confirmed") fillPercent = 33;
-            else if (status == "shipped") fillPercent = 66;
+            else if (status == "shipped" || status == "dispatched") fillPercent = 66;
+            else if (status == "out for delivery") fillPercent = 80;
             else if (status == "delivered" || status == "completed") fillPercent = 90;
 
             litProgressLine.Text = string.Format("<div class='timeline-progress-line' style='width: {0}%;'></div>", fillPercent);
@@ -156,9 +157,10 @@ namespace ecommerce_mlm
 
         private int GetStatusRank(string s)
         {
+            s = s.ToLower().Trim();
             if (s == "placed" || s == "pending") return 0;
             if (s == "processing" || s == "confirmed") return 1;
-            if (s == "shipped") return 2;
+            if (s == "shipped" || s == "out for delivery" || s == "dispatched") return 2;
             if (s == "delivered" || s == "completed") return 3;
             return -1; // Fallback for cancelled etc
         }

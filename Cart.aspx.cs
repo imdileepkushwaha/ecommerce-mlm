@@ -24,6 +24,9 @@ namespace ecommerce_mlm
         {
             if (!IsPostBack)
             {
+                LoadRuntimeSettings();
+                litShippingVisual.Text = "₹ " + ConfigShippingFee;
+                
                 LoadCartItems();
                 LoadSavedForLater();
             }
@@ -75,7 +78,7 @@ namespace ecommerce_mlm
             {
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
-                    string query = @"SELECT c.*, p.Name, p.Price, p.Mrp, p.MainImage, p.Brand 
+                    string query = @"SELECT c.*, p.Name, p.Price, p.Mrp, p.MainImage, p.Brand, p.Stock 
                                      FROM CartItems c 
                                      INNER JOIN SellerProducts p ON c.ProductId = p.Id 
                                      WHERE c.SessionId = @sid AND c.IsSavedForLater = 0
@@ -111,8 +114,8 @@ namespace ecommerce_mlm
 
                             litSubtotal.Text = _subtotal.ToString("N0");
                             
-                            // Retrieve runtime configs
-                            LoadRuntimeSettings();
+                            
+                            // Parsing dynamic fee runtime configs
 
                             decimal minFree = 1000; decimal.TryParse(ConfigMinFreeShipping, out minFree);
                             decimal shipFee = 25; decimal.TryParse(ConfigShippingFee, out shipFee);
@@ -197,6 +200,17 @@ namespace ecommerce_mlm
             catch
             {
                 return "0%";
+            }
+        }
+        protected void btnCheckout_Click(object sender, EventArgs e)
+        {
+            if (Session["UserId"] != null)
+            {
+                Response.Redirect("Checkout.aspx");
+            }
+            else
+            {
+                Response.Redirect("Login.aspx");
             }
         }
     }

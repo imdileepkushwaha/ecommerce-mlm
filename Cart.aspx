@@ -84,14 +84,14 @@
                                                 <div class="item-meta-row">
                                                     <span class="meta-pill"><i class="far fa-dot-circle"
                                                             style="font-size:10px; margin-right:5px;"></i> Size: <%#
-                                                            Eval("SelectedSize") ?? "N/A" %></span>
+                                                            string.IsNullOrEmpty(Convert.ToString(Eval("SelectedSize"))) ? "N/A" : Eval("SelectedSize") %></span>
                                                     <span class="meta-pill"><i class="fas fa-palette"
                                                             style="font-size:10px; margin-right:5px;"></i> Color: <%#
-                                                            Eval("SelectedColor") ?? "Default" %></span>
+                                                            string.IsNullOrEmpty(Convert.ToString(Eval("SelectedColor"))) ? "Default" : Eval("SelectedColor") %></span>
                                                 </div>
 
                                                 <div class="item-qty-row" data-cid='<%# Eval("CartItemId") %>'
-                                                    data-unitprice='<%# Eval("Price") %>'>
+                                                    data-unitprice='<%# Eval("Price") %>' data-stock='<%# Eval("Stock") %>'>
                                                     <button type="button" class="qty-btn btn-qty-minus">-</button>
                                                     <input type="text" class="qty-input item-qty-val"
                                                         value='<%# Eval("Quantity") %>' readonly />
@@ -183,15 +183,15 @@
                                 <div class="section-mini-label"><i class="fas fa-shipping-fast"></i> Delivery Speed
                                 </div>
 
-                                <div class="speed-option js-speed-option selected" data-fee="<%= ConfigShippingFee %>">
+                                <div class="speed-option js-speed-option selected" data-fee="<%= ConfigShippingFee %>" data-name="Standard" data-min-days="3" data-max-days="5">
                                     <div class="speed-name">Standard (3-5 days)</div>
                                     <div class="speed-cost">₹ <%= ConfigShippingFee %></div>
                                 </div>
-                                <div class="speed-option js-speed-option" data-fee="89">
+                                <div class="speed-option js-speed-option" data-fee="89" data-name="Express" data-min-days="1" data-max-days="2">
                                     <div class="speed-name">Express (1-2 days)</div>
                                     <div class="speed-cost">₹ 89</div>
                                 </div>
-                                <div class="speed-option js-speed-option" data-fee="149">
+                                <div class="speed-option js-speed-option" data-fee="149" data-name="Same Day" data-min-days="0" data-max-days="0">
                                     <div class="speed-name">Same Day</div>
                                     <div class="speed-cost">₹ 149</div>
                                 </div>
@@ -211,7 +211,7 @@
                                 <div class="billing-row">
                                     <span>Delivery Charges</span>
                                     <span class="bill-val" id="js-delivery-val">
-                                        <asp:Literal ID="litShippingVisual" runat="server">₹ <%= ConfigShippingFee %></asp:Literal>
+                                        <asp:Literal ID="litShippingVisual" runat="server"></asp:Literal>
                                     </span>
                                 </div>
                                 <div class="billing-row">
@@ -228,7 +228,7 @@
                             </div>
                             <!-- Checkout Button -->
                             <asp:Button ID="btnCheckout" runat="server" CssClass="btn btn-orange-checkout w-100 mt-4"
-                                Text="Proceed to Checkout" />
+                                Text="Proceed to Checkout" OnClick="btnCheckout_Click" />
 
 
                             <div class="trust-badge text-center mt-3">

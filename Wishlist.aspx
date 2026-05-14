@@ -124,6 +124,11 @@
                 const bagBtn = e.target.closest('.js-wish-to-cart');
                 if (bagBtn) {
                     e.preventDefault();
+                    if (bagBtn.classList.contains('working')) return; // Block concurrent clicks
+                    
+                    bagBtn.classList.add('working');
+                    bagBtn.style.pointerEvents = 'none'; // Immediate visual lockout
+                    
                     const pid = bagBtn.getAttribute('data-pid');
                     bagBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Working...';
                     
@@ -131,16 +136,39 @@
                         .then(r => r.json())
                         .then(d => {
                             if (d.success) {
-                                showToast('Successfully moved to cart!', 'success');
-                                bagBtn.innerHTML = '<i class="fas fa-check"></i> Added';
-                                bagBtn.style.background = '#10b981';
-                                // Optionally auto update header if present
-                                const hCart = document.getElementById('cart_count');
-                                if (hCart) hCart.innerText = d.totalCount;
+                                // Chain Wishlist Removal API so the item is deleted from Wishlist database automatically!
+                                fetch('AddToWishlist.ashx?action=remove&pid=' + pid)
+                                    .then(wr => wr.json())
+                                    .then(w => {
+                                        showToast('Successfully moved to cart!', 'success');
+                                        bagBtn.innerHTML = '<i class="fas fa-check"></i> Moved to Bag';
+                                        bagBtn.style.background = '#10b981';
+                                        
+                                        const hCart = document.getElementById('cart_count');
+                                        if (hCart) hCart.innerText = d.totalCount;
+                                        
+                                        // Animate removal from screen
+                                        const card = bagBtn.closest('.wish-card');
+                                        if (card) {
+                                            card.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                                            card.style.opacity = '0';
+                                            card.style.transform = 'scale(0.85) translateY(20px)';
+                                        }
+                                        setTimeout(() => {
+                                             window.location.reload(); // Clean sync reload
+                                        }, 450);
+                                    });
                             } else {
+                                bagBtn.classList.remove('working');
+                                bagBtn.style.pointerEvents = 'auto';
                                 bagBtn.innerHTML = '<i class="fas fa-shopping-bag"></i> Try Again';
                                 showToast(d.message || 'Failed adding to bag', 'error');
                             }
+                        }).catch(err => {
+                            bagBtn.classList.remove('working');
+                            bagBtn.style.pointerEvents = 'auto';
+                            bagBtn.innerHTML = '<i class="fas fa-shopping-bag"></i> Try Again';
+                            console.error(err);
                         });
                 }
             });

@@ -4,7 +4,7 @@
     <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
         <!-- DYNAMIC GLOBAL ALERTS -->
-        <asp:Label ID="lblGlobalMsg" runat="server" Visible="false"></asp:Label>
+        <asp:Label ID="lblGlobalMsg" runat="server" Visible="false" style="display: block;"></asp:Label>
 
         <!-- KYC HEADER -->
         <div class="kyc-hero">

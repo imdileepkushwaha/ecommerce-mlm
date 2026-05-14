@@ -134,12 +134,17 @@
         }
         .audit-asset-link::after {
             content: '\f08e'; /* Font Awesome external-link icon */
-            font-family: 'Font Awesome 6 Free', 'Font Awesome 5 Free';
+            font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "Font Awesome 6 Free";
             font-weight: 900;
             font-size: 0.75rem;
             color: #94a3b8;
             transition: transform 0.25s, color 0.25s;
             margin-left: 8px;
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
         }
         .audit-asset-link:hover::after {
             color: #6366f1;

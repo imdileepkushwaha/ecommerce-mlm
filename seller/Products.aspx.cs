@@ -133,6 +133,15 @@ namespace EcommerceWebsite
 
             if (!string.IsNullOrEmpty(path))
             {
+                // Handle Absolute External HTTPS / HTTP Pathways directly
+                if (path.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || 
+                    path.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || 
+                    path.StartsWith("//"))
+                {
+                    return string.Format("<img src='{0}' class='p-thumb-img' alt='item' />", path);
+                }
+
+                // Handle Local Relational Virtual pathways
                 string cleanPath = path.StartsWith("~") ? path.Substring(1) : path;
                 if (!cleanPath.StartsWith("/")) cleanPath = "/" + cleanPath;
                 return string.Format("<img src='{0}' class='p-thumb-img' alt='item' />", cleanPath);

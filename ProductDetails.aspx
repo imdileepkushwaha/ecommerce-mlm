@@ -21,6 +21,25 @@
                 gap: 10px;
                 width: 100%;
             }
+            .pd-color-ball.active {
+                outline: 2px solid #000;
+                outline-offset: 2px;
+                transform: scale(1.1);
+                box-shadow: 0 0 8px rgba(0,0,0,0.2);
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+            }
+            .pd-color-ball {
+                transition: all 0.2s ease;
+            }
+            .pd-color-anchor {
+                text-decoration: none !important;
+                display: inline-block;
+            }
+            .pd-color-ball:hover {
+                transform: scale(1.15);
+            }
         </style>
     </asp:Content>
 
@@ -56,27 +75,27 @@
                     <!-- LEFT: GALLERY SECTION -->
                     <div class="pd-gallery">
                         <div class="pd-thumbs">
-                            <div class="pd-thumb-item active js-thumb" data-src='<%= ResolveUrl(mainImageUrl) %>'>
-                                <img src="<%= ResolveUrl(mainImageUrl) %>" alt="Thumbnail" />
+                            <div class="pd-thumb-item active js-thumb" data-src='<%= mainImageUrl %>'>
+                                <img src="<%= mainImageUrl %>" alt="Thumbnail" />
                             </div>
                             <asp:Repeater ID="rptGallery" runat="server">
                                 <ItemTemplate>
-                                    <div class="pd-thumb-item js-thumb" data-src='<%# ResolveUrl(Container.DataItem.ToString()) %>'>
-                                        <img src='<%# ResolveUrl(Container.DataItem.ToString()) %>' alt="Gallery" />
+                                    <div class="pd-thumb-item js-thumb" data-src='<%# Container.DataItem.ToString() %>'>
+                                        <img src='<%# Container.DataItem.ToString() %>' alt="Gallery" />
                                     </div>
                                 </ItemTemplate>
                             </asp:Repeater>
 
                         </div>
                         <div class="pd-main-image">
-                            <img src="<%= ResolveUrl(mainImageUrl) %>" id="mainProdImg" alt="Main Image" />
+                            <img src="<%= mainImageUrl %>" id="mainProdImg" alt="Main Image" />
                         </div>
                     </div>
 
                     <!-- RIGHT: PRODUCT INFO SECTION -->
                     <div class="pd-info">
                         <div class="pd-top-tags">
-                            <div class="pd-tag-sale"><i class="fas fa-bolt"></i>
+                            <div class="pd-tag-sale" runat="server" id="divBadge"><i class="fas fa-tags" id="iconBadge" runat="server"></i>
                                 <asp:Literal ID="litBadge" runat="server">Sale Available</asp:Literal>
                             </div>
                             <div class="sold-badge"><i class="fas fa-fire"></i>
@@ -88,7 +107,7 @@
                         </h1>
 
                         <div class="pd-meta-short">
-                            <span><i class="far fa-user"></i> Sold by: <a href="#">
+                            <span><i class="far fa-user"></i> Sold by: <a href='SellerStore.aspx?id=<%= activeSellerId %>' style="color:#3b82f6; font-weight:700; text-decoration:none;">
                                     <asp:Literal ID="litBrandDisplay" runat="server"></asp:Literal>
                                 </a></span>
                             <span>|</span>
@@ -101,19 +120,31 @@
                             </span>
                         </div>
 
-                        <!-- FLASH DEAL WIDGET -->
-                        <div class="flash-deal-box">
+                        <!-- DYNAMIC FLASH DEAL WIDGET -->
+                        <asp:Panel ID="pnlFlashOffer" runat="server" CssClass="flash-deal-box" Visible="false">
                             <div class="flash-deal-txt">
-                                <i class="fas fa-stopwatch fa-spin"></i> FLASH DEAL ENDS IN:
+                                <i class="fas fa-stopwatch fa-spin"></i> <asp:Literal ID="litFlashOfferText" runat="server"></asp:Literal>
                             </div>
                             <div class="flash-timer-wrap">
-                                <div class="flash-unit" id="timer-h">08</div> :
-                                <div class="flash-unit" id="timer-m">42</div> :
-                                <div class="flash-unit" id="timer-s">55</div>
+                                <div class="flash-unit" id="timer-h">00</div> :
+                                <div class="flash-unit" id="timer-m">00</div> :
+                                <div class="flash-unit" id="timer-s">00</div>
                             </div>
-                        </div>
+                            <asp:HiddenField ID="hfOfferSeconds" runat="server" Value="0" ClientIDMode="Static" />
+                        </asp:Panel>
 
                         <div class="seller-offers-wrapper">
+                            <!-- Dynamic Bank Offer Added from Console -->
+                            <asp:Panel ID="pnlBankOffer" runat="server" CssClass="offer-card" Visible="false" style="border-left: 3px solid #2563eb; background: #eff6ff;">
+                                <div class="offer-icon-circle" style="background: #2563eb; color: #fff;"><i class="fas fa-university"></i></div>
+                                <div class="offer-content">
+                                    <h5 style="color: #1e3a8a;">Instant Bank/Card Offer</h5>
+                                    <p style="color: #1e40af; font-weight: 600;">
+                                        <asp:Literal ID="litBankOfferText" runat="server"></asp:Literal>
+                                    </p>
+                                </div>
+                            </asp:Panel>
+
                             <div class="offer-card">
                                 <div class="offer-icon-circle"><i class="fas fa-percent"></i></div>
                                 <div class="offer-content">
@@ -124,9 +155,9 @@
                                 </div>
                             </div>
                             <div class="offer-card">
-                                <div class="offer-icon-circle"><i class="fas fa-university"></i></div>
+                                <div class="offer-icon-circle"><i class="fas fa-credit-card"></i></div>
                                 <div class="offer-content">
-                                    <h5>Bank & Digital Offer</h5>
+                                    <h5>Digital Payments Offer</h5>
                                     <p>
                                         <asp:Literal ID="litOffer2" runat="server"></asp:Literal>
                                     </p>
@@ -145,6 +176,7 @@
                         </div>
 
                         <!-- Color Options dynamic -->
+                        <!-- Legacy Simple String-based Colors -->
                         <asp:Panel ID="pnlColors" runat="server" CssClass="pd-option-group">
                             <span class="pd-opt-label">Color Selection</span>
                             <div class="pd-opt-list">
@@ -152,7 +184,26 @@
                                     <ItemTemplate>
                                         <div class="pd-color-ball"
                                             style='<%# "background-color:" + Container.DataItem.ToString() %>'
+                                            title='<%# Container.DataItem.ToString() %>'
                                             onclick="selectOpt(this, 'color')"></div>
+                                    </ItemTemplate>
+                                </asp:Repeater>
+                            </div>
+                        </asp:Panel>
+
+                        <!-- Color Variant Group Linking System (Multi-Product Page Switcher) -->
+                        <asp:Panel ID="pnlGroupColors" runat="server" CssClass="pd-option-group" Visible="false">
+                            <span class="pd-opt-label">Available Colors</span>
+                            <div class="pd-opt-list">
+                                <asp:Repeater ID="rptGroupColors" runat="server">
+                                    <ItemTemplate>
+                                        <a href='ProductDetails.aspx?slug=<%# Eval("Slug") %>' class="pd-color-anchor" 
+                                           title='<%# Eval("ColorName") %>'>
+                                            <div class='<%# "pd-color-ball" + (Eval("Id").ToString() == productId.ToString() ? " active" : "") %>'
+                                                 style='<%# "background-color:" + Eval("ColorCode") %>'>
+                                                 <%# Eval("Id").ToString() == productId.ToString() ? "<i class=\"fas fa-check\" style=\"color:#fff; font-size:9px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);\"></i>" : "" %>
+                                            </div>
+                                        </a>
                                     </ItemTemplate>
                                 </asp:Repeater>
                             </div>
@@ -164,8 +215,8 @@
                             <div class="pd-opt-list">
                                 <asp:Repeater ID="rptSizes" runat="server">
                                     <ItemTemplate>
-                                        <div class="pd-size-box" onclick="selectOpt(this, 'size')">
-                                            <%# Container.DataItem.ToString() %>
+                                        <div class="pd-size-box" data-stock='<%# Eval("Stock") %>' onclick="selectOpt(this, 'size')">
+                                            <%# Eval("Name") %>
                                         </div>
                                     </ItemTemplate>
                                 </asp:Repeater>
@@ -173,7 +224,7 @@
                         </asp:Panel>
 
                         <% if (isAvailable) { %>
-                        <div class="pd-stock-alert"><i class="fas fa-fire"></i> Hurry! Only a few units left in stock.</div>
+                        <div class="pd-stock-alert" id="js-stock-alert"><i class="fas fa-fire"></i> Hurry! Only <%= productStock %> units left in stock.</div>
                         <% } else { %>
                         <div class="pd-stock-alert" style="color:#ef4444; background:#fee2e2;"><i class="fas fa-exclamation-triangle"></i> This product is currently suspended or out of stock.</div>
                         <% } %>
@@ -285,9 +336,25 @@
                             </div>
                             <!-- PANE 1 -->
                             <div class="tab-pane">
-                                <h3 style="margin-top:0; color:#0f172a; font-weight:800;">Manufacturer Data</h3>
-                                <p>Constructed by elite manufacturers ensuring strictly controlled fabric conditions and
-                                    compliance.</p>
+                                <h3 style="margin-top:0; color:#0f172a; font-weight:800; margin-bottom: 20px;"><i class="fas fa-industry" style="color:#f97316; margin-right:8px;"></i>Manufacturer & Compliance Data</h3>
+                                <div class="mfg-info-container" style="background:#f8fafc; border: 1px solid #e2e8f0; border-radius:12px; padding: 24px; display:grid; gap: 16px;">
+                                    
+                                    <div style="display:flex; align-items:baseline; gap:12px;">
+                                        <div style="font-weight:700; color:#475569; width: 180px; flex-shrink:0;"><i class="fas fa-building" style="font-size: 0.85rem; width:16px; margin-right:6px; color:#64748b;"></i> Manufacturer:</div>
+                                        <div style="color:#0f172a; font-weight:600;"><asp:Literal ID="litMfgName" runat="server" Text="Not Specified"></asp:Literal></div>
+                                    </div>
+
+                                    <div style="display:flex; align-items:baseline; gap:12px;">
+                                        <div style="font-weight:700; color:#475569; width: 180px; flex-shrink:0;"><i class="fas fa-earth-americas" style="font-size: 0.85rem; width:16px; margin-right:6px; color:#64748b;"></i> Country of Origin:</div>
+                                        <div style="color:#0f172a; font-weight:600;"><asp:Literal ID="litMfgCountry" runat="server" Text="Not Specified"></asp:Literal></div>
+                                    </div>
+
+                                    <div style="display:flex; align-items:baseline; gap:12px;">
+                                        <div style="font-weight:700; color:#475569; width: 180px; flex-shrink:0;"><i class="fas fa-location-dot" style="font-size: 0.85rem; width:16px; margin-right:6px; color:#64748b;"></i> Registered Address:</div>
+                                        <div style="color:#0f172a; font-weight:600; line-height:1.5;"><asp:Literal ID="litMfgAddress" runat="server" Text="Not Specified"></asp:Literal></div>
+                                    </div>
+
+                                </div>
                             </div>
                             <!-- PANE 2 -->
                             <div class="tab-pane">
@@ -444,13 +511,36 @@
         <script>
             const basePrice = parseFloat('<%= productRawPrice %>');
             let prodId = '<%= productId %>';
+            let maxStock = parseInt('<%= productStock %>') || 999;
+            let wishlistState = <%= isInWishlist ? "true" : "false" %>; // server-side initial state
 
-            // 1. Quantity Logic
+            // Apply initial wishlist icon state on page load
+            (function initWishIcon() {
+                const circle = document.querySelector('.js-wish-heart');
+                const icon   = circle ? circle.querySelector('i') : null;
+                if (!icon) return;
+                if (wishlistState) {
+                    icon.className = 'fas fa-heart';
+                    circle.style.color = '#ef4444';
+                    circle.style.borderColor = '#ef4444';
+                } else {
+                    icon.className = 'far fa-heart';
+                    circle.style.color = '';
+                    circle.style.borderColor = '';
+                }
+            })();
+
+            // 1. Quantity Logic (capped at stock)
             function updateQty(change) {
                 const input = document.getElementById('txtQty');
                 let cur = parseInt(input.value) || 1;
                 cur += change;
                 if (cur < 1) cur = 1;
+                if (cur > maxStock) {
+                    cur = maxStock;
+                    if (typeof showToast === 'function')
+                        showToast('Only ' + maxStock + ' unit(s) available in stock!', 'warning', 'Stock Limit');
+                }
                 input.value = cur;
                 const tot = cur * basePrice;
                 document.getElementById('js-live-total').innerText = tot.toLocaleString();
@@ -470,17 +560,45 @@
                 const siblings = el.parentNode.children;
                 for (let s of siblings) s.classList.remove('active');
                 el.classList.add('active');
+                
+                if (type === 'size') {
+                    const variantStock = el.getAttribute('data-stock');
+                    if (variantStock) {
+                        maxStock = parseInt(variantStock) || 0;
+                        const alertBox = document.getElementById('js-stock-alert');
+                        if (alertBox) {
+                            alertBox.innerHTML = '<i class="fas fa-fire"></i> Hurry! Only ' + maxStock + ' units of size <b>' + el.innerText.trim() + '</b> left in stock.';
+                        }
+                        const qtyInput = document.getElementById('txtQty');
+                        if (qtyInput && parseInt(qtyInput.value) > maxStock) {
+                            qtyInput.value = maxStock > 0 ? maxStock : 1;
+                            updateQty(0); // trigger price recalculation
+                        }
+                    }
+                }
             }
 
             // 4. AJAX Add To Cart
             function processCartAction(isBuyNow) {
                 const qty = document.getElementById('txtQty').value;
+                
+                // Fetch selected size and color
+                const activeSize = document.querySelector('.pd-size-box.active');
+                const activeColor = document.querySelector('.pd-color-ball.active');
+                
+                const sizeVal = activeSize ? activeSize.innerText.trim() : '';
+                const colorVal = activeColor ? activeColor.getAttribute('title') || '' : '';
+
                 const btn = document.querySelector('.pd-add-to-cart');
                 const originalHtml = btn.innerHTML;
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
                 btn.style.pointerEvents = 'none';
 
-                fetch('AddToCart.ashx?pid=' + prodId + '&qty=' + qty)
+                let url = 'AddToCart.ashx?pid=' + prodId + '&qty=' + qty;
+                if(sizeVal) url += '&size=' + encodeURIComponent(sizeVal);
+                if(colorVal) url += '&color=' + encodeURIComponent(colorVal);
+
+                fetch(url)
                     .then(r => r.json())
                     .then(data => {
                         window.location.href = 'Cart.aspx';
@@ -498,29 +616,66 @@
             }
 
             // 6. Flash Deal Countdown
-            let timeLimit = 31500; // example seconds
-            const timerInterval = setInterval(() => {
-                if (timeLimit <= 0) clearInterval(timerInterval);
-                let h = Math.floor(timeLimit / 3600);
-                let m = Math.floor((timeLimit % 3600) / 60);
-                let s = timeLimit % 60;
-                document.getElementById('timer-h').innerText = String(h).padStart(2, '0');
-                document.getElementById('timer-m').innerText = String(m).padStart(2, '0');
-                document.getElementById('timer-s').innerText = String(s).padStart(2, '0');
-                timeLimit--;
-            }, 1000);
+            const hfSec = document.getElementById('hfOfferSeconds');
+            const timerH = document.getElementById('timer-h');
+            if (hfSec && timerH) {
+                let timeLimit = parseInt(hfSec.value) || 31500;
+                const timerInterval = setInterval(() => {
+                    if (timeLimit <= 0) {
+                        clearInterval(timerInterval);
+                        return;
+                    }
+                    let h = Math.floor(timeLimit / 3600);
+                    let m = Math.floor((timeLimit % 3600) / 60);
+                    let s = timeLimit % 60;
+                    
+                    const th = document.getElementById('timer-h');
+                    const tm = document.getElementById('timer-m');
+                    const ts = document.getElementById('timer-s');
+                    if(th) th.innerText = String(h).padStart(2, '0');
+                    if(tm) tm.innerText = String(m).padStart(2, '0');
+                    if(ts) ts.innerText = String(s).padStart(2, '0');
+                    
+                    timeLimit--;
+                }, 1000);
+            }
 
-            // 7. Wishlist Working
+            // 7. Wishlist Toggle
             function addToWishlist() {
-                const icon = document.querySelector('.js-wish-heart i');
-                icon.className = "fas fa-spinner fa-spin";
-                fetch('AddToWishlist.ashx?pid=' + prodId)
+                const circle = document.querySelector('.js-wish-heart');
+                const icon   = circle ? circle.querySelector('i') : null;
+                if (!icon) return;
+
+                // Optimistic UI update while request is in flight
+                icon.className = 'fas fa-spinner fa-spin';
+
+                fetch('AddToWishlist.ashx?pid=' + prodId + '&action=toggle')
                     .then(r => r.json())
                     .then(d => {
-                        icon.className = "fas fa-heart";
-                        icon.parentElement.style.color = "#ef4444";
-                        icon.parentElement.style.borderColor = "#ef4444";
-                        showToast(d.message, 'success', 'Wishlist');
+                        if (!d.success) { icon.className = wishlistState ? 'fas fa-heart' : 'far fa-heart'; return; }
+
+                        wishlistState = d.inWishlist;
+
+                        if (wishlistState) {
+                            icon.className = 'fas fa-heart';
+                            circle.style.color = '#ef4444';
+                            circle.style.borderColor = '#ef4444';
+                        } else {
+                            icon.className = 'far fa-heart';
+                            circle.style.color = '';
+                            circle.style.borderColor = '';
+                        }
+
+                        // Live-update header wishlist badge (no page reload)
+                        const badge = document.getElementById('wishlist_count');
+                        if (badge) badge.textContent = d.totalCount;
+
+                        const toastType = wishlistState ? 'success' : 'info';
+                        showToast(d.message, toastType, 'Wishlist');
+                    })
+                    .catch(() => {
+                        // Restore on network error
+                        icon.className = wishlistState ? 'fas fa-heart' : 'far fa-heart';
                     });
             }
 

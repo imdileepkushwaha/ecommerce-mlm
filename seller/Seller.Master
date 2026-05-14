@@ -36,7 +36,12 @@
                 <a href="Products.aspx" class="nav-link">
                     <i class="fas fa-boxes"></i> My Products
                 </a>
-
+                <a href="Orders.aspx" class="nav-link">
+                    <i class="fas fa-receipt"></i> Orders
+                </a>
+                <a href="Profile.aspx" class="nav-link">
+                    <i class="fas fa-user-gear"></i> Profile
+                </a>
                 
                 <!-- LOGOUT ENGINE -->
                 <asp:LinkButton ID="btnLogout" runat="server" CssClass="nav-link nav-link-logout" OnClick="btnLogout_Click" CausesValidation="false">

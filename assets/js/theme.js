@@ -1,3 +1,28 @@
+/* ========================================
+   GLOBAL UTILITIES
+   ======================================== */
+window.getFormattedDeliveryRange = function(minDays, maxDays, includeYear = false) {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const today = new Date();
+    
+    const minDate = new Date(today);
+    minDate.setDate(today.getDate() + minDays);
+    
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + maxDays);
+    
+    const yrSuffixMin = includeYear ? ` ${minDate.getFullYear()}` : "";
+    const yrSuffixMax = includeYear ? ` ${maxDate.getFullYear()}` : "";
+    
+    const minText = `${minDate.getDate()} ${months[minDate.getMonth()]}${yrSuffixMin}`;
+    const maxText = `${maxDate.getDate()} ${months[maxDate.getMonth()]}${yrSuffixMax}`;
+    
+    if (minDays === maxDays) {
+        return minText; // Used for "Same Day" e.g. "14 May 2026"
+    }
+    return `${minText} - ${maxText}`;
+};
+
 /* ========================
    PRELOADER HIDE
    ======================== */
@@ -273,7 +298,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            fetch('AddToCart.ashx?pid=' + pid)
+            // Get selected quantity from Product Details page input if it exists
+            let qtyInput = document.getElementById('txtQty');
+            let qtyVal = qtyInput ? parseInt(qtyInput.value) || 1 : 1;
+
+            fetch('AddToCart.ashx?pid=' + pid + '&qty=' + qtyVal)
             .then(res => res.json())
             .then(data => {
                 if(data.success) {
@@ -368,7 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
    ======================================== */
 document.addEventListener('DOMContentLoaded', function () {
     // Ensure we are only executing on cart context safely
-    const isCartPage = document.querySelector('.cart-page-wrapper') !== null;
+    const isCartPage = document.querySelector('.cart-page-wrapper') !== null && window.location.pathname.toLowerCase().includes('cart.aspx');
     if (!isCartPage) return;
 
     console.log('Cart Logic Initialized.');
@@ -450,6 +479,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 deliveryFee = 0;
             }
 
+            // 4.b Update dynamic delivery dates for items
+            if (selectedSpeed) {
+                const minD = selectedSpeed.hasAttribute('data-min-days') ? parseInt(selectedSpeed.getAttribute('data-min-days')) : 3;
+                const maxD = selectedSpeed.hasAttribute('data-max-days') ? parseInt(selectedSpeed.getAttribute('data-max-days')) : 5;
+                const spName = selectedSpeed.getAttribute('data-name') || 'Standard';
+                const rangeTxt = window.getFormattedDeliveryRange(minD, maxD, false);
+                
+                document.querySelectorAll('.delivery-highlight').forEach(hl => {
+                    hl.innerText = `${spName} Delivery by ${rangeTxt}`;
+                });
+            }
+
             // 5. Total Breakdown updates with zero risk format access
             const delCell = document.getElementById('js-delivery-val');
             if (delCell) {
@@ -500,7 +541,15 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!input || !cid) return;
 
             let val = parseInt(input.value) || 1;
+            let maxStock = parseInt(parentRow.getAttribute('data-stock')) || 999;
+
             if (qtyBtn.classList.contains('btn-qty-plus')) {
+                if (val >= maxStock) {
+                    if (typeof showToast === 'function') {
+                        showToast('Only ' + maxStock + ' unit(s) available in stock!', 'warning', 'Stock Limit');
+                    }
+                    return; // Don't allow increasing or syncing
+                }
                 val++;
             } else {
                 if (val > 1) val--;
@@ -588,6 +637,9 @@ document.addEventListener('DOMContentLoaded', function () {
             itemChecks.forEach(chk => chk.checked = e.target.checked);
         }
     });
+
+    // 2. INITIAL SYNC ON LOAD
+    recalculateCartTotals();
 
     // CORE DOM MODIFICATION WORKER
     function processItemRemoval(buttonEl, type) {

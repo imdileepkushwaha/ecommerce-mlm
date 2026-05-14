@@ -64,6 +64,7 @@ namespace EcommerceWebsite
                             txtName.Text = r["Name"] != DBNull.Value ? r["Name"].ToString() : "";
                             txtBrand.Text = r["Brand"] != DBNull.Value ? r["Brand"].ToString() : "";
                             txtCategory.Text = r["Category"] != DBNull.Value ? r["Category"].ToString() : "";
+                            txtSlug.Text = r["Slug"] != DBNull.Value ? r["Slug"].ToString() : "";
                             
                             // Sku Resolution
                             string loadedSku = r["Sku"] != DBNull.Value ? r["Sku"].ToString() : "";
@@ -86,12 +87,26 @@ namespace EcommerceWebsite
                             txtPrice.Text = price.ToString("F2");
                             txtMrp.Text = mrp.ToString("F2");
 
+                            // Load Offer Strip Data Replica
+                            txtFlashOfferText.Text = r["FlashOfferText"] != DBNull.Value ? r["FlashOfferText"].ToString() : "";
+                            txtOfferCountdown.Text = r["OfferCountdown"] != DBNull.Value ? r["OfferCountdown"].ToString() : "";
+                            txtBankOfferText.Text = r["BankOfferText"] != DBNull.Value ? r["BankOfferText"].ToString() : "";
+
                             // Dropdowns Selection
                             if (r["ProductType"] != DBNull.Value && ddlProductType.Items.FindByValue(r["ProductType"].ToString()) != null)
                                 ddlProductType.SelectedValue = r["ProductType"].ToString();
                             
                             if (r["Gender"] != DBNull.Value && ddlGender.Items.FindByValue(r["Gender"].ToString()) != null)
                                 ddlGender.SelectedValue = r["Gender"].ToString();
+
+                            // New Custom Badges & Color Group Load logic
+                            if (r["Badge"] != DBNull.Value && ddlBadge.Items.FindByValue(r["Badge"].ToString()) != null)
+                                ddlBadge.SelectedValue = r["Badge"].ToString();
+                            
+                            txtBadgeText.Text = r["BadgeText"] != DBNull.Value ? r["BadgeText"].ToString() : "";
+                            txtColorGroupKey.Text = r["ColorGroupKey"] != DBNull.Value ? r["ColorGroupKey"].ToString() : "";
+                            txtColorName.Text = r["ColorName"] != DBNull.Value ? r["ColorName"].ToString() : "";
+                            txtColorCode.Text = r["ColorCode"] != DBNull.Value ? r["ColorCode"].ToString() : "";
 
                             // Narrative description
                             txtDesc.Text = r["Description"] != DBNull.Value ? HttpUtility.HtmlDecode(r["Description"].ToString()) : "";
@@ -102,6 +117,11 @@ namespace EcommerceWebsite
                             txtColors.Text = r["ColorOptions"] != DBNull.Value ? r["ColorOptions"].ToString() : "";
                             txtSizes.Text = r["SizeOptions"] != DBNull.Value ? r["SizeOptions"].ToString() : "";
                             txtShipping.Text = r["ShippingClass"] != DBNull.Value ? r["ShippingClass"].ToString() : "";
+
+                            // Manufacturer fields
+                            txtMfgName.Text = r["ManufacturerName"] != DBNull.Value ? r["ManufacturerName"].ToString() : "";
+                            txtMfgCountry.Text = r["ManufacturerCountry"] != DBNull.Value ? r["ManufacturerCountry"].ToString() : "";
+                            txtMfgAddress.Text = r["ManufacturerAddress"] != DBNull.Value ? r["ManufacturerAddress"].ToString() : "";
 
                             // SEO fields
                             txtMetaTitle.Text = r["MetaTitle"] != DBNull.Value ? r["MetaTitle"].ToString() : "";
@@ -139,6 +159,35 @@ namespace EcommerceWebsite
                                 {
                                     litGalleryExistingThumbs.Text = galBuilder.ToString();
                                     pnlGalleryExisting.Visible = true;
+                                }
+                            }
+
+                            // =====================================================
+                            // LOAD SIZE-WISE VARIANTS DATA FOR DYNAMIC MATRIX
+                            // =====================================================
+                            string varSql = "SELECT * FROM ProductVariants WHERE ProductId = @Pid";
+                            using (SqlCommand varCmd = new SqlCommand(varSql, con))
+                            {
+                                varCmd.Parameters.AddWithValue("@Pid", pid);
+                                SqlDataAdapter vda = new SqlDataAdapter(varCmd);
+                                DataTable vdt = new DataTable();
+                                vda.Fill(vdt);
+
+                                if (vdt.Rows.Count > 0)
+                                {
+                                    System.Collections.Generic.List<string> varParts = new System.Collections.Generic.List<string>();
+                                    foreach (DataRow vRow in vdt.Rows)
+                                    {
+                                        string vSize = vRow["VariantValue"].ToString();
+                                        string vStock = vRow["Stock"].ToString();
+                                        string vSku = vRow["Sku"] != DBNull.Value ? vRow["Sku"].ToString() : "";
+                                        string vPrice = vRow["PriceOffset"] != DBNull.Value ? Convert.ToDecimal(vRow["PriceOffset"]).ToString("F2") : "0.00";
+
+                                        // Format: Size:Stock:Sku:Price
+                                        varParts.Add(string.Format("{0}:{1}:{2}:{3}", vSize, vStock, vSku, vPrice));
+                                    }
+                                    // Set Flat String into Hidden Field for Javascript Parsing
+                                    hfVariantData.Value = string.Join("|", varParts.ToArray());
                                 }
                             }
 
@@ -254,6 +303,47 @@ namespace EcommerceWebsite
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
+
+                    // 1. Backend Loop: Validate and Enforce Unique Slug Permutations
+                    string baseSlug = "";
+                    string rawNameStr = txtName.Text.Trim().ToLower();
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                    foreach (char c in rawNameStr)
+                    {
+                        if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) sb.Append(c);
+                        else if (c == ' ' || c == '-' || c == '_' || c == '/') sb.Append('-');
+                    }
+                    baseSlug = sb.ToString();
+                    while (baseSlug.Contains("--")) { baseSlug = baseSlug.Replace("--", "-"); }
+                    baseSlug = baseSlug.Trim('-');
+                    if (string.IsNullOrEmpty(baseSlug)) { baseSlug = "product"; }
+
+                    string uniqueSlug = baseSlug;
+                    bool isSlugUnique = false;
+                    int attempts = 0;
+                    Random rand = new Random();
+
+                    while (!isSlugUnique && attempts < 15)
+                    {
+                        string checkQ = "SELECT COUNT(1) FROM SellerProducts WHERE Slug = @slug AND Id != @pid";
+                        using (SqlCommand checkCmd = new SqlCommand(checkQ, con))
+                        {
+                            checkCmd.Parameters.AddWithValue("@slug", uniqueSlug);
+                            checkCmd.Parameters.AddWithValue("@pid", targetId);
+                            int count = Convert.ToInt32(checkCmd.ExecuteScalar());
+                            if (count == 0)
+                            {
+                                isSlugUnique = true;
+                            }
+                            else
+                            {
+                                // Collision: Append dynamic numeric suffix
+                                uniqueSlug = baseSlug + "-" + rand.Next(100, 9999).ToString();
+                                attempts++;
+                            }
+                        }
+                    }
+
                     using (SqlCommand cmd = new SqlCommand("dbo.UpsertSellerProduct", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -275,6 +365,7 @@ namespace EcommerceWebsite
                         cmd.Parameters.AddWithValue("@Id", targetId);
                         cmd.Parameters.AddWithValue("@SellerId", sellerId);
                         cmd.Parameters.AddWithValue("@Name", txtName.Text.Trim());
+                        cmd.Parameters.AddWithValue("@Slug", uniqueSlug); // Pass our guaranteed unique slug!
                         cmd.Parameters.AddWithValue("@Brand", (object)txtBrand.Text.Trim() ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@Sku", resolvedSku);
                         cmd.Parameters.AddWithValue("@Category", txtCategory.Text.Trim());
@@ -306,6 +397,23 @@ namespace EcommerceWebsite
                         cmd.Parameters.AddWithValue("@MetaKeywords", (object)txtMetaKeywords.Text.Trim() ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@MetaDescription", (object)txtMetaDesc.Text.Trim() ?? DBNull.Value);
 
+                        // Compliance & Manufacturer Parameters
+                        cmd.Parameters.AddWithValue("@ManufacturerName", (object)txtMfgName.Text.Trim() ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ManufacturerCountry", (object)txtMfgCountry.Text.Trim() ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ManufacturerAddress", (object)txtMfgAddress.Text.Trim() ?? DBNull.Value);
+
+                        // Custom Catalog Upgrades: Badges & Grouping
+                        cmd.Parameters.AddWithValue("@Badge", ddlBadge.SelectedValue);
+                        cmd.Parameters.AddWithValue("@BadgeText", (object)txtBadgeText.Text.Trim() ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ColorGroupKey", (object)txtColorGroupKey.Text.Trim() ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ColorName", (object)txtColorName.Text.Trim() ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ColorCode", (object)txtColorCode.Text.Trim() ?? DBNull.Value);
+
+                        // Persist New Dynamic Offer Strip
+                        cmd.Parameters.AddWithValue("@FlashOfferText", (object)txtFlashOfferText.Text.Trim() ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@OfferCountdown", (object)txtOfferCountdown.Text.Trim() ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@BankOfferText", (object)txtBankOfferText.Text.Trim() ?? DBNull.Value);
+
                         // Capture output ID
                         SqlParameter outParam = new SqlParameter("@NewId", SqlDbType.Int);
                         outParam.Direction = ParameterDirection.Output;
@@ -314,6 +422,56 @@ namespace EcommerceWebsite
                         cmd.ExecuteNonQuery();
                         
                         int newProdId = Convert.ToInt32(outParam.Value);
+
+                        // =====================================================
+                        // SAVE SIZE-WISE VARIANTS & INVENTORY RESERVES
+                        // =====================================================
+                        string variantRaw = hfVariantData.Value;
+                        
+                        // 1. Run Delete statement to clear previous states safely
+                        using (SqlCommand delCmd = new SqlCommand("DELETE FROM ProductVariants WHERE ProductId = @Pid", con))
+                        {
+                            delCmd.Parameters.AddWithValue("@Pid", newProdId);
+                            delCmd.ExecuteNonQuery();
+                        }
+
+                        // 2. Loop through raw flat delimiter string and bulk-insert using SaveProductVariants SP!
+                        if (!string.IsNullOrEmpty(variantRaw))
+                        {
+                            string[] records = variantRaw.Split('|');
+                            foreach (string rec in records)
+                            {
+                                if (string.IsNullOrEmpty(rec)) continue;
+                                string[] segments = rec.Split(':');
+                                if (segments.Length >= 4)
+                                {
+                                    string sizeVal = segments[0].Trim();
+                                    string stockStr = segments[1].Trim();
+                                    string skuStr = segments[2].Trim();
+                                    string priceStr = segments[3].Trim();
+
+                                    int stockNum = 0;
+                                    int.TryParse(stockStr, out stockNum);
+
+                                    decimal extraPrice = 0;
+                                    decimal.TryParse(priceStr, out extraPrice);
+
+                                    if (!string.IsNullOrEmpty(sizeVal))
+                                    {
+                                        using (SqlCommand varCmd = new SqlCommand("SaveProductVariants", con))
+                                        {
+                                            varCmd.CommandType = CommandType.StoredProcedure;
+                                            varCmd.Parameters.AddWithValue("@ProductId", newProdId);
+                                            varCmd.Parameters.AddWithValue("@VariantValue", sizeVal);
+                                            varCmd.Parameters.AddWithValue("@Sku", string.IsNullOrEmpty(skuStr) ? DBNull.Value : (object)skuStr);
+                                            varCmd.Parameters.AddWithValue("@Stock", stockNum);
+                                            varCmd.Parameters.AddWithValue("@PriceOffset", extraPrice);
+                                            varCmd.ExecuteNonQuery();
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 

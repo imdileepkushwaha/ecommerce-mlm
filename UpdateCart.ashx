@@ -65,6 +65,18 @@ namespace ecommerce_mlm
                     {
                         int qty = Convert.ToInt32(context.Request["qty"]);
                         if (qty < 1) qty = 1;
+
+                        // Verify stock
+                        string stkQ = "SELECT p.Stock FROM CartItems c INNER JOIN SellerProducts p ON c.ProductId = p.Id WHERE c.CartItemId = @cid";
+                        SqlCommand stkCmd = new SqlCommand(stkQ, con);
+                        stkCmd.Parameters.AddWithValue("@cid", cid);
+                        int productStock = Convert.ToInt32(stkCmd.ExecuteScalar() ?? 0);
+
+                        if (qty > productStock) {
+                            context.Response.Write("{\"success\":false, \"error\":\"Stock limit reached. Max available: " + productStock + "\"}");
+                            return;
+                        }
+
                         string sql = "UPDATE CartItems SET Quantity = @q WHERE CartItemId = @cid";
                         SqlCommand cmd = new SqlCommand(sql, con);
                         cmd.Parameters.AddWithValue("@q", qty);
