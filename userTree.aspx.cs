@@ -166,13 +166,12 @@ namespace ecommerce_mlm
 
                 if (!isAvailableNode)
                 {
-                    // Fetch dynamic direct children belonging to this parent FROM MEMORY TABLE
-                    // Proc already delivered records ordered by CreatedAt!
-                    // Exclude cases where username equals SponsorId to break recursive infinite loops 
-                    DataRow[] children = dtSource.Select(string.Format("SponsorId = '{0}' AND Username <> '{0}'", username.Replace("'", "''")), "CreatedAt ASC");
+                    // Match explicit Physical Placement Children on the Left and Right paths from Pre-Fetched data
+                    DataRow[] leftMatch = dtSource.Select(string.Format("ParentId = '{0}' AND Position = 'Left' AND Username <> '{0}'", username.Replace("'", "''")));
+                    DataRow[] rightMatch = dtSource.Select(string.Format("ParentId = '{0}' AND Position = 'Right' AND Username <> '{0}'", username.Replace("'", "''")));
                     
-                    if (children.Length > 0) leftChild = children[0]["Username"].ToString();
-                    if (children.Length > 1) rightChild = children[1]["Username"].ToString();
+                    if (leftMatch.Length > 0) leftChild = leftMatch[0]["Username"].ToString();
+                    if (rightMatch.Length > 0) rightChild = rightMatch[0]["Username"].ToString();
                 }
 
                 nodeHtml.Append("<ul>");
@@ -180,6 +179,7 @@ namespace ecommerce_mlm
                 nodeHtml.Append(BuildRecursiveNode(rightChild, level + 1, dtSource));
                 nodeHtml.Append("</ul>");
             }
+
 
             nodeHtml.Append("</li>");
             return nodeHtml.ToString();

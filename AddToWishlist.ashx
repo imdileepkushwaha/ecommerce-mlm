@@ -11,7 +11,7 @@ namespace ecommerce_mlm {
             context.Response.ContentType = "application/json";
             try {
                 string pidStr = context.Request.QueryString["pid"];
-                string action = context.Request.QueryString["action"] ?? "add";
+                string action = context.Request.QueryString["action"] ?? "toggle";
 
                 if (string.IsNullOrEmpty(pidStr)) {
                     context.Response.Write("{\"success\":false,\"message\":\"Invalid Product ID\"}");
@@ -21,18 +21,22 @@ namespace ecommerce_mlm {
                 string sid = context.Session.SessionID;
                 string conStr = ConfigurationManager.ConnectionStrings["MlmDb"].ConnectionString;
 
+                bool inWishlist = false;
+
                 using (SqlConnection con = new SqlConnection(conStr)) {
                     con.Open();
-                    
+
                     if (action == "remove") {
+                        // Explicit remove
                         string delQ = "DELETE FROM WishlistItems WHERE ProductId = @pid AND SessionId = @sid";
                         using (SqlCommand cmd = new SqlCommand(delQ, con)) {
                             cmd.Parameters.AddWithValue("@pid", pid);
                             cmd.Parameters.AddWithValue("@sid", sid);
                             cmd.ExecuteNonQuery();
                         }
+                        inWishlist = false;
                     } else {
-                        // Check duplicate
+                        // Toggle: check if already exists
                         string checkQ = "SELECT COUNT(*) FROM WishlistItems WHERE ProductId = @pid AND SessionId = @sid";
                         bool exists = false;
                         using (SqlCommand cmd = new SqlCommand(checkQ, con)) {
@@ -41,18 +45,28 @@ namespace ecommerce_mlm {
                             exists = ((int)cmd.ExecuteScalar() > 0);
                         }
 
-                        if (!exists) {
-                            // Insert
+                        if (exists) {
+                            // Already in wishlist → remove it
+                            string delQ = "DELETE FROM WishlistItems WHERE ProductId = @pid AND SessionId = @sid";
+                            using (SqlCommand cmd = new SqlCommand(delQ, con)) {
+                                cmd.Parameters.AddWithValue("@pid", pid);
+                                cmd.Parameters.AddWithValue("@sid", sid);
+                                cmd.ExecuteNonQuery();
+                            }
+                            inWishlist = false;
+                        } else {
+                            // Not in wishlist → add it
                             string insQ = "INSERT INTO WishlistItems (ProductId, SessionId, AddedDate) VALUES (@pid, @sid, GETDATE())";
                             using (SqlCommand cmd = new SqlCommand(insQ, con)) {
                                 cmd.Parameters.AddWithValue("@pid", pid);
                                 cmd.Parameters.AddWithValue("@sid", sid);
                                 cmd.ExecuteNonQuery();
                             }
+                            inWishlist = true;
                         }
                     }
 
-                    // Fetch final total count after operation to send to UI
+                    // Fetch updated total count for session
                     int count = 0;
                     string countQ = "SELECT COUNT(*) FROM WishlistItems WHERE SessionId = @sid";
                     using (SqlCommand cmd = new SqlCommand(countQ, con)) {
@@ -60,7 +74,8 @@ namespace ecommerce_mlm {
                         count = Convert.ToInt32(cmd.ExecuteScalar());
                     }
 
-                    context.Response.Write("{\"success\":true, \"message\":\"Operation completed\", \"totalCount\":" + count + "}");
+                    string msg = inWishlist ? "Added to Wishlist!" : "Removed from Wishlist";
+                    context.Response.Write("{\"success\":true, \"message\":\"" + msg + "\", \"inWishlist\":" + (inWishlist ? "true" : "false") + ", \"totalCount\":" + count + "}");
                 }
             }
             catch (Exception ex) {

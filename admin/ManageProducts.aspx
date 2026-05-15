@@ -9,7 +9,8 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="u-mb-30 u-j-between u-a-center">
+    <div class="u-mb-30 u-d-flex u-j-between u-a-center">
+
         <div>
             <h1 class="u-txt-lg">Inventory Control</h1>
             <p class="u-txt-subtitle u-mt-5">Govern published merchandise assets across infrastructure.</p>
@@ -50,7 +51,7 @@
                                 <img src='<%# ResolveUrl(!string.IsNullOrEmpty(Eval("MainImage").ToString()) ? Eval("MainImage").ToString() : "~/assets/images/no-product.png") %>' class="prod-img-thumb" />
                                 <div>
                                     <div class="u-bold-700 u-color-dark"><%# Eval("Name") %></div>
-                                    <div class="u-txt-gray-sm">Brand: <%# Eval("Brand") %></div>
+                                    <div class="u-txt-gray-sm"><i class="fas fa-store u-mr-5" style="color:#94a3b8;"></i>Seller: <%# Eval("SellerName") != DBNull.Value ? Eval("SellerName") : "N/A" %></div>
                                 </div>
                             </div>
                         </td>
@@ -69,21 +70,32 @@
                             </span>
                         </td>
                         <td>
-                            <span class='badge <%# Convert.ToBoolean(Eval("IsActive")) ? "badge-success" : "badge-danger" %>'>
-                                <%# Convert.ToBoolean(Eval("IsActive")) ? "Approved" : "Pending" %>
-                            </span>
+                            <%# GetListingStatusBadge(Eval("ListingStatus"), Eval("IsActive")) %>
                         </td>
-                        <td class="u-w-full u-nowrap u-w-auto">
-                            <div class="u-d-flex u-gap-8">
+                        <td>
+
+                            <div class="u-d-flex u-gap-8 u-a-center">
                                 <a href='../ProductDetails.aspx?slug=<%# Eval("Slug") %>' target="_blank" class="action-btn-circle action-btn-view" title="View Product">
                                     <i class="fas fa-external-link-alt"></i>
                                 </a>
                                 
-                                <asp:LinkButton ID="btnToggleStatus" runat="server" CommandName="ToggleStatus" CommandArgument='<%# Eval("Id") %>' 
-                                    CssClass='<%# Convert.ToBoolean(Eval("IsActive")) ? "action-btn-circle action-btn-block" : "action-btn-circle action-btn-unblock" %>'
-                                    ToolTip='<%# Convert.ToBoolean(Eval("IsActive")) ? "Suspend Listing" : "Approve Product" %>'>
-                                    <i class='<%# Convert.ToBoolean(Eval("IsActive")) ? "fas fa-ban" : "fas fa-check-circle" %>'></i>
-                                </asp:LinkButton>
+                                <!-- Conditional High-Priority Action for Pending Submissions -->
+                                <asp:PlaceHolder runat="server" Visible='<%# Eval("ListingStatus") != DBNull.Value && Eval("ListingStatus").ToString().Trim().Equals("Pending", StringComparison.OrdinalIgnoreCase) %>'>
+                                    <asp:LinkButton ID="btnApproveDirect" runat="server" CommandName="ApproveProduct" CommandArgument='<%# Eval("Id") %>' 
+                                        CssClass="badge badge-success" style="cursor:pointer; border:none; padding:8px 14px; text-decoration:none; font-weight:800; display:inline-flex; align-items:center;"
+                                        ToolTip="Approve Listing & Go Live">
+                                        <i class="fas fa-circle-check u-mr-5"></i> Approve
+                                    </asp:LinkButton>
+                                </asp:PlaceHolder>
+
+                                <!-- Regular Suspension Toggle for Active/Inactive states -->
+                                <asp:PlaceHolder runat="server" Visible='<%# Eval("ListingStatus") == DBNull.Value || !Eval("ListingStatus").ToString().Trim().Equals("Pending", StringComparison.OrdinalIgnoreCase) %>'>
+                                    <asp:LinkButton ID="btnToggleStatus" runat="server" CommandName="ToggleStatus" CommandArgument='<%# Eval("Id") %>' 
+                                        CssClass='<%# Convert.ToBoolean(Eval("IsActive")) ? "action-btn-circle action-btn-block" : "action-btn-circle action-btn-unblock" %>'
+                                        ToolTip='<%# Convert.ToBoolean(Eval("IsActive")) ? "Suspend Listing" : "Activate Listing" %>'>
+                                        <i class='<%# Convert.ToBoolean(Eval("IsActive")) ? "fas fa-ban" : "fas fa-check-circle" %>'></i>
+                                    </asp:LinkButton>
+                                </asp:PlaceHolder>
                             </div>
                         </td>
                     </tr>

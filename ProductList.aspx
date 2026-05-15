@@ -120,6 +120,7 @@
                 padding: 60px 20px;
                 color: #64748b;
             }
+
             .oos-banner {
                 background: #fee2e2;
                 color: #ef4444;
@@ -132,9 +133,14 @@
                 letter-spacing: 0.5px;
                 border: 1px dashed #fca5a5;
             }
+
             .oos-overlay {
-                position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-                background: rgba(255,255,255,0.6);
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.6);
                 z-index: 2;
                 pointer-events: none;
             }
@@ -198,13 +204,14 @@
                     <div class="filter-group">
                         <div class="filter-title">Price Range</div>
                         <ul class="filter-list">
-                            <li class="filter-item"><input type="checkbox" id="p1" /><label for="p1">Under â‚¹500</label>
+                            <li class="filter-item"><input type="checkbox" id="p1" /><label for="p1">Under ₹ 500</label>
                             </li>
-                            <li class="filter-item"><input type="checkbox" id="p2" /><label for="p2">â‚¹500 -
-                                    â‚¹1,000</label></li>
-                            <li class="filter-item"><input type="checkbox" id="p3" /><label for="p3">â‚¹1,000 -
-                                    â‚¹5,000</label></li>
-                            <li class="filter-item"><input type="checkbox" id="p4" /><label for="p4">Over â‚¹5,000</label>
+                            <li class="filter-item"><input type="checkbox" id="p2" /><label for="p2">₹ 500 -
+                                    ₹ 1,000</label></li>
+                            <li class="filter-item"><input type="checkbox" id="p3" /><label for="p3">₹ 1,000 -
+                                    ₹ 5,000</label></li>
+                            <li class="filter-item"><input type="checkbox" id="p4" /><label for="p4">Over ₹
+                                    5,000</label>
                             </li>
                         </ul>
                     </div>
@@ -237,20 +244,21 @@
                             <ItemTemplate>
                                 <div class="product-card">
                                     <div class="product-card-img">
-                                        <%# !IsProductAvailable(Eval("IsActive"), Eval("Stock"), Eval("SellerActive")) ? "<div class='oos-overlay'></div>" : "" %>
-                                        <span class="discount-tag">
-                                            <%# GetDiscountPercentage(Eval("Price"), Eval("Mrp")) %>
-                                        </span>
-                                        <img src='<%# ResolveUrl(Eval("MainImage") != DBNull.Value && Eval("MainImage").ToString() != "" ? Eval("MainImage").ToString() : "https://via.placeholder.com/300?text=No+Image") %>'
-                                            alt='<%# Eval("Name") %>' />
+                                        <%# !IsProductAvailable(Eval("IsActive"), Eval("Stock"), Eval("SellerActive"))
+                                            ? "<div class='oos-overlay'></div>" : "" %>
+                                            <span class="discount-tag">
+                                                <%# GetDiscountPercentage(Eval("Price"), Eval("Mrp")) %>
+                                            </span>
+                                            <img src='<%# ResolveUrl(Eval("MainImage") != DBNull.Value && Eval("MainImage").ToString() != "" ? Eval("MainImage").ToString() : "https://via.placeholder.com/300?text=No+Image") %>'
+                                                alt='<%# Eval("Name") %>' />
 
-                                        <div class="product-actions">
-                                            <a href="javascript:void(0);" class="action-btn btn-wishlist"
-                                                title="Add to Wishlist" data-pid='<%# Eval("Id") %>'><i
-                                                    class="far fa-heart"></i></a>
-                                            <a href='<%# "ProductDetails.aspx?slug=" + Eval("Slug") %>' class="action-btn"
-                                                title="Quick View"><i class="far fa-eye"></i></a>
-                                        </div>
+                                            <div class="product-actions">
+                                                <a href="javascript:void(0);" class="action-btn btn-wishlist"
+                                                    title="Add to Wishlist" data-pid='<%# Eval("Id") %>'><i
+                                                        class="far fa-heart"></i></a>
+                                                <a href='<%# "ProductDetails.aspx?slug=" + Eval("Slug") %>'
+                                                    class="action-btn" title="Quick View"><i class="far fa-eye"></i></a>
+                                            </div>
                                     </div>
                                     <div class="product-card-body">
                                         <div class="prod-rating">
@@ -272,11 +280,15 @@
                                                     %></span>
                                         </div>
                                         <div class="prod-action-row">
-                                            <%# IsProductAvailable(Eval("IsActive"), Eval("Stock"), Eval("SellerActive")) ? 
-                                                @"<a href='javascript:void(0);' class='add-cart-btn js-add-to-cart' data-pid='" + Eval("Id") + @"' title='Add to Cart'><i class='fas fa-shopping-basket'></i></a>
-                                                  <a href='javascript:void(0);' class='buy-now-btn js-buy-now' data-pid='" + Eval("Id") + @"'>Buy Now</a>" : 
-                                                @"<div class='oos-banner'><i class='fas fa-exclamation-circle'></i> OUT OF STOCK</div>" 
-                                            %>
+                                            <%# IsProductAvailable(Eval("IsActive"), Eval("Stock"),
+                                                Eval("SellerActive")) ? @"<a href='javascript:void(0);'
+                                                class='add-cart-btn js-add-to-cart' data-pid='" + Eval("Id") + @"'
+                                                title='Add to Cart'><i class='fas fa-shopping-basket'></i></a>
+                                                <a href='javascript:void(0);' class='buy-now-btn js-buy-now'
+                                                    data-pid='" + Eval("Id") + @"'>Buy Now</a>" :
+                                                @"<div class='oos-banner'><i class='fas fa-exclamation-circle'></i> OUT
+                                                    OF STOCK</div>"
+                                                %>
                                         </div>
                                     </div>
                                 </div>

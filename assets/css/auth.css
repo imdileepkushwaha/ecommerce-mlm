@@ -680,3 +680,84 @@ body::after {
         left: 15px;
     }
 }
+
+/* ==========================================
+   MODERN BEAUTIFUL BINARY RADIO TOGGLE
+   ========================================== */
+.modern-radio-list {
+    width: 100%;
+    border-collapse: separate;
+    margin-bottom: 5px;
+}
+.modern-radio-list td {
+    padding: 0 !important;
+    width: 50%;
+}
+.modern-radio-list input[type="radio"] {
+    display: none !important;
+}
+.modern-radio-list label {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    padding: 14px 15px !important;
+    background: #f8fafc;
+    color: #64748b;
+    border: 1.5px solid #e2e8f0;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin: 0 !important;
+    user-select: none;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+.modern-radio-list td:first-child label {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-right: none;
+}
+.modern-radio-list td:last-child label {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.modern-radio-list label:hover {
+    background: #f1f5f9;
+    color: #475569;
+}
+.modern-radio-list input[type="radio"]:checked + label {
+    background: #eff6ff !important;
+    color: #2563eb !important;
+    border-color: #3b82f6 !important;
+    box-shadow: inset 0 0 0 1px #3b82f6;
+    position: relative;
+    z-index: 1;
+}
+.modern-radio-list td:first-child input[type="radio"]:checked + label {
+    border-right: 1.5px solid #3b82f6 !important;
+}
+.modern-radio-list input[type="radio"]:checked + label::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    border-radius: 50% !important;
+    border: 2px solid #2563eb !important;
+    background: radial-gradient(#2563eb 35%, #eff6ff 45%) !important;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2) !important;
+}
+.modern-radio-list label::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    border-radius: 50% !important;
+    border: 2px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    transition: all 0.2s ease;
+}
+

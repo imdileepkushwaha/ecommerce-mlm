@@ -68,8 +68,16 @@
                                                 CssClass="error-msg lbl-inline-error-compact" Visible="false">
                                             </asp:Label>
                                         </div>
+                                        <div class="form-group mt-15 mb-0">
+                                            <label class="form-label">Placement Node Position</label>
+                                            <asp:RadioButtonList ID="rblPosition" runat="server" RepeatDirection="Horizontal" CssClass="modern-radio-list">
+                                                <asp:ListItem Text="Left Side Node" Value="Left" Selected="True"></asp:ListItem>
+                                                <asp:ListItem Text="Right Side Node" Value="Right"></asp:ListItem>
+                                            </asp:RadioButtonList>
+                                        </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
+
 
                                 <!-- Section 2: Personal Detail -->
                                 <div class="form-group">

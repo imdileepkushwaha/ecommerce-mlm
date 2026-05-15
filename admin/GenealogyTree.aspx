@@ -126,7 +126,10 @@
                     </p>
 
                     <!-- REGISTRATION FORM GRID -->
+                    <asp:HiddenField ID="hfSelectedPosition" runat="server" ClientIDMode="Static" />
+                    
                     <div class="form-grp u-mb-15">
+
                         <label class="settings-label">Pre-Locked Sponsor ID</label>
                         <div style="position:relative;">
                             <i class="fas fa-lock" style="position:absolute; left:18px; top:50%; transform:translateY(-50%); color:#94a3b8;"></i>
@@ -178,7 +181,7 @@
 
     <script type="text/javascript">
         // JavaScript to handle opening the registration modal
-        function openQuickRegModal(sponsorId) {
+        function openQuickRegModal(sponsorId, position) {
             if (!sponsorId || sponsorId.trim() === "") {
                 alert("Operational Error: Cannot assign to null sponsor node.");
                 return;
@@ -187,10 +190,15 @@
             const spBox = document.getElementById('txtModalSponsor');
             if(spBox) spBox.value = sponsorId;
 
+            // Set target side position to hidden field
+            const posBox = document.getElementById('hfSelectedPosition');
+            if(posBox) posBox.value = position || 'Left';
+
             // Open overlays
             const modal = document.getElementById('modal-quick-reg');
             if(modal) modal.classList.add('show');
         }
+
 
         function closeQuickRegModal() {
             const modal = document.getElementById('modal-quick-reg');

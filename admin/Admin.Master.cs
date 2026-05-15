@@ -42,6 +42,16 @@ namespace ecommerce_mlm.admin
                     if(count > 0) {
                         litDelBadge.Text = string.Format("<span class='nav-count-pill'>{0}</span>", count);
                     }
+
+                    // Aggregate 2: Pending Seller KYC Approvals, Access Requests or Re-audits
+                    string sqlKyc = "SELECT COUNT(*) FROM SellerUsers WHERE KycStatus = 'Pending' OR EditRequestStatus IN ('PendingApproval', 'DraftSubmitted')";
+
+                    SqlCommand cmdKyc = new SqlCommand(sqlKyc, con);
+                    int countKyc = Convert.ToInt32(cmdKyc.ExecuteScalar());
+
+                    if (countKyc > 0) {
+                        litKycBadge.Text = string.Format("<span class='nav-count-pill'>{0}</span>", countKyc);
+                    }
                 }
             } catch { }
         }

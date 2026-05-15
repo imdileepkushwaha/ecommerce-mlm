@@ -30,6 +30,12 @@
                 <a href="ManageSellers.aspx" class="nav-item" data-page="managesellers.aspx">
                     <i class="fas fa-store"></i> Sellers
                 </a>
+                <a href="KycAudits.aspx" class="nav-item u-j-between" data-page="kycaudits.aspx">
+                    <div class="u-d-flex u-a-center u-gap-12">
+                        <i class="fas fa-address-card"></i> KYC Requests
+                    </div>
+                    <asp:Literal ID="litKycBadge" runat="server"></asp:Literal>
+                </a>
                 <a href="ManageProducts.aspx" class="nav-item" data-page="manageproducts.aspx">
                     <i class="fas fa-box"></i> Products
                 </a>

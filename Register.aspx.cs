@@ -122,6 +122,8 @@ namespace ecommerce_mlm
             Session["Reg_Mobile"] = mobile;
             Session["Reg_Username"] = username;
             Session["Reg_Password"] = password;
+            Session["Reg_Position"] = rblPosition.SelectedValue;
+
 
             // 5. Generate and dispatch OTP
             string otp = new Random().Next(100000, 999999).ToString();
@@ -195,11 +197,9 @@ namespace ecommerce_mlm
                 using (SqlConnection con = new SqlConnection(connStr))
                 {
                     con.Open();
-                    string sql = @"INSERT INTO Users (SponsorId, SponsorName, FullName, Dob, Gender, Email, Mobile, Username, Password, CreatedAt) 
-                                  VALUES (@SponsorId, @SponsorName, @FullName, @Dob, @Gender, @Email, @Mobile, @Username, @Password, GETDATE())";
-
-                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    using (SqlCommand cmd = new SqlCommand("sp_UserSignup", con))
                     {
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@SponsorId", string.IsNullOrEmpty(Session["Reg_SponsorId"].ToString()) ? (object)DBNull.Value : Session["Reg_SponsorId"].ToString());
                         cmd.Parameters.AddWithValue("@SponsorName", string.IsNullOrEmpty(Session["Reg_SponsorName"].ToString()) ? (object)DBNull.Value : Session["Reg_SponsorName"].ToString());
                         cmd.Parameters.AddWithValue("@FullName", Session["Reg_FullName"].ToString());
@@ -209,10 +209,17 @@ namespace ecommerce_mlm
                         cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(Session["Reg_Mobile"].ToString()) ? (object)DBNull.Value : Session["Reg_Mobile"].ToString());
                         cmd.Parameters.AddWithValue("@Username", Session["Reg_Username"].ToString());
                         cmd.Parameters.AddWithValue("@Password", Session["Reg_Password"].ToString());
+                        cmd.Parameters.AddWithValue("@Position", Session["Reg_Position"].ToString());
 
-                        cmd.ExecuteNonQuery();
+                        object result = cmd.ExecuteScalar();
+                        if (result == null || Convert.ToInt32(result) == -1)
+                        {
+                            ShowModalError("Registration failure: Username or node space problem.");
+                            return;
+                        }
                     }
                 }
+
 
                 // Done! Clear and advance
                 Session.Remove("Reg_OTP");

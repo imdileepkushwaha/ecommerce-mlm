@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -22,185 +23,264 @@ namespace ecommerce_mlm
 
             if (!IsPostBack)
             {
-                LoadUserDeliveredProducts();
+                BindProductsForReview();
             }
         }
 
-        private int GetUserId()
+        private int GetCurrentUserId()
         {
+            if (Session["Username"] == null) return 0;
             try
             {
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
-                    SqlCommand cmd = new SqlCommand("SELECT Id FROM Users WHERE Username = @u", con);
-                    cmd.Parameters.AddWithValue("@u", Session["Username"].ToString());
-                    object obj = cmd.ExecuteScalar();
-                    return obj != null ? Convert.ToInt32(obj) : 0;
+                    using (SqlCommand cmd = new SqlCommand("SELECT Id FROM Users WHERE Username = @uname", con))
+                    {
+                        cmd.Parameters.AddWithValue("@uname", Session["Username"].ToString());
+                        object obj = cmd.ExecuteScalar();
+                        return obj != null ? Convert.ToInt32(obj) : 0;
+                    }
                 }
             }
             catch { return 0; }
         }
 
-        private string GetFullName()
+        private string GetCurrentUserFullName()
         {
+            if (Session["Username"] == null) return "Verified Buyer";
             try
             {
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
-                    SqlCommand cmd = new SqlCommand("SELECT FullName FROM Users WHERE Username = @u", con);
-                    cmd.Parameters.AddWithValue("@u", Session["Username"].ToString());
-                    object obj = cmd.ExecuteScalar();
-                    return obj != null ? obj.ToString() : Session["Username"].ToString();
+                    using (SqlCommand cmd = new SqlCommand("SELECT FullName FROM Users WHERE Username = @uname", con))
+                    {
+                        cmd.Parameters.AddWithValue("@uname", Session["Username"].ToString());
+                        object obj = cmd.ExecuteScalar();
+                        return obj != null && !string.IsNullOrEmpty(obj.ToString()) ? obj.ToString() : "Verified Buyer";
+                    }
                 }
             }
-            catch { return "Customer"; }
+            catch { return "Verified Buyer"; }
         }
 
-        private void LoadUserDeliveredProducts()
+        private void BindProductsForReview()
         {
-            int uId = GetUserId();
-            if (uId == 0) return;
+            int userId = GetCurrentUserId();
+            if (userId == 0) return;
 
             try
             {
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
-                    // Fetch unique delivered products user purchased and check for existing review
-                    string q = @"
-                        SELECT DISTINCT 
-                            P.Id AS ProductId, 
-                            P.Name AS ProductName, 
+                    con.Open();
+                    // Modified to match screenshot schema: shows products ordered by user, joined with reviews
+                    // Uses DISTINCT/GROUP based approach for product-level reviews
+                    string sql = @"
+                        SELECT 
+                            P.Id AS ProductId,
+                            P.Name AS ProductName,
                             P.MainImage,
-                            PR.Rating, 
-                            PR.ReviewText, 
-                            PR.ReviewDate,
-                            CASE WHEN PR.Id IS NOT NULL THEN 1 ELSE 0 END AS HasReviewed
+                            MAX(O.CreatedAt) AS CreatedAt,
+                            MAX(PR.Rating) AS Rating,
+                            MAX(PR.ReviewText) AS ReviewText,
+                            MAX(PR.ReviewStatus) AS ReviewStatus,
+                            CASE WHEN MAX(PR.Id) IS NOT NULL THEN 1 ELSE 0 END AS HasReviewed
                         FROM Orders O
-                        JOIN OrderItems OI ON O.Id = OI.OrderId
-                        JOIN SellerProducts P ON OI.ProductId = P.Id
+                        INNER JOIN OrderItems OI ON O.Id = OI.OrderId
+                        INNER JOIN SellerProducts P ON OI.ProductId = P.Id
                         LEFT JOIN ProductReviews PR ON P.Id = PR.ProductId AND PR.UserId = @uid
                         WHERE O.UserId = @uid AND UPPER(O.Status) = 'DELIVERED'
-                        ORDER BY HasReviewed ASC";
-                    
-                    SqlCommand cmd = new SqlCommand(q, con);
-                    cmd.Parameters.AddWithValue("@uid", uId);
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
+                        GROUP BY P.Id, P.Name, P.MainImage
+                        ORDER BY HasReviewed ASC, CreatedAt DESC";
 
-                    if (dt.Rows.Count > 0)
+                    using (SqlCommand cmd = new SqlCommand(sql, con))
                     {
-                        rptDeliveredProducts.DataSource = dt;
-                        rptDeliveredProducts.DataBind();
-                        rptDeliveredProducts.Visible = true;
-                        pnlNoProducts.Visible = false;
+                        cmd.Parameters.AddWithValue("@uid", userId);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+
+                            if (dt.Rows.Count > 0)
+                            {
+                                rptProductReviews.DataSource = dt;
+                                rptProductReviews.DataBind();
+                                rptProductReviews.Visible = true;
+                                pnlEmpty.Visible = false;
+                            }
+                            else
+                            {
+                                rptProductReviews.Visible = false;
+                                pnlEmpty.Visible = true;
+                            }
+                        }
                     }
-                    else
+                }
+            }
+            catch
+            {
+                pnlEmpty.Visible = true;
+            }
+        }
+
+        protected void rptProductReviews_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "ExpandForm")
+            {
+                // Expand the inline writing form for the specific item
+                ViewState["ActiveWriteProductId"] = e.CommandArgument.ToString();
+                BindProductsForReview();
+            }
+            else if (e.CommandName == "SubmitReview")
+            {
+                int productId = Convert.ToInt32(e.CommandArgument);
+                
+                // Locate controls inside RepeaterItem
+                DropDownList ddlStars = (DropDownList)e.Item.FindControl("ddlStars");
+                TextBox txtComment = (TextBox)e.Item.FindControl("txtInlineComment");
+                Label lblErr = (Label)e.Item.FindControl("lblInlineError");
+
+                int rating = Convert.ToInt32(ddlStars.SelectedValue);
+                string comment = txtComment.Text.Trim();
+
+                if (string.IsNullOrEmpty(comment))
+                {
+                    lblErr.Text = "Please provide some feedback.";
+                    lblErr.Visible = true;
+                    return;
+                }
+
+                // Perform database insertion
+                int userId = GetCurrentUserId();
+                string fullName = GetCurrentUserFullName();
+                
+                if (userId == 0)
+                {
+                    lblErr.Text = "Session expired. Please login again.";
+                    lblErr.Visible = true;
+                    return;
+                }
+
+                try
+                {
+                    using (SqlConnection con = new SqlConnection(strcon))
                     {
-                        rptDeliveredProducts.Visible = false;
-                        pnlNoProducts.Visible = true;
+                        con.Open();
+
+                        // Fetch real name from SellerProducts to ensure ProductName mapping is solid
+                        string dbProductName = "Product";
+                        using (SqlCommand pnameCmd = new SqlCommand("SELECT Name FROM SellerProducts WHERE Id = @pid", con))
+                        {
+                            pnameCmd.Parameters.AddWithValue("@pid", productId);
+                            object o = pnameCmd.ExecuteScalar();
+                            if (o != null) dbProductName = o.ToString();
+                        }
+
+                        // Set ReviewStatus to PENDING, IsApproved to 0 (Wait for Seller Approval)
+                        string insertSql = @"
+                            INSERT INTO ProductReviews (
+                                ProductId, UserId, ReviewerName, Rating, ReviewText, 
+                                ReviewDate, IsApproved, ReviewStatus, IsVerifiedPurchase, ProductName
+                            ) VALUES (
+                                @pid, @uid, @rname, @rating, @rtext, 
+                                GETDATE(), 0, 'PENDING', 1, @pname
+                            )";
+
+                        using (SqlCommand cmd = new SqlCommand(insertSql, con))
+                        {
+                            cmd.Parameters.AddWithValue("@pid", productId);
+                            cmd.Parameters.AddWithValue("@uid", userId);
+                            cmd.Parameters.AddWithValue("@rname", fullName);
+                            cmd.Parameters.AddWithValue("@rating", rating);
+                            cmd.Parameters.AddWithValue("@rtext", comment);
+                            cmd.Parameters.AddWithValue("@pname", dbProductName);
+
+                            cmd.ExecuteNonQuery();
+                        }
                     }
-                }
-            }
-            catch (Exception ex) { 
-                // Logging omitted 
-            }
-        }
 
-        protected void rptDeliveredProducts_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            if (e.CommandName == "TriggerReview")
-            {
-                string[] args = e.CommandArgument.ToString().Split('|');
-                if (args.Length >= 2)
-                {
-                    hfRevProdId.Value = args[0];
-                    lblModalProdName.Text = args[1];
+                    // Success, clear expanded panel and refresh list
+                    ViewState["ActiveWriteProductId"] = null;
+                    BindProductsForReview();
                     
-                    // Reset form
-                    hfRatingValue.Value = "0";
-                    txtReviewText.Text = "";
-                    lblModalErr.Text = "";
-
-                    pnlReviewModal.Visible = true;
-                    pnlReviewModal.CssClass = "modal-overlay active";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ShowReview", "setTimeout(showModal, 10);", true);
+                    // Optional user alert toast
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ToastSuccess", "alert('Thank you for submitting! Your review is under process.');", true);
                 }
-            }
-        }
-
-        protected void btnCloseModal_Click(object sender, EventArgs e)
-        {
-            pnlReviewModal.Visible = false;
-        }
-
-        protected void btnSubmitReview_Click(object sender, EventArgs e)
-        {
-            int ratingVal = 0;
-            int.TryParse(hfRatingValue.Value, out ratingVal);
-
-            if (ratingVal < 1 || ratingVal > 5)
-            {
-                lblModalErr.Text = "Please select a star rating (1-5).";
-                return;
-            }
-            
-            if (string.IsNullOrWhiteSpace(txtReviewText.Text))
-            {
-                lblModalErr.Text = "Please share a brief comment.";
-                return;
-            }
-
-            int uId = GetUserId();
-            string reviewerName = GetFullName();
-
-            try
-            {
-                using (SqlConnection con = new SqlConnection(strcon))
+                catch (Exception ex)
                 {
-                    con.Open();
-                    string q = @"INSERT INTO ProductReviews (ProductId, UserId, ReviewerName, Rating, ReviewText, ReviewDate, IsApproved, ReviewStatus, IsVerifiedPurchase, ProductName)
-                                 VALUES (@pid, @uid, @rn, @r, @txt, GETDATE(), 1, 'APPROVED', 1, @pn)";
-                    
-                    SqlCommand cmd = new SqlCommand(q, con);
-                    cmd.Parameters.AddWithValue("@pid", hfRevProdId.Value);
-                    cmd.Parameters.AddWithValue("@uid", uId);
-                    cmd.Parameters.AddWithValue("@rn", reviewerName);
-                    cmd.Parameters.AddWithValue("@r", ratingVal);
-                    cmd.Parameters.AddWithValue("@txt", txtReviewText.Text.Trim());
-                    cmd.Parameters.AddWithValue("@pn", lblModalProdName.Text);
-
-                    cmd.ExecuteNonQuery();
+                    lblErr.Text = "Save failed: " + ex.Message;
+                    lblErr.Visible = true;
                 }
-
-                pnlReviewModal.Visible = false;
-                LoadUserDeliveredProducts();
-                ScriptManager.RegisterStartupScript(this, GetType(), "Success", "alert('Thank you! Your review was submitted.');", true);
-            }
-            catch (Exception ex)
-            {
-                lblModalErr.Text = "System constraint: could not save review.";
             }
         }
 
-        // STATIC HELPER CALLED DIRECTLY FROM ASPX
-        public static string GetStarsHTML(int rating)
+        protected void rptProductReviews_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                DataRowView row = (DataRowView)e.Item.DataItem;
+                string prodId = row["ProductId"].ToString();
+
+                Panel pnlWrite = (Panel)e.Item.FindControl("pnlInlineWriteReview");
+                
+                // Toggle expanding inline form based on saved dynamic view state
+                if (ViewState["ActiveWriteProductId"] != null && ViewState["ActiveWriteProductId"].ToString() == prodId)
+                {
+                    pnlWrite.Visible = true;
+                }
+                else
+                {
+                    pnlWrite.Visible = false;
+                }
+            }
+        }
+
+        #region Formatting Helpers
+
+        protected string ResolveProductImage(object imgObj)
+        {
+            if (imgObj == null || imgObj == DBNull.Value || string.IsNullOrEmpty(imgObj.ToString()))
+            {
+                return "assets/images/no-image.png";
+            }
+
+            string path = imgObj.ToString();
+            if (path.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || 
+                path.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || 
+                path.StartsWith("//"))
+            {
+                return path;
+            }
+
+            // Cleans virtual directory path prefix 
+            string relative = path.Replace("~", "");
+            if (!relative.StartsWith("/")) relative = "/" + relative;
+
+            return ResolveUrl("~" + relative);
+        }
+
+        protected string GetVisualStars(object ratingObj)
+        {
+            if (ratingObj == null || ratingObj == DBNull.Value) return "";
+            int rating = Convert.ToInt32(ratingObj);
+
             StringBuilder sb = new StringBuilder();
             for (int i = 1; i <= 5; i++)
             {
                 if (i <= rating)
                 {
-                    sb.Append("<i class=\"fas fa-star\" style=\"margin-right:2px;\"></i>");
+                    sb.Append("<i class=\"fas fa-star\"></i>");
                 }
                 else
                 {
-                    sb.Append("<i class=\"far fa-star\" style=\"color:#cbd5e1; margin-right:2px;\"></i>");
+                    sb.Append("<i class=\"far fa-star\" style=\"color:#cbd5e1;\"></i>");
                 }
             }
             return sb.ToString();
         }
+
+        #endregion
     }
 }

@@ -51,7 +51,7 @@
                         </td>
                         <td>
                             <div class="u-txt-gray-sm"><i class="fas fa-envelope u-mr-5"></i> <%# Eval("Email") %></div>
-                            <div class="u-txt-gray-sm u-mt-5"><i class="fas fa-phone u-mr-5"></i> <%# Eval("Mobile") != DBNull.Value ? Eval("Mobile") : "N/A" %></div>
+                            <div class="u-txt-gray-sm u-mt-5"><i class="fas fa-phone u-mr-5"></i> <%# Eval("Phone") != DBNull.Value ? Eval("Phone") : "N/A" %></div>
                         </td>
                         <td>
                             <span class='badge <%# Convert.ToBoolean(Eval("IsActive")) ? "badge-success" : "badge-danger" %>'>
@@ -65,7 +65,7 @@
                         </td>
                         <td>
                             <div class="u-d-flex u-gap-8">
-                                <a href='#' class="action-btn-circle action-btn-view" title="Deep Audit">
+                                <a href='ViewSellerKyc.aspx?id=<%# Eval("Id") %>' class="action-btn-circle action-btn-view" title="Deep Audit & Verify KYC">
                                     <i class="fas fa-eye"></i>
                                 </a>
                                 <asp:LinkButton runat="server" CommandName="ToggleStatus" CommandArgument='<%# Eval("Id") %>'

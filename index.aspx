@@ -40,7 +40,7 @@
                                     Discover our exclusive collection available only in our online store. Shop now for
                                     unique and premium items that you won't find anywhere else.
                                 </p>
-                                <a href="#" class="btn btn-dark-pill">Shop Now <i class="fas fa-arrow-right"
+                                <a href="ProductList.aspx" class="btn btn-dark-pill">Shop Now <i class="fas fa-arrow-right"
                                         style="margin-left:8px; font-size:12px;"></i></a>
                             </div>
                             <div class="hero-image-area">
@@ -80,7 +80,7 @@
                                     Step into the new season with our latest arrivals. Elevate your wardrobe with fresh
                                     styles and vibrant colors.
                                 </p>
-                                <a href="#" class="btn btn-dark-pill">Explore Now</a>
+                                <a href="ProductList.aspx" class="btn btn-dark-pill">Explore Now</a>
                             </div>
                             <div class="hero-image-area">
                                 <div class="hero-image-wrapper">
@@ -120,7 +120,7 @@
                                     Don't miss out on our limited-time special offers. Grab your favorite items at half
                                     the price before they run out!
                                 </p>
-                                <a href="#" class="btn btn-dark-pill">Grab Offer</a>
+                                <a href="ProductList.aspx" class="btn btn-dark-pill">Grab Offer</a>
                             </div>
                             <div class="hero-image-area">
                                 <div class="hero-image-wrapper">
@@ -324,7 +324,7 @@
                         <div class="banner-content">
                             <span>UP TO <span class="off">50%</span></span>
                             <h4>Exclusive Kids &amp; Adults Summer Outfits</h4>
-                            <a href="shops.html" class="theme-btn style-one">Shop Now</a>
+                            <a href="ProductList.aspx" class="theme-btn style-one">Shop Now</a>
                         </div>
                     </div>
 
@@ -340,7 +340,7 @@
                         <div class="banner-content">
                             <span>UP TO <span class="off">70%</span></span>
                             <h4>Exclusive Kids &amp; Adults Summer Outfits</h4>
-                            <a href="shops.html" class="theme-btn style-one">Shop Now</a>
+                            <a href="ProductList.aspx" class="theme-btn style-one">Shop Now</a>
                         </div>
                     </div>
                 </div>
@@ -495,7 +495,7 @@
                         <div class="trend-overlay">
                             <span class="trend-tag">Popular</span>
                             <h3>Women's</h3>
-                            <a href="#" class="trend-link">Shop Now <i class="fas fa-arrow-right"></i></a>
+                            <a href="ProductList.aspx" class="trend-link">Shop Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
 
@@ -505,7 +505,7 @@
                         <div class="trend-overlay">
                             <span class="trend-tag">New</span>
                             <h3>Men's</h3>
-                            <a href="#" class="trend-link">Shop Now <i class="fas fa-arrow-right"></i></a>
+                            <a href="ProductList.aspx" class="trend-link">Shop Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
 
@@ -515,7 +515,7 @@
                         <div class="trend-overlay">
                             <span class="trend-tag">Cute</span>
                             <h3>Kid's Wear</h3>
-                            <a href="#" class="trend-link">Shop Now <i class="fas fa-arrow-right"></i></a>
+                            <a href="ProductList.aspx" class="trend-link">Shop Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
 
@@ -525,7 +525,7 @@
                         <div class="trend-overlay">
                             <span class="trend-tag">Trendy</span>
                             <h3>Footwear</h3>
-                            <a href="#" class="trend-link">Shop Now <i class="fas fa-arrow-right"></i></a>
+                            <a href="ProductList.aspx" class="trend-link">Shop Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
 
@@ -535,7 +535,7 @@
                         <div class="trend-overlay">
                             <span class="trend-tag">Luxe</span>
                             <h3>Accessories</h3>
-                            <a href="#" class="trend-link">Shop Now <i class="fas fa-arrow-right"></i></a>
+                            <a href="ProductList.aspx" class="trend-link">Shop Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -574,7 +574,7 @@
                             </div>
                         </div>
 
-                        <a href="#" class="deal-btn">Shop Now <i class="fas fa-arrow-right"></i></a>
+                        <a href="ProductList.aspx" class="deal-btn">Shop Now <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="deal-image">
                         <img src="assets/images/banner/deal-promo.png" alt="High Premium Offer Image" />

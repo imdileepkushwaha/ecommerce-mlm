@@ -7,6 +7,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Seller Login</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="assets/css/seller.css" />
 
@@ -86,6 +87,24 @@
                                         </path>
                                     </svg>
                                 </button>
+                            </div>
+                        </div>
+                        
+                        <!-- CAPTCHA SECURITY MATRIX -->
+                        <div class="mb-1">
+                            <label class="seller-field-label">Verify Security Code</label>
+                            <div class="captcha-matrix">
+                                <div class="captcha-visual-box">
+                                    <img id="captchaImg" src="../Captcha.ashx" alt="Captcha Vector" />
+                                </div>
+                                <button type="button" class="captcha-refresh-btn" onclick="refreshCaptcha()" aria-label="Reload Code" title="Reload verification code">
+                                    <svg width="20" height="20" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M17.65 6.35A7.958 7.958 0 0 0 12 4a8 8 0 1 0 8 8h-2a6 6 0 1 1-6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                                    </svg>
+                                </button>
+                                <div class="seller-input-wrap" style="margin-bottom: 0; flex: 1;">
+                                    <asp:TextBox ID="txtCaptcha" runat="server" CssClass="form-control" placeholder="Type code..." style="padding-left: 18px;" MaxLength="6" autocomplete="off"></asp:TextBox>
+                                </div>
                             </div>
                         </div>
 
@@ -211,6 +230,14 @@
                     });
                 }
                 setupPasswordToggle("<%= txtPassword.ClientID %>", "loginPasswordToggle");
+
+                // 2. CAPTCHA LIVE RELOADER
+                window.refreshCaptcha = function() {
+                    var img = document.getElementById('captchaImg');
+                    if (img) {
+                        img.src = '../Captcha.ashx?t=' + new Date().getTime(); // Append timestamp anti-cache vector
+                    }
+                };
             })();
         </script>
     </body>
