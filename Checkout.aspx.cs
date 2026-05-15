@@ -313,7 +313,7 @@ namespace ecommerce_mlm
                 try
                 {
                     // 1. Retrieve current Cart Items for the user
-                    string cartQuery = @"SELECT c.ProductId, p.Name, p.Price, c.Quantity 
+                    string cartQuery = @"SELECT c.ProductId, p.Name, p.Price, c.Quantity, c.SelectedSize, c.SelectedColor 
                                          FROM CartItems c 
                                          INNER JOIN SellerProducts p ON c.ProductId = p.Id 
                                          WHERE c.SessionId = @sid AND c.IsSavedForLater = 0";
@@ -372,9 +372,9 @@ namespace ecommerce_mlm
                         newOrderId = Convert.ToInt32(cmdOrd.ExecuteScalar());
                     }
 
-                    // 4. Insert Order Items
-                    string insertItemQ = @"INSERT INTO OrderItems (OrderId, ProductId, ProductName, UnitPrice, Quantity, CreatedAt)
-                                          VALUES (@oid, @pid, @pname, @price, @qty, GETDATE())";
+                    // 4. Insert Order Items (with Size & Color tracking)
+                    string insertItemQ = @"INSERT INTO OrderItems (OrderId, ProductId, ProductName, UnitPrice, Quantity, CreatedAt, SelectedSize, SelectedColor)
+                                          VALUES (@oid, @pid, @pname, @price, @qty, GETDATE(), @sz, @clr)";
                     
                     foreach (DataRow row in dtCart.Rows)
                     {
@@ -385,6 +385,8 @@ namespace ecommerce_mlm
                             cmdItm.Parameters.AddWithValue("@pname", row["Name"]);
                             cmdItm.Parameters.AddWithValue("@price", row["Price"]);
                             cmdItm.Parameters.AddWithValue("@qty", row["Quantity"]);
+                            cmdItm.Parameters.AddWithValue("@sz", row["SelectedSize"] == DBNull.Value ? (object)DBNull.Value : row["SelectedSize"]);
+                            cmdItm.Parameters.AddWithValue("@clr", row["SelectedColor"] == DBNull.Value ? (object)DBNull.Value : row["SelectedColor"]);
                             cmdItm.ExecuteNonQuery();
                         }
                     }

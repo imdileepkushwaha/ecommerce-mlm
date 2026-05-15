@@ -11,6 +11,12 @@ namespace EcommerceWebsite
     public partial class SellerProducts : System.Web.UI.Page
     {
         string strcon = ConfigurationManager.ConnectionStrings["MlmDb"].ConnectionString;
+        
+        // Public statistics variables for front-end stat cards
+        public int totalListings = 0;
+        public int liveListings = 0;
+        public int pendingListings = 0;
+        public int lowStockListings = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,8 +28,47 @@ namespace EcommerceWebsite
 
             if (!IsPostBack)
             {
+                LoadDashboardStats();
                 BindProducts();
             }
+        }
+
+        private void LoadDashboardStats()
+        {
+            if (Session["SellerId"] == null) return;
+            int sid = Convert.ToInt32(Session["SellerId"]);
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(strcon))
+                {
+                    con.Open();
+                    // Optimized aggregate query to grab metrics in one go
+                    string sql = @"
+                        SELECT 
+                            COUNT(*) AS TotalCount,
+                            SUM(CASE WHEN IsActive = 1 AND (ListingStatus = 'Active' OR ListingStatus = 'Approved') THEN 1 ELSE 0 END) AS LiveCount,
+                            SUM(CASE WHEN ListingStatus = 'Pending' THEN 1 ELSE 0 END) AS PendingCount,
+                            SUM(CASE WHEN Stock < 5 THEN 1 ELSE 0 END) AS LowStockCount
+                        FROM SellerProducts WHERE SellerId = @sid";
+
+                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    {
+                        cmd.Parameters.AddWithValue("@sid", sid);
+                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                totalListings = dr["TotalCount"] != DBNull.Value ? Convert.ToInt32(dr["TotalCount"]) : 0;
+                                liveListings = dr["LiveCount"] != DBNull.Value ? Convert.ToInt32(dr["LiveCount"]) : 0;
+                                pendingListings = dr["PendingCount"] != DBNull.Value ? Convert.ToInt32(dr["PendingCount"]) : 0;
+                                lowStockListings = dr["LowStockCount"] != DBNull.Value ? Convert.ToInt32(dr["LowStockCount"]) : 0;
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
         }
 
         private void BindProducts()
@@ -36,8 +81,26 @@ namespace EcommerceWebsite
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
-                    // Fetch products tied specifically to the logged-in seller
-                    string sql = "SELECT * FROM SellerProducts WHERE SellerId = @sid ORDER BY Id DESC";
+                    // HIGH PERFORMANCE OPTIMIZATION: Select only the UI-relevant subset of columns. 
+                    // Purged SELECT * to block loading of heavy Nvarchar(MAX) assets like 'Description', 'GalleryUrls', 'MetaDescription', etc.
+                    string sql = @"
+                        SELECT 
+                            Id, 
+                            Name, 
+                            Slug, 
+                            Sku, 
+                            Category, 
+                            Price, 
+                            Mrp, 
+                            Stock, 
+                            ListingStatus, 
+                            IsActive, 
+                            CreatedAt, 
+                            ThumbnailUrl, 
+                            MainImage 
+                        FROM SellerProducts 
+                        WHERE SellerId = @sid 
+                        ORDER BY Id DESC";
                     using (SqlCommand cmd = new SqlCommand(sql, con))
                     {
                         cmd.Parameters.AddWithValue("@sid", sid);
@@ -91,6 +154,7 @@ namespace EcommerceWebsite
                         }
                     }
                     BindProducts(); // Instant Refresh
+                    LoadDashboardStats(); // Refresh stats as well
                     ShowMsg("⚡ Product visibility state updated successfully.", false);
                 }
                 catch (Exception ex)
@@ -114,6 +178,7 @@ namespace EcommerceWebsite
                         }
                     }
                     BindProducts(); // Instant Refresh
+                    LoadDashboardStats();
                     ShowMsg("🗑️ Product removed permanently from catalog inventory.", false);
                 }
                 catch (Exception ex)
@@ -177,6 +242,19 @@ namespace EcommerceWebsite
             else
             {
                 return "<span class='badge-pill badge-pill-inactive'><i class='fas fa-eye-slash'></i> Inactive</span>";
+            }
+        }
+
+        protected string GetListingStatusBadge(object listingStatus)
+        {
+            string status = listingStatus != DBNull.Value ? listingStatus.ToString().Trim() : "Pending";
+            if (status.Equals("Active", StringComparison.OrdinalIgnoreCase) || status.Equals("Approved", StringComparison.OrdinalIgnoreCase))
+            {
+                return "<span class='p-badge-success'>Approved</span>";
+            }
+            else
+            {
+                return "<span class='p-badge-warning'>Pending</span>";
             }
         }
 

@@ -100,10 +100,11 @@ namespace ecommerce_mlm
 
                             sSku.Text = dr["Sku"] != DBNull.Value ? dr["Sku"].ToString() : "N/A";
 
-                            sGen.Text = dr["Gender"] != DBNull.Value ? dr["Gender"].ToString() : "Unisex";
+                            sModel.Text = name;
                             sPType.Text = dr["ProductType"] != DBNull.Value ? dr["ProductType"].ToString() : "Fashion";
-                            sWeight.Text = dr["Weight"] != DBNull.Value ? dr["Weight"].ToString() + " kg" : "Standard";
-                            sDim.Text = dr["Dimensions"] != DBNull.Value ? dr["Dimensions"].ToString() : "Standard";
+                            sSeller.Text = storeName;
+                            sSizes.Text = dr["SizeOptions"] != DBNull.Value && !string.IsNullOrEmpty(dr["SizeOptions"].ToString()) ? dr["SizeOptions"].ToString() : "Standard";
+                            sColors.Text = dr["ColorOptions"] != DBNull.Value && !string.IsNullOrEmpty(dr["ColorOptions"].ToString()) ? dr["ColorOptions"].ToString() : "Multi";
 
                             // Manufacturer Data Bindings with premium fallbacks
                             litMfgName.Text = dr["ManufacturerName"] != DBNull.Value && !string.IsNullOrEmpty(dr["ManufacturerName"].ToString()) 
@@ -302,7 +303,7 @@ namespace ecommerce_mlm
             {
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
-                    string q = "SELECT * FROM ProductReviews WHERE ProductId = @pid ORDER BY ReviewDate DESC";
+                    string q = "SELECT * FROM ProductReviews WHERE ProductId = @pid AND IsApproved = 1 ORDER BY ReviewDate DESC";
                     using (SqlCommand cmd = new SqlCommand(q, con))
                     {
                         cmd.Parameters.AddWithValue("@pid", pid);

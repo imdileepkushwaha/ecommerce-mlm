@@ -27,17 +27,30 @@
             </div>
             
             <nav class="sb-nav">
+                <div class="sb-nav-label">Analytics Hub</div>
                 <a href="Dashboard.aspx" class="nav-link">
                     <i class="fas fa-chart-pie"></i> Dashboard
                 </a>
-                <a href="Kyc.aspx" class="nav-link">
-                    <i class="fas fa-id-card-clip"></i> KYC & Bank
-                </a>
+                
+                <div class="sb-nav-label">Catalog & Warehouse</div>
                 <a href="Products.aspx" class="nav-link">
                     <i class="fas fa-boxes"></i> My Products
                 </a>
+                <a href="Inventory.aspx" class="nav-link">
+                    <i class="fas fa-boxes-stacked"></i> Manage Inventory
+                </a>
+                
+                <div class="sb-nav-label">Sales & Customer</div>
                 <a href="Orders.aspx" class="nav-link">
                     <i class="fas fa-receipt"></i> Orders
+                </a>
+                <a href="ManageReviews.aspx" class="nav-link">
+                    <i class="fas fa-comments"></i> Customer Reviews
+                </a>
+
+                <div class="sb-nav-label">Settings & Profile</div>
+                <a href="Kyc.aspx" class="nav-link">
+                    <i class="fas fa-id-card-clip"></i> KYC & Bank
                 </a>
                 <a href="Profile.aspx" class="nav-link">
                     <i class="fas fa-user-gear"></i> Profile

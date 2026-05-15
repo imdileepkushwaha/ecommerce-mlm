@@ -86,9 +86,9 @@ namespace ecommerce_mlm.admin
                     }
 
                     // Rewards
-                    SqlCommand cmdRew = new SqlCommand("SELECT ISNULL(SUM(PointsEarned), 0) FROM UserRewards WHERE UserId = @id", con);
+                    SqlCommand cmdRew = new SqlCommand("SELECT ISNULL(SUM(PointsEarned), 0) FROM UserRewards WHERE UserId = @id AND Status = 'CREDITED'", con);
                     cmdRew.Parameters.AddWithValue("@id", userId);
-                    litRewardPoints.Text = cmdRew.ExecuteScalar().ToString();
+                    litRewardPoints.Text = Convert.ToInt64(cmdRew.ExecuteScalar()).ToString("N0");
 
                     // 3. Bind Bank Accounts
                     SqlCommand cmdBank = new SqlCommand("SELECT * FROM UserBankDetails WHERE UserId = @id ORDER BY CreatedAt DESC", con);

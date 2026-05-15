@@ -2,15 +2,16 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <!-- 1. EXECUTIVE ORDERS HEADER -->
-    <div class="ord-page-header">
-        <div class="ord-header-left">
-            <h2>Orders</h2>
-            <p>Track fulfilment for orders that include your products. Search filters <strong>this page</strong> only — use pagination for older orders. New orders may need a quick <strong>Confirm</strong> before you ship.</p>
+    <!-- 1. EXECUTIVE ORDERS HEADER REDESIGN -->
+    <div class="page-action-bar">
+        <div class="welcome-title">
+            <h1 style="font-size: 1.6rem;"><i class="fas fa-receipt" style="color: var(--accent); margin-right: 8px;"></i>Orders Management</h1>
+            <p>Monitor order fulfillment, manage shipment logistics, and track sales in real-time.</p>
         </div>
         <div class="ord-header-right">
-            <a href="#" class="ord-hdr-btn" style="margin-right: 8px;">Shipped</a>
-            <a href="#" class="ord-hdr-btn">Earnings</a>
+            <a href="#" class="add-prod-btn" style="background: linear-gradient(135deg, #059669, #10b981); text-shadow:none; border:none;">
+                <i class="fas fa-wallet"></i> View Earnings
+            </a>
         </div>
     </div>
 

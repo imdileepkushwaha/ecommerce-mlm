@@ -40,6 +40,141 @@
             .pd-color-ball:hover {
                 transform: scale(1.15);
             }
+            
+            /* Custom Premium Reviews CSS to match user mockup */
+            .premium-review-card {
+                position: relative;
+                background: #ffffff;
+                border-radius: 16px;
+                border: 1px solid #f1f5f9;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+                padding: 28px 32px;
+                margin-bottom: 24px;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+            .premium-review-card::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 6px;
+                background: linear-gradient(180deg, #ff8c00 0%, #e52d27 40%, #8a2be2 100%);
+            }
+            .pr-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 16px;
+            }
+            .pr-user-flex {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+            .pr-avatar-circle {
+                width: 54px;
+                height: 54px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #ff8c00, #e52d27);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #ffffff;
+                font-weight: 800;
+                font-size: 20px;
+                font-family: 'Segoe UI', Arial, sans-serif;
+                box-shadow: 0 4px 12px rgba(229, 45, 39, 0.2);
+            }
+            .pr-name-col {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            .pr-username {
+                font-weight: 700;
+                font-size: 17px;
+                color: #1e293b;
+            }
+            .pr-verified-lbl {
+                font-size: 11px;
+                font-weight: 700;
+                color: #64748b;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+            }
+            .pr-stars-col {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 6px;
+            }
+            .pr-stars-row {
+                color: #f59e0b;
+                font-size: 14px;
+                display: flex;
+                gap: 2px;
+            }
+            .pr-stars-row i {
+                margin-right: 0px;
+            }
+            .pr-top-badge {
+                background: #fef3c7;
+                color: #b45309;
+                font-size: 10px;
+                font-weight: 800;
+                padding: 5px 12px;
+                border-radius: 6px;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                border: 1px solid #fde68a;
+            }
+            .pr-separator {
+                height: 1px;
+                background-color: #f1f5f9;
+                margin-bottom: 20px;
+                width: 100%;
+            }
+            .pr-body {
+                margin-bottom: 24px;
+                padding-left: 4px;
+            }
+            .pr-review-txt {
+                font-size: 16px;
+                line-height: 1.6;
+                color: #334155;
+                margin: 0;
+                font-weight: 500;
+            }
+            .pr-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 13px;
+                border-top: 1px solid #f8fafc;
+                padding-top: 16px;
+            }
+            .pr-date-time {
+                color: #94a3b8;
+                font-weight: 600;
+            }
+            .pr-helpful-btn {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                color: #475569;
+                font-weight: 700;
+                font-size: 13px;
+                background: transparent;
+                padding: 0;
+                cursor: pointer;
+                transition: color 0.2s ease;
+            }
+            .pr-helpful-btn:hover {
+                color: #1e293b;
+            }
         </style>
     </asp:Content>
 
@@ -280,33 +415,45 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td class="spec-key">Model</td>
+                                <td class="spec-val">
+                                    <asp:Literal ID="sModel" runat="server"></asp:Literal>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="spec-key">Category</td>
                                 <td class="spec-val">
                                     <asp:Literal ID="sCat" runat="server"></asp:Literal>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="spec-key">Gender</td>
-                                <td class="spec-val">
-                                    <asp:Literal ID="sGen" runat="server"></asp:Literal>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="spec-key">Product Type</td>
+                                <td class="spec-key">Product type</td>
                                 <td class="spec-val">
                                     <asp:Literal ID="sPType" runat="server"></asp:Literal>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="spec-key">Weight</td>
+                                <td class="spec-key">Shipping</td>
                                 <td class="spec-val">
-                                    <asp:Literal ID="sWeight" runat="server"></asp:Literal>
+                                    Standard
                                 </td>
                             </tr>
                             <tr>
-                                <td class="spec-key">Dimensions</td>
+                                <td class="spec-key">Seller</td>
+                                <td class="spec-val" style="color:#ef4444; font-weight:750;">
+                                    <asp:Literal ID="sSeller" runat="server"></asp:Literal>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="spec-key">Sizes</td>
                                 <td class="spec-val">
-                                    <asp:Literal ID="sDim" runat="server"></asp:Literal>
+                                    <asp:Literal ID="sSizes" runat="server"></asp:Literal>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="spec-key">Colors</td>
+                                <td class="spec-val">
+                                    <asp:Literal ID="sColors" runat="server"></asp:Literal>
                                 </td>
                             </tr>
                             <tr>
@@ -358,40 +505,13 @@
                             </div>
                             <!-- PANE 2 -->
                             <div class="tab-pane">
-                                <div class="reviews-summary-bar">
+                                <div class="reviews-summary-bar" style="margin-bottom: 20px;">
                                     <h3 style="margin:0; color:#0f172a; font-weight:800;">
                                         <asp:Literal ID="litRevCountSummary" runat="server"></asp:Literal>
                                     </h3>
-                                    <button type="button" class="btn-open-rev-form" onclick="toggleRevForm()">Write A
-                                        Review</button>
-                                </div>
-
-                                <!-- Submission Form (Hidden initially) -->
-                                <div class="review-form-container" id="revFormContainer">
-                                    <h4 style="margin-top:0; margin-bottom:15px;">Write Your Feedback</h4>
-                                    <div class="rev-form-row">
-                                        <label class="rev-form-lbl">Rating (1 to 5)</label>
-                                        <div class="star-rating-picker" id="starPicker">
-                                            <i class="far fa-star active" data-val="1" onclick="setRating(1)"></i>
-                                            <i class="far fa-star" data-val="2" onclick="setRating(2)"></i>
-                                            <i class="far fa-star" data-val="3" onclick="setRating(3)"></i>
-                                            <i class="far fa-star" data-val="4" onclick="setRating(4)"></i>
-                                            <i class="far fa-star" data-val="5" onclick="setRating(5)"></i>
-                                        </div>
-                                        <input type="hidden" id="hdnRating" value="1" />
+                                    <div style="font-size: 12px; color: #64748b; font-weight: 600; display: flex; align-items: center; gap: 5px; background: #f1f5f9; padding: 6px 12px; border-radius: 20px;">
+                                        <i class="fas fa-shield-check" style="color:#10b981;"></i> Verified Reviews
                                     </div>
-                                    <div class="rev-form-row">
-                                        <label class="rev-form-lbl">Your Name</label>
-                                        <input type="text" class="rev-inp" id="txtRevName" placeholder="Enter name" />
-                                    </div>
-                                    <div class="rev-form-row">
-                                        <label class="rev-form-lbl">Message</label>
-                                        <textarea class="rev-inp" id="txtRevMsg" rows="3"
-                                            placeholder="Tell us about the product"></textarea>
-                                    </div>
-                                    <button type="button" class="pd-add-to-cart"
-                                        style="font-size:14px; padding:10px 20px; width:auto;"
-                                        onclick="submitReview()">Post Review</button>
                                 </div>
 
                                 <asp:Panel ID="pnlNoReviews" runat="server"
@@ -408,19 +528,42 @@
                                 <div class="review-item-list">
                                     <asp:Repeater ID="rptReviews" runat="server">
                                         <ItemTemplate>
-                                            <div class="single-review">
-                                                <div class="rev-hdr">
-                                                    <div class="rev-user"><i class="fas fa-user-circle"></i>
-                                                        <%# Eval("ReviewerName") %>
+                                            <div class="premium-review-card">
+                                                <div class="pr-card-header">
+                                                    <div class="pr-user-flex">
+                                                        <!-- Avatar Initial Box -->
+                                                        <div class="pr-avatar-circle">
+                                                            <%# (Eval("ReviewerName") != DBNull.Value && Eval("ReviewerName").ToString().Trim().Length > 0) ? Eval("ReviewerName").ToString().Trim().Substring(0,1).ToUpper() : "U" %>
+                                                        </div>
+                                                        
+                                                        <div class="pr-name-col">
+                                                            <span class="pr-username"><%# Eval("ReviewerName") %></span>
+                                                            <span class="pr-verified-lbl">VERIFIED BUYER</span>
+                                                        </div>
                                                     </div>
-                                                    <div class="rev-stars">
-                                                        <%# RenderRevStars(Eval("Rating")) %>
+                                                    
+                                                    <div class="pr-stars-col">
+                                                        <div class="pr-stars-row">
+                                                            <%# RenderRevStars(Eval("Rating")) %>
+                                                        </div>
+                                                        <span class="pr-top-badge">TOP REVIEW</span>
                                                     </div>
                                                 </div>
-                                                <div class="rev-text">"<%# Eval("ReviewText") %>"</div>
-                                                <div class="rev-date">
-                                                    <%# Convert.ToDateTime(Eval("ReviewDate")).ToString("dd MMM yyyy")
-                                                        %>
+                                                
+                                                <div class="pr-separator"></div>
+                                                
+                                                <div class="pr-body">
+                                                    <p class="pr-review-txt"><%# Eval("ReviewText") %></p>
+                                                </div>
+                                                
+                                                <div class="pr-footer">
+                                                    <span class="pr-date-time">
+                                                        <%# Convert.ToDateTime(Eval("ReviewDate")).ToString("yyyy-MM-dd HH:mm:ss") %>
+                                                    </span>
+                                                    
+                                                    <div class="pr-helpful-btn">
+                                                        🔥 Helpful (0)
+                                                    </div>
                                                 </div>
                                             </div>
                                         </ItemTemplate>
@@ -580,11 +723,24 @@
 
             // 4. AJAX Add To Cart
             function processCartAction(isBuyNow) {
-                const qty = document.getElementById('txtQty').value;
-                
-                // Fetch selected size and color
+                // 1. Validate selections if the product has those options
+                const sizeOptions = document.querySelectorAll('.pd-size-box');
                 const activeSize = document.querySelector('.pd-size-box.active');
+                if (sizeOptions.length > 0 && !activeSize) {
+                    alert('⚠️ Please select a SIZE before adding to cart.');
+                    const grp = document.querySelector('.pd-option-group');
+                    if (grp) grp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+
+                const colorOptions = document.querySelectorAll('.pd-color-ball');
                 const activeColor = document.querySelector('.pd-color-ball.active');
+                if (colorOptions.length > 0 && !activeColor) {
+                    alert('⚠️ Please select a COLOR before adding to cart.');
+                    return;
+                }
+
+                const qty = document.getElementById('txtQty').value;
                 
                 const sizeVal = activeSize ? activeSize.innerText.trim() : '';
                 const colorVal = activeColor ? activeColor.getAttribute('title') || '' : '';

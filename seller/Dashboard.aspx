@@ -17,26 +17,38 @@
     <!-- METRICS CARD GRID -->
     <section class="metric-grid">
         <div class="stat-card clr-blue">
-            <div class="stat-lbl">Total Products</div>
-            <div class="stat-val"><asp:Literal ID="litTotalProducts" runat="server">0</asp:Literal></div>
+            <div>
+                <div class="stat-lbl">Total Products</div>
+                <div class="stat-val"><asp:Literal ID="litTotalProducts" runat="server">0</asp:Literal></div>
+                <div class="stat-desc">Registered catalog size</div>
+            </div>
             <div class="stat-ico"><i class="fas fa-cube"></i></div>
         </div>
 
         <div class="stat-card clr-green">
-            <div class="stat-lbl">Gross Earnings</div>
-            <div class="stat-val">₹<asp:Literal ID="litTotalEarnings" runat="server">0.00</asp:Literal></div>
+            <div>
+                <div class="stat-lbl">Gross Earnings</div>
+                <div class="stat-val">₹<asp:Literal ID="litTotalEarnings" runat="server">0.00</asp:Literal></div>
+                <div class="stat-desc">Lifetime revenue volume</div>
+            </div>
             <div class="stat-ico"><i class="fas fa-indian-rupee-sign"></i></div>
         </div>
 
         <div class="stat-card clr-orange">
-            <div class="stat-lbl">Units Dispatched</div>
-            <div class="stat-val"><asp:Literal ID="litUnitsSold" runat="server">0</asp:Literal></div>
+            <div>
+                <div class="stat-lbl">Units Dispatched</div>
+                <div class="stat-val"><asp:Literal ID="litUnitsSold" runat="server">0</asp:Literal></div>
+                <div class="stat-desc">Successful deliveries</div>
+            </div>
             <div class="stat-ico"><i class="fas fa-truck-fast"></i></div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-lbl">Pending Clearances</div>
-            <div class="stat-val"><asp:Literal ID="litPendingOrders" runat="server">0</asp:Literal></div>
+            <div>
+                <div class="stat-lbl">Pending Clearances</div>
+                <div class="stat-val"><asp:Literal ID="litPendingOrders" runat="server">0</asp:Literal></div>
+                <div class="stat-desc">Awaiting processing</div>
+            </div>
             <div class="stat-ico"><i class="fas fa-clock"></i></div>
         </div>
     </section>

@@ -33,22 +33,12 @@ namespace EcommerceWebsite
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
-                    // Get KPIs using conditional counts securely.
-                    string query = @"
-                        SELECT 
-                            COUNT(DISTINCT o.Id) as TotalOrders,
-                            COUNT(DISTINCT CASE WHEN o.Status IN ('Pending', 'Placed', 'Processing', 'Confirmed') THEN o.Id END) as NeedsConfirm,
-                            COUNT(DISTINCT CASE WHEN o.Status IN ('Shipped', 'Dispatched', 'In Transit') THEN o.Id END) as InTransit,
-                            COUNT(DISTINCT CASE WHEN o.Status = 'Delivered' THEN o.Id END) as Delivered,
-                            COUNT(DISTINCT CASE WHEN o.Status LIKE '%Return%' THEN o.Id END) as ReturnRequests
-                        FROM Orders o
-                        JOIN OrderItems oi ON o.Id = oi.OrderId
-                        JOIN SellerProducts p ON oi.ProductId = p.Id
-                        WHERE p.SellerId = @SellerId" + GetDateFilterSql();
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    // Execute specialized analytics aggregator SP for low latency performance
+                    using (SqlCommand cmd = new SqlCommand("sp_Seller_GetOrderMetrics", con))
                     {
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@SellerId", sellerId);
+                        cmd.Parameters.AddWithValue("@DateFilter", ddlDateFilter.SelectedValue);
                         using (SqlDataReader dr = cmd.ExecuteReader())
                         {
                             if (dr.Read())
@@ -88,38 +78,12 @@ namespace EcommerceWebsite
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
-                    string query = @"
-                        SELECT DISTINCT 
-                            o.Id,
-                            o.OrderRef,
-                            o.TotalAmount,
-                            o.Status,
-                            o.CreatedAt,
-                            o.PaymentMode,
-                            ISNULL(u.FullName, 'Guest Customer') as CustName,
-                            ISNULL(u.Email, 'noemail@yopmail.com') as CustEmail,
-                            (SELECT TOP 1 ISNULL(p3.Category, 'General')
-                             FROM OrderItems oi3 
-                             JOIN SellerProducts p3 ON oi3.ProductId = p3.Id 
-                             WHERE oi3.OrderId = o.Id AND p3.SellerId = @SellerId) as TopCategory,
-                            (SELECT SUM(oi2.Quantity) 
-                             FROM OrderItems oi2 
-                             JOIN SellerProducts p2 ON oi2.ProductId = p2.Id 
-                             WHERE oi2.OrderId = o.Id AND p2.SellerId = @SellerId) as SellerItemCount,
-                            (SELECT SUM(oi2.UnitPrice * oi2.Quantity) 
-                             FROM OrderItems oi2 
-                             JOIN SellerProducts p2 ON oi2.ProductId = p2.Id 
-                             WHERE oi2.OrderId = o.Id AND p2.SellerId = @SellerId) as SellerTotalAmount
-                        FROM Orders o
-                        LEFT JOIN Users u ON o.UserId = u.Id
-                        JOIN OrderItems oi ON o.Id = oi.OrderId
-                        JOIN SellerProducts p ON oi.ProductId = p.Id
-                        WHERE p.SellerId = @SellerId" + GetDateFilterSql() + @"
-                        ORDER BY o.Id DESC";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    // Routing dataset population via cached optimized stored execution tree
+                    using (SqlCommand cmd = new SqlCommand("sp_Seller_GetOrdersList", con))
                     {
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@SellerId", sellerId);
+                        cmd.Parameters.AddWithValue("@DateFilter", ddlDateFilter.SelectedValue);
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable dt = new DataTable();
                         da.Fill(dt);
@@ -243,11 +207,12 @@ namespace EcommerceWebsite
                     using (SqlConnection con = new SqlConnection(strcon))
                     {
                         con.Open();
-                        // Explicit direct SQL override for lightning-fast status updates
-                        string updateSql = "UPDATE Orders SET Status = 'Confirmed', UpdatedAt = GETDATE() WHERE Id = @OrderId";
-                        using (SqlCommand cmd = new SqlCommand(updateSql, con))
+                        // Automated single-step transactional status trigger
+                        using (SqlCommand cmd = new SqlCommand("sp_Seller_UpdateOrderStatus", con))
                         {
+                            cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@OrderId", orderId);
+                            cmd.Parameters.AddWithValue("@Status", "Confirmed");
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -268,15 +233,6 @@ namespace EcommerceWebsite
             // Live execution trigger on period toggle
             BindKPIs();
             BindOrders();
-        }
-
-        private string GetDateFilterSql()
-        {
-            string val = ddlDateFilter.SelectedValue;
-            if (val == "24h") return " AND o.CreatedAt >= DATEADD(hour, -24, GETDATE()) ";
-            if (val == "7d") return " AND o.CreatedAt >= DATEADD(day, -7, GETDATE()) ";
-            if (val == "30d") return " AND o.CreatedAt >= DATEADD(day, -30, GETDATE()) ";
-            return ""; // Returns empty clause for "All time" default
         }
     }
 }

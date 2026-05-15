@@ -1,164 +1,161 @@
-<%@ Page Title="My Reviews" Language="C#" MasterPageFile="~/usersite.Master" AutoEventWireup="true" CodeFile="MyReviews.aspx.cs" Inherits="ecommerce_mlm.MyReviews" %>
-<%@ Register Src="~/UserSidebar.ascx" TagPrefix="uc" TagName="UserSidebar" %>
+<%@ Page Title="My Reviews" Language="C#" MasterPageFile="~/usersite.Master" AutoEventWireup="true"
+    CodeFile="MyReviews.aspx.cs" Inherits="ecommerce_mlm.MyReviews" %>
+    <%@ Register Src="~/UserSidebar.ascx" TagPrefix="uc" TagName="UserSidebar" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style>
-        /* Overrides for Star selection */
-        .star-option { cursor:pointer; font-size: 1.8rem; color: #cbd5e1; transition: color 0.1s; }
-        .star-option.selected { color: #fbbf24; }
-    </style>
-</asp:Content>
+        <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        </asp:Content>
 
-    <section class="dashboard-wrapper">
-        <div class="dashboard-breadcrumb">
-            <div class="container">
-                <div class="dashboard-breadcrumb-inner">
-                    <div class="breadcrumb-left"><h3>Product Reviews</h3></div>
-                    <div class="breadcrumb-right">
-                        <a href="index.aspx"><i class="fas fa-home"></i></a>
-                        <span> / Reviews</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+            <asp:ScriptManager ID="ScriptManager1" runat="server" />
 
-        <div class="container">
-            <div class="dashboard-layout">
-                <!-- User Navigation -->
-                <uc:UserSidebar runat="server" ID="UserSidebar" />
+            <section class="dashboard-wrapper">
+                <div class="container dashboard-container" style="padding-top: 30px;">
+                    <div class="dashboard-layout">
+                        <!-- Sidebar Section -->
+                        <uc:UserSidebar runat="server" ID="UserSidebar" />
 
-                <!-- Main Body -->
-                <main class="dashboard-main-content">
-                    <asp:UpdatePanel ID="upnlReviews" runat="server">
-                        <ContentTemplate>
-                            <div class="main-card main-card-padded">
-                                
-                                <div class="section-title section-title-bordered" style="margin-bottom: 25px;">
-                                    <div><i class="fas fa-star"></i> Rate Delivered Products</div>
-                                </div>
+                        <!-- Main Area -->
+                        <main class="dashboard-main-content">
+                            <div class="review-dashboard-content">
+                                <h1 class="page-header-title">My Reviews</h1>
 
-                                <!-- Dynamic Repeater -->
-                                <div class="review-card-list">
-                                    <asp:Repeater ID="rptDeliveredProducts" runat="server" OnItemCommand="rptDeliveredProducts_ItemCommand">
-                                        <ItemTemplate>
-                                            <div class="rev-item-row">
-                                                <!-- Left Column: Product Detail -->
-                                                <img src='<%# ResolveUrl("~/assets/images/products/" + Eval("MainImage")) %>' 
-                                                     onerror="this.src='assets/images/no-image.png';" class="rev-prod-thumb" />
-                                                
-                                                <div class="rev-info-block">
-                                                    <div class="rev-prod-name"><%# Eval("ProductName") %></div>
-                                                    <div class="rev-status-badge"><i class="fas fa-check-circle"></i> Verified Purchase - Delivered</div>
-                                                </div>
+                                <asp:UpdatePanel ID="upnlMain" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <asp:Repeater ID="rptProductReviews" runat="server"
+                                            OnItemCommand="rptProductReviews_ItemCommand"
+                                            OnItemDataBound="rptProductReviews_ItemDataBound">
+                                            <ItemTemplate>
+                                                <!-- Individual Card representing Product + Review logic -->
+                                                <div class="review-item-card">
+                                                    <div class="prod-meta-row">
+                                                        <div class="prod-info-left">
+                                                            <!-- Product Image -->
+                                                            <img src='<%# ResolveProductImage(Eval("MainImage")) %>'
+                                                                class="prod-img-thumb" alt="Product"
+                                                                onerror="this.src='assets/images/no-image.png';" />
 
-                                                <!-- Right Column: Review status block -->
-                                                <div class="rev-action-area">
-                                                    
-                                                    <!-- STATE 1: Already Reviewed (DISPLAY MODE, NO EDIT) -->
-                                                    <asp:Panel runat="server" Visible='<%# Convert.ToInt32(Eval("HasReviewed")) == 1 %>' CssClass="existing-rev-box">
-                                                        <div class="rev-stars-display">
-                                                            <%# ecommerce_mlm.MyReviews.GetStarsHTML(Convert.ToInt32(Eval("Rating"))) %>
+                                                            <div class="prod-details-stack">
+                                                                <!-- Product Name -->
+                                                                <h4 class="prod-title-link">
+                                                                    <%# Eval("ProductName") %>
+                                                                </h4>
+                                                                <!-- Delivered / Order Date -->
+                                                                <span class="order-date-text">
+                                                                    <i class="far fa-calendar-alt"></i>
+                                                                    <%# Convert.ToDateTime(Eval("CreatedAt")).ToString("MMM
+                                                                        dd, yyyy") %>
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                        <div class="rev-comment-txt">"<%# Eval("ReviewText") %>"</div>
-                                                        <div style="font-size:0.75rem; color:#94a3b8; margin-top:8px; font-weight:600;">Reviewed on <%# Convert.ToDateTime(Eval("ReviewDate")).ToString("dd MMM yyyy") %></div>
-                                                    </asp:Panel>
 
-                                                    <!-- STATE 2: Not Reviewed (WRITE MODE) -->
-                                                    <asp:Panel runat="server" Visible='<%# Convert.ToInt32(Eval("HasReviewed")) == 0 %>'>
-                                                        <asp:LinkButton ID="btnWriteRev" runat="server" CommandName="TriggerReview" CommandArgument='<%# Eval("ProductId") + "|" + Eval("ProductName") %>' 
-                                                                        CssClass="btn-pill-modern btn-orange-grad" style="font-size:0.85rem; padding: 10px 20px;">
-                                                            <i class="fas fa-pen"></i> Write Review
-                                                        </asp:LinkButton>
-                                                    </asp:Panel>
+                                                        <!-- Action Badges / Trigger Buttons on Right -->
+                                                        <div class="action-badge-right">
+                                                            <!-- STATE: No Review Made Yet -->
+                                                            <asp:LinkButton ID="btnWriteReviewTrigger" runat="server"
+                                                                CommandName="ExpandForm"
+                                                                CommandArgument='<%# Eval("ProductId") %>'
+                                                                CssClass="btn-write-rev-pill"
+                                                                Visible='<%# Convert.ToInt32(Eval("HasReviewed")) == 0 %>'>
+                                                                <i class="fas fa-pencil-alt"></i> Write Review
+                                                            </asp:LinkButton>
 
+                                                            <!-- STATE: Approved Review -->
+                                                            <div class="badge-approved" runat="server"
+                                                                visible='<%# Convert.ToInt32(Eval("HasReviewed")) == 1 && Eval("ReviewStatus").ToString().ToUpper() == "APPROVED" %>'>
+                                                                <i class="fas fa-check"></i> Approved
+                                                            </div>
+
+                                                            <!-- STATE: Pending Review -->
+                                                            <div class="badge-pending" runat="server"
+                                                                visible='<%# Convert.ToInt32(Eval("HasReviewed")) == 1 && Eval("ReviewStatus").ToString().ToUpper() == "PENDING" %>'>
+                                                                <i class="far fa-clock"></i> Under Process
+                                                            </div>
+
+                                                            <!-- STATE: Rejected Review -->
+                                                            <div class="badge-pending"
+                                                                style="background:#fef2f2; border-color:#fecaca; color:#dc2626;"
+                                                                runat="server"
+                                                                visible='<%# Convert.ToInt32(Eval("HasReviewed")) == 1 && Eval("ReviewStatus").ToString().ToUpper() == "REJECTED" %>'>
+                                                                <i class="fas fa-ban"></i> Rejected
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- SECTION A: Output Review Content (If Reviewed Already) -->
+                                                    <div class="review-output-block" runat="server"
+                                                        visible='<%# Convert.ToInt32(Eval("HasReviewed")) == 1 %>'>
+                                                        <div class="rev-rating-display-row">
+                                                            <div class="stars-gold">
+                                                                <%# GetVisualStars(Eval("Rating")) %>
+                                                            </div>
+                                                            <span class="rating-badge-mini">
+                                                                <%# Eval("Rating") %>/5
+                                                            </span>
+                                                        </div>
+                                                        <p class="review-comment-quote">"<%# Eval("ReviewText") %>"</p>
+                                                    </div>
+
+                                                    <!-- SECTION B: Expandable Write Review Panel (Inline) -->
+                                                    <asp:Panel ID="pnlInlineWriteReview" runat="server"
+                                                        CssClass="write-review-inline-panel" Visible="false">
+                                                        <h5 class="inline-panel-title">
+                                                            <i class="fas fa-pencil-alt"></i> Share your experience with
+                                                            this product
+                                                        </h5>
+
+                                                        <div class="inline-form-grid">
+                                                            <!-- Star Rating DD -->
+                                                            <asp:DropDownList ID="ddlStars" runat="server"
+                                                                CssClass="star-select-ddl">
+                                                                <asp:ListItem Text="⭐⭐⭐⭐⭐ 5 Stars" Value="5"
+                                                                    Selected="True"></asp:ListItem>
+                                                                <asp:ListItem Text="⭐⭐⭐⭐ 4 Stars" Value="4">
+                                                                </asp:ListItem>
+                                                                <asp:ListItem Text="⭐⭐⭐ 3 Stars" Value="3">
+                                                                </asp:ListItem>
+                                                                <asp:ListItem Text="⭐⭐ 2 Stars" Value="2">
+                                                                </asp:ListItem>
+                                                                <asp:ListItem Text="⭐ 1 Star" Value="1"></asp:ListItem>
+                                                            </asp:DropDownList>
+
+                                                            <!-- Review Text input -->
+                                                            <asp:TextBox ID="txtInlineComment" runat="server"
+                                                                CssClass="review-textbox-input"
+                                                                placeholder="Share what you think about this product..."
+                                                                MaxLength="300"></asp:TextBox>
+
+                                                            <!-- Submit Trigger -->
+                                                            <asp:Button ID="btnInlineSubmitReview" runat="server"
+                                                                Text="Submit" CommandName="SubmitReview"
+                                                                CommandArgument='<%# Eval("ProductId") %>'
+                                                                CssClass="btn-inline-submit" />
+                                                        </div>
+
+                                                        <asp:Label ID="lblInlineError" runat="server"
+                                                            CssClass="error-feedback-label" Visible="false"></asp:Label>
+                                                    </asp:Panel>
                                                 </div>
-                                            </div>
-                                        </ItemTemplate>
-                                    </asp:Repeater>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
 
-                                    <asp:Panel ID="pnlNoProducts" runat="server" Visible="false" CssClass="empty-state-premium">
-                                        <div class="empty-state-visual">
-                                            <img src="assets/images/empty-orders.svg" alt="No delivered products" />
-                                        </div>
-                                        <h4 class="empty-state-heading">No Delivered Products Yet</h4>
-                                        <p class="empty-state-sub">
-                                            You don't have any delivered products awaiting your review right now. 
-                                            Shop now and check back once your items arrive!
-                                        </p>
-                                        <a href="index.aspx" class="btn-pill-modern btn-orange-grad" style="text-decoration:none;"><i class="fas fa-shopping-bag"></i> Start Shopping</a>
-                                    </asp:Panel>
-                                </div>
+                                        <!-- Empty State Display -->
+                                        <asp:Panel ID="pnlEmpty" runat="server" Visible="false"
+                                            style="text-align:center; padding:40px; background:#fff; border-radius:16px; border:1px solid #f1f5f9;">
+                                            <img src="assets/images/dashboard/notification.svg"
+                                                style="width:80px; margin-bottom:16px; opacity:0.4;" alt="Empty" />
+                                            <h4 style="font-weight:700; color:#334155; margin-bottom:8px;">No orders
+                                                found for review</h4>
+                                            <p style="color:#64748b; font-size:14px;">When your orders are delivered,
+                                                they will show up here for your valuable feedback.</p>
+                                        </asp:Panel>
+
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
 
                             </div>
-
-                            <!-- SUBMIT REVIEW POPUP MODAL -->
-                            <asp:Panel ID="pnlReviewModal" runat="server" CssClass="modal-overlay" Visible="false">
-                                <div class="modal-container" style="max-width:450px;">
-                                    <div class="modal-header">
-                                        <h3>Submit Review</h3>
-                                        <asp:LinkButton ID="btnCloseModal" runat="server" CssClass="btn-close-modal" OnClick="btnCloseModal_Click"><i class="fas fa-times"></i></asp:LinkButton>
-                                    </div>
-                                    <div class="modal-body">
-                                        <asp:HiddenField ID="hfRevProdId" runat="server" />
-                                        <asp:HiddenField ID="hfRatingValue" runat="server" Value="0" />
-                                        
-                                        <div style="text-align: center; margin-bottom: 20px;">
-                                            <h5 style="color:#1e293b; font-weight:700; margin-bottom:5px;">Rate this Product</h5>
-                                            <asp:Label ID="lblModalProdName" runat="server" CssClass="rev-prod-name" Font-Bold="false"></asp:Label>
-                                        </div>
-
-                                        <!-- Visual Star Selector -->
-                                        <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 25px;">
-                                            <i class="fas fa-star star-option" onclick="setRating(1)"></i>
-                                            <i class="fas fa-star star-option" onclick="setRating(2)"></i>
-                                            <i class="fas fa-star star-option" onclick="setRating(3)"></i>
-                                            <i class="fas fa-star star-option" onclick="setRating(4)"></i>
-                                            <i class="fas fa-star star-option" onclick="setRating(5)"></i>
-                                        </div>
-
-                                        <div class="modal-form-group">
-                                            <label>Share your experience (Comments)</label>
-                                            <asp:TextBox ID="txtReviewText" runat="server" TextMode="MultiLine" Rows="4" CssClass="form-control-custom" style="resize:none;" placeholder="What did you like or dislike about this product?"></asp:TextBox>
-                                        </div>
-
-                                        <asp:Label ID="lblModalErr" runat="server" ForeColor="Red" Font-Size="Small" Font-Bold="true"></asp:Label>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <asp:LinkButton ID="btnCancel" runat="server" CssClass="btn-pill-modern btn-soft-outline" OnClick="btnCloseModal_Click">Cancel</asp:LinkButton>
-                                        <asp:Button ID="btnSubmitReview" runat="server" Text="Post Review" CssClass="btn-pill-modern btn-orange-grad" style="border:none;" OnClick="btnSubmitReview_Click" />
-                                    </div>
-                                </div>
-                            </asp:Panel>
-
-                            <script type="text/javascript">
-                                function showModal() {
-                                    var mod = document.querySelector('.modal-overlay');
-                                    if(mod) mod.classList.add('active');
-                                }
-                                
-                                function setRating(n) {
-                                    // Save logic back to server hidden field
-                                    document.getElementById('<%= hfRatingValue.ClientID %>').value = n;
-                                    
-                                    // Visual update
-                                    var stars = document.querySelectorAll('.star-option');
-                                    stars.forEach(function(star, index) {
-                                        if (index < n) {
-                                            star.classList.add('selected');
-                                        } else {
-                                            star.classList.remove('selected');
-                                        }
-                                    });
-                                }
-                            </script>
-
-                        </ContentTemplate>
-                    </asp:UpdatePanel>
-                </main>
-            </div>
-        </div>
-    </section>
-</asp:Content>
+                        </main>
+                    </div>
+                </div>
+            </section>
+        </asp:Content>
