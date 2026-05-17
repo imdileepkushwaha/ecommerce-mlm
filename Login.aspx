@@ -129,7 +129,7 @@
                                         OnClick="btnVerifyCode_Click" />
 
                                     <div class="text-center" style="margin-top: 15px;">
-                                        <span id="resendTimer" style="color: #64748b; font-size: 0.85rem;">Resend
+                                        <span id="resendTimer" style="color:#888888; font-size: 0.85rem;">Resend
                                             available in <b id="timeLeft">02:00</b></span>
                                         <asp:LinkButton ID="lnkResendCode" runat="server" CssClass="forgot-link"
                                             Text="Resend Security Code" OnClick="lnkResendCode_Click"

@@ -7,7 +7,7 @@
     --accent: #f97316;
     --main-bg: #f8fafc;
     --text-dark: #0f172a;
-    --text-gray: #64748b;
+    --text-gray: #888888;
     --border-c: #e2e8f0;
 }
 
@@ -21,6 +21,30 @@
 body {
     background: var(--main-bg);
 }
+
+/* Width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track (background) */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+/* Thumb (scroll handle) */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #33333342, #0000005e);
+    border-radius: 3px;
+    transition: 0.3s;
+}
+
+/* Hover effect */
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #555, #222);
+}
+
 
 #form1 {
     display: flex;
@@ -768,7 +792,7 @@ body {
 }
 
 .u-sec-hdr i {
-    color: #64748b;
+    color: #888888;
     background: #f1f5f9;
     padding: 8px;
     border-radius: 8px;
@@ -843,7 +867,7 @@ body {
 
 .u-badge-count {
     background: #f1f5f9;
-    color: #64748b;
+    color: #888888;
     display: inline-flex;
     align-items: center;
 }
@@ -1036,7 +1060,7 @@ body {
 
 .admin-table th {
     background: transparent;
-    color: #64748b;
+    color: #888888;
     border-bottom: none;
     padding: 15px 25px;
     font-size: 0.75rem;
@@ -1196,7 +1220,7 @@ body {
 
 .u-t-sub {
     font-size: 0.75rem;
-    color: #64748b;
+    color: #888888;
     padding-left: 18px;
     font-weight: 500;
 }
@@ -1292,7 +1316,7 @@ body {
     display: block;
     font-size: 0.75rem;
     font-weight: 700;
-    color: #64748b;
+    color: #888888;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -1372,7 +1396,7 @@ body {
     padding: 12px 24px;
     border: none;
     background: transparent;
-    color: #64748b;
+    color: #888888;
     font-weight: 700;
     font-size: 0.85rem;
     border-radius: 12px;
@@ -1453,7 +1477,7 @@ body {
     padding: 15px 20px;
     border: none;
     background: transparent;
-    color: #64748b;
+    color: #888888;
     font-weight: 700;
     font-size: 0.88rem;
     border-radius: 15px;
@@ -1631,7 +1655,7 @@ body {
 
 .node-role {
     font-size: 0.6rem;
-    color: #64748b;
+    color: #888888;
     font-weight: 600;
     text-transform: uppercase;
 }

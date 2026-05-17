@@ -529,7 +529,7 @@
                                                         </div>
                                                     </div>
                                                     <p
-                                                        style="font-size: 0.75rem; color: #64748b; margin-top: 10px; display:flex; align-items:center; gap:5px;">
+                                                        style="font-size: 0.75rem; color:#888888; margin-top: 10px; display:flex; align-items:center; gap:5px;">
                                                         <i class="fas fa-shield-alt" style="color:#10b981;"></i> Click
                                                         'Send OTP' to authenticate these details.
                                                     </p>

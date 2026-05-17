@@ -1,5 +1,6 @@
 <%@ Page Title="Catalog Configuration Console" Language="C#" MasterPageFile="~/seller/Seller.Master"
-    AutoEventWireup="true" CodeFile="AddEditProduct.aspx.cs" Inherits="EcommerceWebsite.SellerAddEditProduct" ValidateRequest="false" %>
+    AutoEventWireup="true" CodeFile="AddEditProduct.aspx.cs" Inherits="EcommerceWebsite.SellerAddEditProduct"
+    ValidateRequest="false" %>
 
     <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
         <style>
@@ -185,7 +186,8 @@
 
                         <div class="db-form-full" style="margin-bottom: 20px;">
                             <label class="db-label">Product Title *</label>
-                            <asp:TextBox ID="txtName" runat="server" CssClass="db-input" placeholder="Product title" ClientIDMode="Static">
+                            <asp:TextBox ID="txtName" runat="server" CssClass="db-input" placeholder="Product title"
+                                ClientIDMode="Static">
                             </asp:TextBox>
                             <span class="sku-sub-hint" style="display:block; margin-top:5px;">Kam se kam 2 shabd (sirf
                                 ek letter ya ek shabd se Next / Submit nahi hoga).</span>
@@ -194,29 +196,32 @@
                                 CssClass="validator-error-text"></asp:RequiredFieldValidator>
                         </div>
 
-                        <div class="db-form-full" style="margin-bottom: 20px; background: #f8fafc; padding: 15px; border-radius: 12px; border: 1.5px dashed #cbd5e1;">
-                            <label class="db-label" style="color: #475569;">Product Permalink / Slug <i class="fas fa-lock" style="margin-left: 5px; font-size: 0.78rem; color: #94a3b8;"></i></label>
-                            <asp:TextBox ID="txtSlug" runat="server" CssClass="db-input" placeholder="auto-generated-slug-path" ReadOnly="true" 
-                                style="background: #f1f5f9; color: #64748b; font-weight: 700; cursor: not-allowed; font-family: monospace;" ClientIDMode="Static"></asp:TextBox>
-                            <span class="sku-sub-hint" style="display:block; margin-top:6px; color: #64748b;"><i class="fas fa-circle-info" style="margin-right:4px;"></i> Automatically synchronized from title. Cannot be manually overridden.</span>
+                        <div class="db-form-full slug-container-banner">
+                            <label class="db-label">Product Permalink / Slug <i class="fas fa-lock"
+                                    style="margin-left: 5px; font-size: 0.78rem; color: #94a3b8;"></i></label>
+                            <asp:TextBox ID="txtSlug" runat="server" CssClass="db-input slug-input-read"
+                                placeholder="auto-generated-slug-path" ReadOnly="true" ClientIDMode="Static">
+                            </asp:TextBox>
+                            <span class="sku-sub-hint" style="display:block; margin-top:6px; color:#888888;"><i
+                                    class="fas fa-circle-info" style="margin-right:4px;"></i> Automatically synchronized
+                                from title. Cannot be manually overridden.</span>
                         </div>
 
                         <div class="db-form-full">
                             <label class="db-label">Description</label>
-                            <div style="border: 1.5px solid #e2e8f0; border-radius: 12px; overflow:hidden;">
+                            <div class="mock-editor-container">
                                 <!-- Toolbar Mock-up similar to image -->
-                                <div
-                                    style="background: #f8fafc; padding: 8px 15px; border-bottom: 1.5px solid #e2e8f0; display:flex; align-items:center; gap:15px; color:#64748b; font-size:0.85rem;">
+                                <div class="mock-editor-toolbar">
                                     <span style="font-weight:700;">Normal <i class="fas fa-caret-down"></i></span>
-                                    <span style="width:1px; height:15px; background:#e2e8f0;"></span>
+                                    <span class="mock-editor-divider"></span>
                                     <i class="fas fa-bold" style="cursor:pointer;"></i>
                                     <i class="fas fa-italic" style="cursor:pointer;"></i>
                                     <i class="fas fa-underline" style="cursor:pointer;"></i>
                                     <i class="fas fa-strikethrough" style="cursor:pointer;"></i>
-                                    <span style="width:1px; height:15px; background:#e2e8f0;"></span>
+                                    <span class="mock-editor-divider"></span>
                                     <i class="fas fa-list-ul" style="cursor:pointer;"></i>
                                     <i class="fas fa-list-ol" style="cursor:pointer;"></i>
-                                    <span style="width:1px; height:15px; background:#e2e8f0;"></span>
+                                    <span class="mock-editor-divider"></span>
                                     <i class="fas fa-link" style="cursor:pointer;"></i>
                                     <i class="fas fa-image" style="cursor:pointer;"></i>
                                 </div>
@@ -251,7 +256,7 @@
 
                             <!-- Left Column: Solo Product Image -->
                             <div style="flex: 1;">
-                                <label class="db-label" style="color: #1e293b; font-weight:700;">Product Image</label>
+                                <label class="db-label">Product Image</label>
                                 <div class="pg-drop-box" onclick="document.getElementById('fuMain').click();">
                                     <i class="fas fa-cloud-arrow-up" id="iconMain"></i>
                                     <strong>Drag your image here, or browser</strong>
@@ -269,7 +274,7 @@
 
                             <!-- Right Column: Bulk Gallery Pipeline -->
                             <div style="flex: 1;">
-                                <label class="db-label" style="color: #1e293b; font-weight:700;">Product Gallery</label>
+                                <label class="db-label">Product Gallery</label>
                                 <div class="pg-drop-box" onclick="document.getElementById('fuGallery').click();">
                                     <i class="fas fa-images" id="iconGal"></i>
                                     <strong>Drag files here</strong>
@@ -282,7 +287,7 @@
                                         style="display:none;" ClientIDMode="Static"
                                         onchange="var f=this.files; var n=[]; for(var i=0; i<f.length; i++){ n.push(f[i].name); } document.getElementById('spnGalSummary').innerText = '🔥 ' + f.length + ' Image(s) Queued'; document.getElementById('spnGalSummary').style.display='inline-block'; document.getElementById('iconGal').style.color='var(--accent)';" />
                                 </div>
-                                <div style="font-size: 0.78rem; color: #64748b; font-weight:600; margin-top: 8px;">
+                                <div style="font-size: 0.78rem; color:#888888; font-weight:600; margin-top: 8px;">
                                     Har selected color ke liye max 6 images. Main product image alag hai.
                                 </div>
                             </div>
@@ -357,11 +362,8 @@
                             </div>
 
                             <!-- DYNAMIC SIZE SELECTOR MODULE -->
-                            <div class="db-form-full"
-                                style="background:#f8fafc; padding: 20px; border-radius:16px; border:1.5px solid #e2e8f0; margin-top:15px; margin-bottom:15px;">
-                                <label class="db-label"
-                                    style="color:#0f172a; font-weight:800; margin-bottom:5px;">Available Size
-                                    Configurator</label>
+                            <div class="db-form-full size-config-card">
+                                <label class="db-label">Available Size Configurator</label>
                                 <p style="font-size:0.76rem; color:#64748b; margin-bottom:15px; font-weight:600;">
                                     Product type badalne par standard size options boxes apne aap dikhenge. Please ticks
                                     karein.</p>
@@ -521,13 +523,14 @@
                         </div>
 
                         <!-- Color Variant Grouping Section -->
-                        <div style="margin-top: 25px; padding-top: 25px; border-top: 1.5px solid #f1f5f9;">
+                        <div
+                            style="margin-top: 25px; padding-top: 25px; border-top: 1.5px solid rgba(243, 243, 243, 0.05) !important;">
                             <h4
-                                style="margin: 0 0 10px 0; color: #1e293b; font-size: 0.95rem; font-weight: 800; display: flex; align-items: center; gap: 10px;">
+                                style="margin: 0 0 10px 0;  font-size: 0.95rem; font-weight: 800; display: flex; align-items: center; gap: 10px;">
                                 <i class="fas fa-link" style="color: #ef4444;"></i> Color Variant Group Linking
                             </h4>
                             <p
-                                style="font-size: 0.78rem; color: #64748b; margin-bottom: 20px; font-weight: 600; line-height: 1.4;">
+                                style="font-size: 0.78rem; color:#888888; margin-bottom: 20px; font-weight: 600; line-height: 1.4;">
                                 Link distinct color-variant products by specifying the **same Group Identification Key**
                                 (e.g. `classic-tee-group`).
                             </p>
@@ -595,10 +598,9 @@
                     <div class="db-form-card" style="margin-top: 25px;">
                         <div class="db-form-head"
                             style="margin-bottom: 25px; border-left: 4.5px solid #dc2626; padding-left: 18px; display: block;">
-                            <h3 style="color: #0f172a; font-size: 1.15rem; font-weight: 800; margin: 0;">Offer strip
-                            </h3>
+                            <h3 class="offer-strip-title">Offer strip</h3>
                             <span
-                                style="font-size: 0.82rem; color: #64748b; font-weight: 550; display: block; margin-top: 4px; letter-spacing: -0.1px;">Flash
+                                style="font-size: 0.82rem; color:#888888; font-weight: 550; display: block; margin-top: 4px; letter-spacing: -0.1px;">Flash
                                 line, countdown timer display, aur bank copy — optional.</span>
                         </div>
 
@@ -655,17 +657,18 @@
 
                             <!-- Dynamic Size-wise Variant Stock Allocation Matrix -->
                             <div id="divVariantMatrix" class="db-form-full" style="display: none; margin-top: 10px;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1.5px solid #f1f5f9; padding-bottom: 10px;">
-                                    <label class="db-label" style="color: #0f172a; font-weight: 800; font-size: 0.86rem; margin: 0;">
-                                        <i class="fas fa-boxes" style="color: #3b82f6; margin-right: 5px;"></i> Size-wise Stock Allocation Matrix
+                                <div class="variant-matrix-header">
+                                    <label class="db-label">
+                                        <i class="fas fa-boxes" style="color: #3b82f6; margin-right: 5px;"></i>
+                                        Size-wise Stock Allocation Matrix
                                     </label>
-                                    <span style="font-size: 0.72rem; background: #eff6ff; color: #2563eb; padding: 4px 10px; border-radius: 20px; font-weight: 800;" id="spnTotalSumDisplay">Total Sum: 0</span>
+                                    <span class="matrix-total-badge" id="spnTotalSumDisplay">Total Sum: 0</span>
                                 </div>
-                                
-                                <div style="overflow-x: auto; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px;">
-                                    <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem; background: #fff; border-radius: 8px; border: 1px solid #e2e8f0;">
+
+                                <div class="matrix-table-wrap">
+                                    <table class="matrix-table">
                                         <thead>
-                                            <tr style="border-bottom: 1.5px solid #e2e8f0; text-align: left; color: #475569; font-weight: 700; background: #f1f5f9;">
+                                            <tr class="matrix-table-head-row">
                                                 <th style="padding: 10px;">Size Option</th>
                                                 <th style="padding: 10px;">SKU Suffix (Optional)</th>
                                                 <th style="padding: 10px; width: 110px;">Allocated Stock *</th>
@@ -677,8 +680,9 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <p style="font-size: 0.7rem; color: #64748b; margin-top: 6px; font-weight: 600;">
-                                    💡 <strong style="color:#1e293b;">Tip:</strong> Stock values daalne par total apne aap upar calculate ho jayega. Extra Price ko zero rakh sakte hain agar same rate hai.
+                                <p style="font-size: 0.7rem; color:#888888; margin-top: 6px; font-weight: 600;">
+                                    💡 <strong>Tip:</strong> Stock values daalne par total apne aap upar calculate ho
+                                    jayega. Extra Price ko zero rakh sakte hain agar same rate hai.
                                 </p>
                                 <asp:HiddenField ID="hfVariantData" runat="server" ClientIDMode="Static" />
                             </div>
@@ -706,8 +710,9 @@
 
                             <div class="db-form-full">
                                 <label class="db-label">Full Address of the Manufacturer</label>
-                                <asp:TextBox ID="txtMfgAddress" runat="server" CssClass="db-input" TextMode="MultiLine" Rows="2"
-                                    placeholder="Complete factory layout / operational unit address..."></asp:TextBox>
+                                <asp:TextBox ID="txtMfgAddress" runat="server" CssClass="db-input" TextMode="MultiLine"
+                                    Rows="2" placeholder="Complete factory layout / operational unit address...">
+                                </asp:TextBox>
                             </div>
                         </div>
                     </div>
@@ -816,14 +821,14 @@
                     .replace(/-+$/, '');            // Trim - from end of text
             }
 
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function () {
                 const nameField = document.getElementById('txtName');
                 const slugField = document.getElementById('txtSlug');
-                
+
                 if (nameField && slugField) {
-                    nameField.addEventListener('input', function() {
+                    nameField.addEventListener('input', function () {
                         // Auto slugify ONLY on non-empty strings
-                        if(this.value.trim() !== "") {
+                        if (this.value.trim() !== "") {
                             slugField.value = generateSlug(this.value);
                         } else {
                             slugField.value = "";
@@ -870,6 +875,12 @@
                 // Smooth Scroll Up on mobile
                 if (window.innerWidth <= 992) {
                     document.querySelector('.vt-layout').scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Auto-scroll the active tab horizontally to center it in the mobile stepper menu
+                    const activeLnk = document.getElementById('lnkTab' + idx);
+                    if (activeLnk) {
+                        activeLnk.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    }
                 }
             }
 
@@ -1055,7 +1066,7 @@
                 if (!txt) return;
 
                 // 1. Isolate operation STRICTLY to the active visible grid!
-                const container = document.querySelector('.db-form-full[style*="background:#f8fafc"]');
+                const container = document.querySelector('.size-config-card');
                 if (!container) return;
                 const activeGrid = Array.from(container.querySelectorAll('.size-check-grid')).find(g => g.style.display === 'flex');
                 if (!activeGrid) return;
@@ -1066,13 +1077,13 @@
                     const clickedBox = event.target;
                     const boxVal = clickedBox.value.toUpperCase();
                     const isExclusive = ['FREE SIZE', 'ONE SIZE', 'STANDARD'].includes(boxVal);
-                    
+
                     const checkboxes = activeGrid.querySelectorAll('input[type="checkbox"]');
                     checkboxes.forEach(c => {
                         if (c === clickedBox) return;
                         const otherVal = c.value.toUpperCase();
                         const otherIsExclusive = ['FREE SIZE', 'ONE SIZE', 'STANDARD'].includes(otherVal);
-                        
+
                         if (isExclusive) {
                             c.checked = false;
                         } else if (!isExclusive && otherIsExclusive) {
@@ -1096,7 +1107,7 @@
                 const rawText = txt.value || '';
                 const currentValues = rawText.split(',').map(s => s.trim().toUpperCase());
 
-                const container = document.querySelector('.db-form-full[style*="background:#f8fafc"]');
+                const container = document.querySelector('.size-config-card');
                 if (!container) return;
 
                 // Isolate ticks activation strictly to the currently active visible grid!
@@ -1128,8 +1139,8 @@
 
                 const rawText = txtSizes.value || '';
                 const sizes = rawText.split(',')
-                                   .map(s => s.trim())
-                                   .filter(s => s.length > 0);
+                    .map(s => s.trim())
+                    .filter(s => s.length > 0);
 
                 // If no sizes selected, hide matrix & enable manual stock input
                 if (sizes.length === 0) {
@@ -1152,7 +1163,7 @@
                 }
 
                 // Parse existing configurations to retain values during multi-click sessions
-                const existingData = parseVariantData(); 
+                const existingData = parseVariantData();
 
                 matrixBody.innerHTML = '';
                 sizes.forEach(size => {
@@ -1161,7 +1172,7 @@
 
                     const tr = document.createElement('tr');
                     tr.style.borderBottom = '1px solid #e2e8f0';
-                    
+
                     tr.innerHTML = `
                         <td style="padding: 10px; font-weight: 700; color: #0f172a;">${size}</td>
                         <td style="padding: 8px;">
@@ -1197,7 +1208,7 @@
                 let serializedParts = [];
 
                 rows.forEach(tr => {
-                    if(tr.cells.length < 1) return;
+                    if (tr.cells.length < 1) return;
                     const sizeTd = tr.cells[0].innerText.trim();
                     const skuInput = tr.querySelector('.js-mat-sku');
                     const stockInput = tr.querySelector('.js-mat-stock');

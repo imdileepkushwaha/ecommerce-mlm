@@ -34,7 +34,7 @@ let newCss = `
     background: #f8fafc; 
     padding: 15px; 
     text-align: left; 
-    color: #64748b; 
+    color:#888888; 
     font-weight: 600; 
     font-size: 0.85rem; 
     text-transform: uppercase; 
@@ -61,7 +61,7 @@ let newCss = `
 
 .order-date { 
     font-size: 0.85rem; 
-    color: #64748b; 
+    color:#888888; 
 }
 
 .order-status-badge { 

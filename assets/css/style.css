@@ -654,7 +654,7 @@ ul {
 
 .feature-text p {
     font-size: 13px;
-    color: #64748b;
+    color: #888888;
     line-height: 1.5;
     margin: 0;
 }
@@ -673,7 +673,7 @@ ul {
     position: absolute;
     width: 6px;
     height: 6px;
-    background-color: #64748b;
+    background-color: #888888;
     border-radius: 50%;
     left: -2px;
 }
@@ -1309,7 +1309,7 @@ img.loaded {
     background: none;
     border: none;
     font-size: 20px;
-    color: #64748b;
+    color: #888888;
     cursor: pointer;
 }
 
@@ -2240,7 +2240,7 @@ img.loaded {
 .testi-user-title p {
     margin: 0;
     font-size: 13px;
-    color: #64748b;
+    color: #888888;
 }
 
 .testi-quote-icon {
@@ -2645,7 +2645,7 @@ img.loaded {
 
 .process-step p {
     font-size: 14px;
-    color: #64748b;
+    color: #888888;
     line-height: 1.6;
     max-width: 220px;
     margin: 0 auto;
@@ -2744,7 +2744,7 @@ img.loaded {
 
 .prod-rating span {
     font-size: 11px;
-    color: #64748b;
+    color: #888888;
     font-weight: 600;
     margin-left: 5px;
 }
@@ -2842,7 +2842,7 @@ img.loaded {
 .slider-nav-controls .slick-prev i,
 .slider-nav-controls .slick-next i {
     font-size: 14px !important;
-    color: #64748b !important;
+    color: #888888 !important;
 }
 
 .slider-nav-controls .slick-prev:hover i,
@@ -3049,7 +3049,7 @@ img.loaded {
 }
 
 .floating-hero-badge .text span {
-    color: #64748b;
+    color: #888888;
     font-size: 12px;
     font-weight: 600;
 }
@@ -3183,7 +3183,7 @@ img.loaded {
 .hero-desc {
     font-size: 18px;
     line-height: 1.6;
-    color: #64748b;
+    color: #888888;
     margin-bottom: 35px;
     max-width: 90%;
 }
@@ -3247,7 +3247,7 @@ img.loaded {
 
 .action-link {
     text-decoration: none;
-    color: #64748b;
+    color: #888888;
     font-size: 14px;
     font-weight: 500;
     display: flex;
@@ -3440,7 +3440,7 @@ img.loaded {
 }
 
 .delivery-info {
-    color: #64748b;
+    color: #888888;
     font-weight: 500;
 }
 
@@ -3462,7 +3462,7 @@ img.loaded {
 
 .foot-link {
     text-decoration: none;
-    color: #64748b;
+    color: #888888;
     font-weight: 500;
 }
 
@@ -3542,7 +3542,7 @@ img.loaded {
 /* Delivery Speeds */
 .section-mini-label {
     font-weight: 700;
-    color: #64748b;
+    color: #888888;
     font-size: 13px;
     margin-bottom: 12px;
     display: flex;
@@ -3580,7 +3580,7 @@ img.loaded {
     display: flex;
     justify-content: space-between;
     margin-bottom: 12px;
-    color: #64748b;
+    color: #888888;
     font-size: 15px;
 }
 
@@ -3922,7 +3922,7 @@ img.loaded {
 .pd-meta-short {
     display: flex;
     gap: 15px;
-    color: #64748b;
+    color: #888888;
     font-size: 14px;
     align-items: center;
 }
@@ -4119,7 +4119,7 @@ img.loaded {
 
 .meta-lbl {
     width: 100px;
-    color: #64748b;
+    color: #888888;
     font-weight: 600;
 }
 
@@ -4218,7 +4218,7 @@ img.loaded {
 }
 
 .spec-key {
-    color: #64748b;
+    color: #888888;
     font-weight: 600;
 }
 
@@ -4246,7 +4246,7 @@ img.loaded {
     font-weight: 700;
     font-size: 14px;
     cursor: pointer;
-    color: #64748b;
+    color: #888888;
     transition: 0.2s;
 }
 
@@ -4381,7 +4381,7 @@ img.loaded {
 .share-close {
     cursor: pointer;
     font-size: 20px;
-    color: #64748b;
+    color: #888888;
 }
 
 .share-options-grid {
@@ -4795,7 +4795,7 @@ img.loaded {
 
 .toast-desc {
     font-size: 13px;
-    color: #64748b;
+    color: #888888;
     line-height: 1.4;
 }
 
@@ -5021,7 +5021,7 @@ img.loaded {
 }
 
 .profile-meta p {
-    color: #64748b;
+    color: #888888;
     font-size: 1rem;
     margin-bottom: 15px;
     display: flex;
@@ -5157,7 +5157,7 @@ img.loaded {
 .profile-detail-row .label {
     display: block;
     font-size: 0.75rem;
-    color: #64748b;
+    color: #888888;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -5877,7 +5877,7 @@ img.loaded {
 }
 
 .empty-subtitle {
-    color: #64748b;
+    color: #888888;
     margin-bottom: 25px;
 }
 
@@ -5972,7 +5972,7 @@ img.loaded {
 
 .order-det-pill .lbl {
     font-size: 0.75rem;
-    color: #64748b;
+    color: #888888;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -6186,7 +6186,7 @@ img.loaded {
 }
 
 .price-summary-row span:first-child {
-    color: #64748b;
+    color: #888888;
     font-weight: 600;
 }
 
@@ -6279,7 +6279,7 @@ img.loaded {
 
 .item-meta p {
     font-size: 0.85rem;
-    color: #64748b;
+    color: #888888;
     margin: 0;
     display: flex;
     align-items: center;
@@ -6411,7 +6411,7 @@ img.loaded {
 
 .empty-state-sub {
     font-size: 1rem;
-    color: #64748b;
+    color: #888888;
     max-width: 400px;
     line-height: 1.6;
     margin-bottom: 35px;
@@ -6454,7 +6454,7 @@ img.loaded {
 .btn-back-link {
     font-size: 0.8rem;
     font-weight: 700;
-    color: #64748b;
+    color: #888888;
     background: #f1f5f9;
     padding: 6px 14px;
     border-radius: 30px;
@@ -6476,7 +6476,7 @@ img.loaded {
 
 .btn-back-link i {
     font-size: 0.75rem;
-    color: #64748b !important;
+    color: #888888 !important;
     /* Overriding parent i override */
 }
 
@@ -6574,7 +6574,7 @@ img.loaded {
 .set-grp-title-grp p {
     margin: 0;
     font-size: 0.9rem;
-    color: #64748b;
+    color: #888888;
 }
 
 .set-item-row {
@@ -6744,7 +6744,7 @@ img.loaded {
 
 .addr-text-full {
     font-size: 0.9rem;
-    color: #64748b;
+    color: #888888;
     line-height: 1.6;
     margin-bottom: 10px;
 }
@@ -6891,7 +6891,7 @@ img.loaded {
 .btn-close-modal {
     background: #f8fafc;
     border: none;
-    color: #64748b;
+    color: #888888;
     width: 32px;
     height: 32px;
     border-radius: 8px;
@@ -6974,7 +6974,7 @@ img.loaded {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    color: #64748b;
+    color: #888888;
     font-size: 0.9rem;
     transition: color 0.2s;
     z-index: 10;
@@ -7174,7 +7174,7 @@ img.loaded {
 
 .r-sub-lbl {
     font-size: 0.85rem;
-    color: #64748b;
+    color: #888888;
     margin-top: 5px;
 }
 
@@ -7253,7 +7253,7 @@ img.loaded {
 
 .pts-expired {
     background: #f1f5f9;
-    color: #64748b;
+    color: #888888;
 }
 
 .exp-timer {
@@ -7400,7 +7400,7 @@ img.loaded {
 
 .node-role {
     font-size: 0.65rem;
-    color: #64748b;
+    color: #888888;
     font-weight: 600;
     text-transform: uppercase;
 }
@@ -7591,7 +7591,7 @@ img.loaded {
 
 .inc-meta-lbl {
     font-size: 0.75rem;
-    color: #64748b;
+    color: #888888;
     font-weight: 600;
 }
 
@@ -7676,7 +7676,7 @@ img.loaded {
 }
 
 .b-acc-num {
-    color: #64748b;
+    color: #888888;
     font-size: 0.85rem;
     font-weight: 600;
     font-family: monospace;
@@ -7803,7 +7803,7 @@ img.loaded {
 
 .faq-body {
     padding: 20px 25px 20px;
-    color: #64748b;
+    color: #888888;
     font-size: 0.95rem;
     display: none;
 }
@@ -8074,7 +8074,7 @@ img.loaded {
 }
 
 .address-text {
-    color: #64748b;
+    color: #888888;
     font-size: 14px;
     line-height: 1.6;
     margin-bottom: 12px;
@@ -8228,7 +8228,7 @@ img.loaded {
 
 .pay-method-info p {
     font-size: 13px;
-    color: #64748b;
+    color: #888888;
     margin: 0;
     font-weight: 600;
 }
@@ -8412,7 +8412,7 @@ img.loaded {
 }
 
 .co-text-muted {
-    color: #64748b !important;
+    color: #888888 !important;
 }
 
 .co-text-dark {
@@ -8650,7 +8650,7 @@ img.loaded {
 .co-billing-row-flex {
     display: flex;
     justify-content: space-between;
-    color: #64748b;
+    color: #888888;
     font-weight: 600;
     margin-bottom: 15px;
     font-size: 15px;
@@ -8812,7 +8812,7 @@ img.loaded {
     align-items: center;
     justify-content: center;
     font-size: 24px !important;
-    color: #64748b !important;
+    color: #888888 !important;
     line-height: 1;
     transition: all 0.2s ease;
 }
@@ -8961,7 +8961,7 @@ img.loaded {
 
 .co-success-subtitle {
     font-size: 14px;
-    color: #64748b;
+    color: #888888;
     line-height: 1.65;
     margin-bottom: 35px;
 }
@@ -9212,7 +9212,7 @@ img.loaded {
 }
 
 .ss-widget-desc {
-    color: #64748b;
+    color: #888888;
     font-size: 0.92rem;
     line-height: 1.7;
     margin: 0;
@@ -9271,7 +9271,7 @@ img.loaded {
 }
 
 .ss-meta-val strong {
-    color: #64748b;
+    color: #888888;
     font-weight: 500;
     display: block;
     font-size: 0.8rem;
@@ -9305,7 +9305,7 @@ img.loaded {
     border-radius: 20px;
     border: 2px dashed #e2e8f0;
     grid-column: 1 / -1;
-    color: #64748b;
+    color: #888888;
 }
 
 .ss-empty-slate i {
@@ -9633,7 +9633,7 @@ img.loaded {
 .rt-lbl {
     font-size: 0.75rem;
     font-weight: 800;
-    color: #64748b;
+    color: #888888;
     margin-bottom: 1px;
     text-align: center;
 }
@@ -9738,7 +9738,7 @@ img.loaded {
     align-items: center;
     gap: 6px;
     font-size: 13px;
-    color: #64748b;
+    color: #888888;
 }
 
 .action-badge-right {

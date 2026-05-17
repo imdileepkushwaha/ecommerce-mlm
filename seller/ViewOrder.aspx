@@ -42,9 +42,9 @@
                         </div>
                     </div>
                     <!-- Dynamic Optional Pickup Notes Input for Picked up State -->
-                    <asp:Panel ID="pnlPickupNoteInput" runat="server" Visible="false" style="margin: 0 20px; display: flex; flex-direction: column; justify-content: center;">
-                        <label style="font-size:0.68rem; font-weight:850; color:#64748b; text-transform:uppercase; display:block; margin-bottom:4px; letter-spacing:0.3px;">Pickup Note (Optional)</label>
-                        <asp:TextBox ID="txtSellerPickupNote" runat="server" placeholder="Enter logistics tracking/note..." style="font-size:0.8rem; padding:8px 12px; border-radius:8px; border:1.5px solid #e2e8f0; width:250px; font-family:inherit; outline:none; transition: border 0.3s;"></asp:TextBox>
+                    <asp:Panel ID="pnlPickupNoteInput" runat="server" Visible="false" class="od-pickup-note-container">
+                        <label class="od-pickup-lbl">Pickup Note (Optional)</label>
+                        <asp:TextBox ID="txtSellerPickupNote" runat="server" placeholder="Enter logistics tracking/note..." class="od-pickup-input"></asp:TextBox>
                     </asp:Panel>
                     
                     <asp:LinkButton ID="btnConfirmOrder" runat="server" CssClass="od-btn-action"
@@ -209,30 +209,30 @@
 
         <!-- PREMIUM DETAILED RETURN LIFECYCLE (ATTACHMENT INSPIRED) -->
         <asp:Panel ID="pnlReturnDetailedFlow" runat="server" Visible="false">
-            <div style="margin-top:30px; margin-bottom:12px;">
-                <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:0 0 2px 0;">Return process — full view</h3>
-                <p style="font-size:0.78rem; color:#94a3b8; margin:0; font-weight:500;">Har return ka poora flow: steps, refund details, aur timestamps — panel khol kar dekhein.</p>
+            <div class="od-rtn-intro">
+                <h3 class="od-rtn-title">Return process — full view</h3>
+                <p class="od-rtn-desc">Har return ka poora flow: steps, refund details, aur timestamps — panel khol kar dekhein.</p>
             </div>
 
-            <div class="od-section" style="border: 1.5px solid #e2e8f0; border-radius:16px; margin-bottom:30px;">
+            <div class="od-section od-rtn-sec-box">
                 <!-- ACCORDION/PANEL HEADER -->
-                <div class="od-sec-head" style="background:#f8fafc; padding: 14px 20px;">
+                <div class="od-sec-head od-rtn-head">
                     <div style="display:flex; align-items:center; gap:12px;">
-                        <div style="background:#f1f5f9; border: 1px solid #e2e8f0; border-radius:6px; width:28px; height:24px; display:flex; align-items:center; justify-content:center; color:#64748b; font-size:0.7rem;"><i class="fas fa-chevron-down"></i></div>
+                        <div class="od-chevron-box"><i class="fas fa-chevron-down"></i></div>
                         <div>
-                            <span style="font-size:0.68rem; text-transform:uppercase; font-weight:850; color:#94a3b8; letter-spacing:0.5px;">Return #<asp:Literal ID="litRtnId" runat="server"></asp:Literal></span>
-                            <h4 style="font-size:0.88rem; font-weight:800; color:#1e293b; margin:1px 0 0 0;"><asp:Literal ID="litRtnProductName" runat="server"></asp:Literal></h4>
+                            <span class="od-rtn-ref-lbl">Return #<asp:Literal ID="litRtnId" runat="server"></asp:Literal></span>
+                            <h4 class="od-rtn-product-name"><asp:Literal ID="litRtnProductName" runat="server"></asp:Literal></h4>
                         </div>
                     </div>
                     <div style="display:flex; gap:8px;">
-                        <span class="ord-pill-status" style="background:#ecfdf5; color:#059669; border: 1px solid #a7f3d0; font-size:0.72rem; font-weight:750;"><asp:Literal ID="litRtnStatusBadge" runat="server"></asp:Literal></span>
-                        <span class="ord-pill-status" style="background:#f3e8ff; color:#7e22ce; border: 1px solid #e9d5ff; font-size:0.72rem; font-weight:750;"><asp:Literal ID="litRtnSubBadge" runat="server">Pickup • In Queue</asp:Literal></span>
+                        <span class="ord-pill-status od-rtn-badge"><asp:Literal ID="litRtnStatusBadge" runat="server"></asp:Literal></span>
+                        <span class="ord-pill-status od-rtn-subbadge"><asp:Literal ID="litRtnSubBadge" runat="server">Pickup • In Queue</asp:Literal></span>
                     </div>
                 </div>
                 
                 <div class="od-sec-body" style="padding:22px;">
                     <!-- PROGRESS LABEL -->
-                    <span style="font-size:0.65rem; text-transform:uppercase; font-weight:850; color:#94a3b8; letter-spacing:1px; display:block; margin-bottom:15px;">Progress</span>
+                    <span class="od-rtn-section-lbl" style="margin-bottom:15px;">Progress</span>
 
                     <!-- SCALED NODE TIMELINE -->
                     <div class="rt-timeline-wrap">
@@ -269,31 +269,31 @@
                     </div>
 
                     <!-- DETAILS METRIC DECK CONTAINER -->
-                    <div style="background:#f8fafc; border-radius:12px; padding:18px; border: 1.5px solid #f1f5f9; margin-top:25px;">
-                        <span style="font-size:0.68rem; text-transform:uppercase; font-weight:850; color:#64748b; letter-spacing:0.5px; display:block; margin-bottom:12px;">Refund & Order</span>
+                    <div class="od-rtn-deck">
+                        <span class="od-rtn-section-lbl" style="margin-bottom:12px;">Refund & Order</span>
                         
                         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:10px; margin-bottom:12px;">
-                            <div style="background:#ffffff; border: 1.5px solid #e2e8f0; padding:10px 14px; border-radius:10px;">
-                                <span style="font-size:0.65rem; font-weight:800; color:#94a3b8; text-transform:uppercase;">Refund Amount</span>
-                                <div style="font-size:0.95rem; font-weight:800; color:#059669; margin-top:3px;">₹ <asp:Literal ID="litRtAmount" runat="server"></asp:Literal></div>
+                            <div class="od-rtn-metric-box">
+                                <span class="od-rtn-metric-lbl">Refund Amount</span>
+                                <div class="od-rtn-amt-val">₹ <asp:Literal ID="litRtAmount" runat="server"></asp:Literal></div>
                             </div>
-                            <div style="background:#ffffff; border: 1.5px solid #e2e8f0; padding:10px 14px; border-radius:10px;">
-                                <span style="font-size:0.65rem; font-weight:800; color:#94a3b8; text-transform:uppercase;">Refund Mode</span>
-                                <div style="font-size:0.88rem; font-weight:700; color:#334155; margin-top:3px;"><asp:Literal ID="litRtMode" runat="server"></asp:Literal></div>
+                            <div class="od-rtn-metric-box">
+                                <span class="od-rtn-metric-lbl">Refund Mode</span>
+                                <div class="od-rtn-metric-val"><asp:Literal ID="litRtMode" runat="server"></asp:Literal></div>
                             </div>
-                            <div style="background:#ffffff; border: 1.5px solid #e2e8f0; padding:10px 14px; border-radius:10px;">
-                                <span style="font-size:0.65rem; font-weight:800; color:#94a3b8; text-transform:uppercase;">Order Ref</span>
-                                <div style="font-size:0.88rem; font-weight:700; color:#334155; margin-top:3px;"><asp:Literal ID="litRtOrderRef" runat="server"></asp:Literal></div>
+                            <div class="od-rtn-metric-box">
+                                <span class="od-rtn-metric-lbl">Order Ref</span>
+                                <div class="od-rtn-metric-val"><asp:Literal ID="litRtOrderRef" runat="server"></asp:Literal></div>
                             </div>
-                            <div style="background:#ffffff; border: 1.5px solid #e2e8f0; padding:10px 14px; border-radius:10px;">
-                                <span style="font-size:0.65rem; font-weight:800; color:#94a3b8; text-transform:uppercase;">Reason for Request</span>
-                                <div style="font-size:0.82rem; font-weight:700; color:#475569; margin-top:3px;"><asp:Literal ID="litRtReason" runat="server"></asp:Literal></div>
+                            <div class="od-rtn-metric-box">
+                                <span class="od-rtn-metric-lbl">Reason for Request</span>
+                                <div class="od-rtn-metric-val"><asp:Literal ID="litRtReason" runat="server"></asp:Literal></div>
                             </div>
                         </div>
 
-                        <div style="background:#ffffff; border: 1.5px solid #e2e8f0; padding:10px 14px; border-radius:10px;">
-                            <span style="font-size:0.65rem; font-weight:800; color:#94a3b8; text-transform:uppercase;">Pickup Note / Message</span>
-                            <div style="font-size:0.82rem; font-weight:550; color:#64748b; margin-top:4px; line-height:1.4;"><asp:Literal ID="litRtPickupNote" runat="server">—</asp:Literal></div>
+                        <div class="od-rtn-metric-box od-rtn-note-box">
+                            <span class="od-rtn-metric-lbl">Pickup Note / Message</span>
+                            <div class="od-rtn-note-val"><asp:Literal ID="litRtPickupNote" runat="server">—</asp:Literal></div>
                         </div>
                     </div>
                 </div>
@@ -361,7 +361,7 @@
                                 </span>
                             </td>
                             <td>
-                                <strong class="od-cell-val" style="color:#0f172a;">₹<%#
+                                <strong class="od-cell-val od-cell-val-strong">₹<%#
                                         (Convert.ToDecimal(Eval("UnitPrice")) *
                                         Convert.ToInt32(Eval("Quantity"))).ToString("N0") %></strong>
                             </td>

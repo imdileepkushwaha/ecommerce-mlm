@@ -14,33 +14,37 @@
                 text-align: center;
                 font-size: 1.2rem;
                 letter-spacing: 1px;
-                box-shadow: inset 0 0 10px rgba(239,68,68,0.05);
+                box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.05);
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 gap: 10px;
                 width: 100%;
             }
+
             .pd-color-ball.active {
                 outline: 2px solid #000;
                 outline-offset: 2px;
                 transform: scale(1.1);
-                box-shadow: 0 0 8px rgba(0,0,0,0.2);
+                box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
                 display: flex !important;
                 align-items: center;
                 justify-content: center;
             }
+
             .pd-color-ball {
                 transition: all 0.2s ease;
             }
+
             .pd-color-anchor {
                 text-decoration: none !important;
                 display: inline-block;
             }
+
             .pd-color-ball:hover {
                 transform: scale(1.15);
             }
-            
+
             /* Custom Premium Reviews CSS to match user mockup */
             .premium-review-card {
                 position: relative;
@@ -54,6 +58,7 @@
                 display: flex;
                 flex-direction: column;
             }
+
             .premium-review-card::before {
                 content: '';
                 position: absolute;
@@ -63,17 +68,20 @@
                 width: 6px;
                 background: linear-gradient(180deg, #ff8c00 0%, #e52d27 40%, #8a2be2 100%);
             }
+
             .pr-card-header {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 margin-bottom: 16px;
             }
+
             .pr-user-flex {
                 display: flex;
                 align-items: center;
                 gap: 16px;
             }
+
             .pr-avatar-circle {
                 width: 54px;
                 height: 54px;
@@ -88,38 +96,45 @@
                 font-family: 'Segoe UI', Arial, sans-serif;
                 box-shadow: 0 4px 12px rgba(229, 45, 39, 0.2);
             }
+
             .pr-name-col {
                 display: flex;
                 flex-direction: column;
                 gap: 4px;
             }
+
             .pr-username {
                 font-weight: 700;
                 font-size: 17px;
                 color: #1e293b;
             }
+
             .pr-verified-lbl {
                 font-size: 11px;
                 font-weight: 700;
-                color: #64748b;
+                color: #888888;
                 letter-spacing: 0.5px;
                 text-transform: uppercase;
             }
+
             .pr-stars-col {
                 display: flex;
                 flex-direction: column;
                 align-items: flex-end;
                 gap: 6px;
             }
+
             .pr-stars-row {
                 color: #f59e0b;
                 font-size: 14px;
                 display: flex;
                 gap: 2px;
             }
+
             .pr-stars-row i {
                 margin-right: 0px;
             }
+
             .pr-top-badge {
                 background: #fef3c7;
                 color: #b45309;
@@ -131,16 +146,19 @@
                 text-transform: uppercase;
                 border: 1px solid #fde68a;
             }
+
             .pr-separator {
                 height: 1px;
                 background-color: #f1f5f9;
                 margin-bottom: 20px;
                 width: 100%;
             }
+
             .pr-body {
                 margin-bottom: 24px;
                 padding-left: 4px;
             }
+
             .pr-review-txt {
                 font-size: 16px;
                 line-height: 1.6;
@@ -148,6 +166,7 @@
                 margin: 0;
                 font-weight: 500;
             }
+
             .pr-footer {
                 display: flex;
                 justify-content: space-between;
@@ -156,10 +175,12 @@
                 border-top: 1px solid #f8fafc;
                 padding-top: 16px;
             }
+
             .pr-date-time {
                 color: #94a3b8;
                 font-weight: 600;
             }
+
             .pr-helpful-btn {
                 display: flex;
                 align-items: center;
@@ -172,6 +193,7 @@
                 cursor: pointer;
                 transition: color 0.2s ease;
             }
+
             .pr-helpful-btn:hover {
                 color: #1e293b;
             }
@@ -230,7 +252,8 @@
                     <!-- RIGHT: PRODUCT INFO SECTION -->
                     <div class="pd-info">
                         <div class="pd-top-tags">
-                            <div class="pd-tag-sale" runat="server" id="divBadge"><i class="fas fa-tags" id="iconBadge" runat="server"></i>
+                            <div class="pd-tag-sale" runat="server" id="divBadge"><i class="fas fa-tags" id="iconBadge"
+                                    runat="server"></i>
                                 <asp:Literal ID="litBadge" runat="server">Sale Available</asp:Literal>
                             </div>
                             <div class="sold-badge"><i class="fas fa-fire"></i>
@@ -242,7 +265,9 @@
                         </h1>
 
                         <div class="pd-meta-short">
-                            <span><i class="far fa-user"></i> Sold by: <a href='SellerStore.aspx?id=<%= activeSellerId %>' style="color:#3b82f6; font-weight:700; text-decoration:none;">
+                            <span><i class="far fa-user"></i> Sold by: <a
+                                    href='SellerStore.aspx?id=<%= activeSellerId %>'
+                                    style="color:#3b82f6; font-weight:700; text-decoration:none;">
                                     <asp:Literal ID="litBrandDisplay" runat="server"></asp:Literal>
                                 </a></span>
                             <span>|</span>
@@ -258,7 +283,8 @@
                         <!-- DYNAMIC FLASH DEAL WIDGET -->
                         <asp:Panel ID="pnlFlashOffer" runat="server" CssClass="flash-deal-box" Visible="false">
                             <div class="flash-deal-txt">
-                                <i class="fas fa-stopwatch fa-spin"></i> <asp:Literal ID="litFlashOfferText" runat="server"></asp:Literal>
+                                <i class="fas fa-stopwatch fa-spin"></i>
+                                <asp:Literal ID="litFlashOfferText" runat="server"></asp:Literal>
                             </div>
                             <div class="flash-timer-wrap">
                                 <div class="flash-unit" id="timer-h">00</div> :
@@ -270,8 +296,10 @@
 
                         <div class="seller-offers-wrapper">
                             <!-- Dynamic Bank Offer Added from Console -->
-                            <asp:Panel ID="pnlBankOffer" runat="server" CssClass="offer-card" Visible="false" style="border-left: 3px solid #2563eb; background: #eff6ff;">
-                                <div class="offer-icon-circle" style="background: #2563eb; color: #fff;"><i class="fas fa-university"></i></div>
+                            <asp:Panel ID="pnlBankOffer" runat="server" CssClass="offer-card" Visible="false"
+                                style="border-left: 3px solid #2563eb; background: #eff6ff;">
+                                <div class="offer-icon-circle" style="background: #2563eb; color: #fff;"><i
+                                        class="fas fa-university"></i></div>
                                 <div class="offer-content">
                                     <h5 style="color: #1e3a8a;">Instant Bank/Card Offer</h5>
                                     <p style="color: #1e40af; font-weight: 600;">
@@ -332,11 +360,13 @@
                             <div class="pd-opt-list">
                                 <asp:Repeater ID="rptGroupColors" runat="server">
                                     <ItemTemplate>
-                                        <a href='ProductDetails.aspx?slug=<%# Eval("Slug") %>' class="pd-color-anchor" 
-                                           title='<%# Eval("ColorName") %>'>
+                                        <a href='ProductDetails.aspx?slug=<%# Eval("Slug") %>' class="pd-color-anchor"
+                                            title='<%# Eval("ColorName") %>'>
                                             <div class='<%# "pd-color-ball" + (Eval("Id").ToString() == productId.ToString() ? " active" : "") %>'
-                                                 style='<%# "background-color:" + Eval("ColorCode") %>'>
-                                                 <%# Eval("Id").ToString() == productId.ToString() ? "<i class=\"fas fa-check\" style=\"color:#fff; font-size:9px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);\"></i>" : "" %>
+                                                style='<%# "background-color:" + Eval("ColorCode") %>'>
+                                                <%# Eval("Id").ToString()==productId.ToString() ? "<i class=\" fas
+                                                    fa-check\" style=\"color:#fff; font-size:9px; text-shadow: 0 1px 2px
+                                                    rgba(0,0,0,0.5);\"></i>" : "" %>
                                             </div>
                                         </a>
                                     </ItemTemplate>
@@ -350,7 +380,8 @@
                             <div class="pd-opt-list">
                                 <asp:Repeater ID="rptSizes" runat="server">
                                     <ItemTemplate>
-                                        <div class="pd-size-box" data-stock='<%# Eval("Stock") %>' onclick="selectOpt(this, 'size')">
+                                        <div class="pd-size-box" data-stock='<%# Eval("Stock") %>'
+                                            onclick="selectOpt(this, 'size')">
                                             <%# Eval("Name") %>
                                         </div>
                                     </ItemTemplate>
@@ -359,46 +390,55 @@
                         </asp:Panel>
 
                         <% if (isAvailable) { %>
-                        <div class="pd-stock-alert" id="js-stock-alert"><i class="fas fa-fire"></i> Hurry! Only <%= productStock %> units left in stock.</div>
-                        <% } else { %>
-                        <div class="pd-stock-alert" style="color:#ef4444; background:#fee2e2;"><i class="fas fa-exclamation-triangle"></i> This product is currently suspended or out of stock.</div>
-                        <% } %>
-
-                        <!-- Quantity & Action Buttons -->
-                        <div class="pd-actions-wrap">
-                            <% if (isAvailable) { %>
-                                <div class="qty-ctrl">
-                                    <button type="button" class="qty-btn" onclick="updateQty(-1)">-</button>
-                                    <input type="text" id="txtQty" value="1" class="qty-input" readonly />
-                                    <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>
-                                </div>
-
-                                <button type="button" class="pd-add-to-cart" onclick="processCartAction(false)">
-                                    <i class="fas fa-shopping-bag"></i> Add to Cart — ₹ <span id="js-live-total">
-                                        <asp:Literal ID="litActionPrice" runat="server"></asp:Literal>
-                                    </span>
-                                </button>
+                            <div class="pd-stock-alert" id="js-stock-alert"><i class="fas fa-fire"></i> Hurry! Only <%=
+                                    productStock %> units left in stock.</div>
                             <% } else { %>
-                                <div class="oos-large-banner">
-                                    <i class="fas fa-ban"></i> CURRENTLY OUT OF STOCK
-                                </div>
-                            <% } %>
+                                <div class="pd-stock-alert" style="color:#ef4444; background:#fee2e2;"><i
+                                        class="fas fa-exclamation-triangle"></i> This product is currently suspended or
+                                    out of stock.</div>
+                                <% } %>
 
-                            <div class="pd-wish-share">
-                                <div class="pd-icon-circle js-wish-heart" title="Wishlist" onclick="addToWishlist()"><i
-                                        class="far fa-heart"></i></div>
-                                <div class="pd-icon-circle" title="Share" onclick="toggleShareModal(true)"><i
-                                        class="fas fa-share-alt"></i></div>
-                            </div>
-                        </div>
+                                    <!-- Quantity & Action Buttons -->
+                                    <div class="pd-actions-wrap">
+                                        <% if (isAvailable) { %>
+                                            <div class="qty-ctrl">
+                                                <button type="button" class="qty-btn" onclick="updateQty(-1)">-</button>
+                                                <input type="text" id="txtQty" value="1" class="qty-input" readonly />
+                                                <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>
+                                            </div>
 
-                        <div class="pd-badges-row">
-                            <div class="pd-badge-pill pill-blue"><i class="fas fa-shipping-fast"></i> Free Delivery
-                            </div>
-                            <div class="pd-badge-pill pill-green"><i class="fas fa-history"></i> 10 Days Return</div>
-                            <div class="pd-badge-pill pill-orange"><i class="fas fa-shield-alt"></i> Secure Payment
-                            </div>
-                        </div>
+                                            <button type="button" class="pd-add-to-cart"
+                                                onclick="processCartAction(false)">
+                                                <i class="fas fa-shopping-bag"></i> Add to Cart — ₹ <span
+                                                    id="js-live-total">
+                                                    <asp:Literal ID="litActionPrice" runat="server"></asp:Literal>
+                                                </span>
+                                            </button>
+                                            <% } else { %>
+                                                <div class="oos-large-banner">
+                                                    <i class="fas fa-ban"></i> CURRENTLY OUT OF STOCK
+                                                </div>
+                                                <% } %>
+
+                                                    <div class="pd-wish-share">
+                                                        <div class="pd-icon-circle js-wish-heart" title="Wishlist"
+                                                            onclick="addToWishlist()"><i class="far fa-heart"></i></div>
+                                                        <div class="pd-icon-circle" title="Share"
+                                                            onclick="toggleShareModal(true)"><i
+                                                                class="fas fa-share-alt"></i></div>
+                                                    </div>
+                                    </div>
+
+                                    <div class="pd-badges-row">
+                                        <div class="pd-badge-pill pill-blue"><i class="fas fa-shipping-fast"></i> Free
+                                            Delivery
+                                        </div>
+                                        <div class="pd-badge-pill pill-green"><i class="fas fa-history"></i> 10 Days
+                                            Return</div>
+                                        <div class="pd-badge-pill pill-orange"><i class="fas fa-shield-alt"></i> Secure
+                                            Payment
+                                        </div>
+                                    </div>
                     </div>
                 </div>
 
@@ -483,22 +523,43 @@
                             </div>
                             <!-- PANE 1 -->
                             <div class="tab-pane">
-                                <h3 style="margin-top:0; color:#0f172a; font-weight:800; margin-bottom: 20px;"><i class="fas fa-industry" style="color:#f97316; margin-right:8px;"></i>Manufacturer & Compliance Data</h3>
-                                <div class="mfg-info-container" style="background:#f8fafc; border: 1px solid #e2e8f0; border-radius:12px; padding: 24px; display:grid; gap: 16px;">
-                                    
+                                <h3 style="margin-top:0; color:#0f172a; font-weight:800; margin-bottom: 20px;"><i
+                                        class="fas fa-industry"
+                                        style="color:#f97316; margin-right:8px;"></i>Manufacturer & Compliance Data</h3>
+                                <div class="mfg-info-container"
+                                    style="background:#f8fafc; border: 1px solid #e2e8f0; border-radius:12px; padding: 24px; display:grid; gap: 16px;">
+
                                     <div style="display:flex; align-items:baseline; gap:12px;">
-                                        <div style="font-weight:700; color:#475569; width: 180px; flex-shrink:0;"><i class="fas fa-building" style="font-size: 0.85rem; width:16px; margin-right:6px; color:#64748b;"></i> Manufacturer:</div>
-                                        <div style="color:#0f172a; font-weight:600;"><asp:Literal ID="litMfgName" runat="server" Text="Not Specified"></asp:Literal></div>
+                                        <div style="font-weight:700; color:#475569; width: 180px; flex-shrink:0;"><i
+                                                class="fas fa-building"
+                                                style="font-size: 0.85rem; width:16px; margin-right:6px; color:#64748b;"></i>
+                                            Manufacturer:</div>
+                                        <div style="color:#0f172a; font-weight:600;">
+                                            <asp:Literal ID="litMfgName" runat="server" Text="Not Specified">
+                                            </asp:Literal>
+                                        </div>
                                     </div>
 
                                     <div style="display:flex; align-items:baseline; gap:12px;">
-                                        <div style="font-weight:700; color:#475569; width: 180px; flex-shrink:0;"><i class="fas fa-earth-americas" style="font-size: 0.85rem; width:16px; margin-right:6px; color:#64748b;"></i> Country of Origin:</div>
-                                        <div style="color:#0f172a; font-weight:600;"><asp:Literal ID="litMfgCountry" runat="server" Text="Not Specified"></asp:Literal></div>
+                                        <div style="font-weight:700; color:#475569; width: 180px; flex-shrink:0;"><i
+                                                class="fas fa-earth-americas"
+                                                style="font-size: 0.85rem; width:16px; margin-right:6px; color:#64748b;"></i>
+                                            Country of Origin:</div>
+                                        <div style="color:#0f172a; font-weight:600;">
+                                            <asp:Literal ID="litMfgCountry" runat="server" Text="Not Specified">
+                                            </asp:Literal>
+                                        </div>
                                     </div>
 
                                     <div style="display:flex; align-items:baseline; gap:12px;">
-                                        <div style="font-weight:700; color:#475569; width: 180px; flex-shrink:0;"><i class="fas fa-location-dot" style="font-size: 0.85rem; width:16px; margin-right:6px; color:#64748b;"></i> Registered Address:</div>
-                                        <div style="color:#0f172a; font-weight:600; line-height:1.5;"><asp:Literal ID="litMfgAddress" runat="server" Text="Not Specified"></asp:Literal></div>
+                                        <div style="font-weight:700; color:#475569; width: 180px; flex-shrink:0;"><i
+                                                class="fas fa-location-dot"
+                                                style="font-size: 0.85rem; width:16px; margin-right:6px; color:#64748b;"></i>
+                                            Registered Address:</div>
+                                        <div style="color:#0f172a; font-weight:600; line-height:1.5;">
+                                            <asp:Literal ID="litMfgAddress" runat="server" Text="Not Specified">
+                                            </asp:Literal>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -509,7 +570,8 @@
                                     <h3 style="margin:0; color:#0f172a; font-weight:800;">
                                         <asp:Literal ID="litRevCountSummary" runat="server"></asp:Literal>
                                     </h3>
-                                    <div style="font-size: 12px; color: #64748b; font-weight: 600; display: flex; align-items: center; gap: 5px; background: #f1f5f9; padding: 6px 12px; border-radius: 20px;">
+                                    <div
+                                        style="font-size: 12px; color:#888888; font-weight: 600; display: flex; align-items: center; gap: 5px; background: #f1f5f9; padding: 6px 12px; border-radius: 20px;">
                                         <i class="fas fa-shield-check" style="color:#10b981;"></i> Verified Reviews
                                     </div>
                                 </div>
@@ -533,15 +595,20 @@
                                                     <div class="pr-user-flex">
                                                         <!-- Avatar Initial Box -->
                                                         <div class="pr-avatar-circle">
-                                                            <%# (Eval("ReviewerName") != DBNull.Value && Eval("ReviewerName").ToString().Trim().Length > 0) ? Eval("ReviewerName").ToString().Trim().Substring(0,1).ToUpper() : "U" %>
+                                                            <%# (Eval("ReviewerName") !=DBNull.Value &&
+                                                                Eval("ReviewerName").ToString().Trim().Length> 0) ?
+                                                                Eval("ReviewerName").ToString().Trim().Substring(0,1).ToUpper()
+                                                                : "U" %>
                                                         </div>
-                                                        
+
                                                         <div class="pr-name-col">
-                                                            <span class="pr-username"><%# Eval("ReviewerName") %></span>
+                                                            <span class="pr-username">
+                                                                <%# Eval("ReviewerName") %>
+                                                            </span>
                                                             <span class="pr-verified-lbl">VERIFIED BUYER</span>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div class="pr-stars-col">
                                                         <div class="pr-stars-row">
                                                             <%# RenderRevStars(Eval("Rating")) %>
@@ -549,18 +616,21 @@
                                                         <span class="pr-top-badge">TOP REVIEW</span>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="pr-separator"></div>
-                                                
+
                                                 <div class="pr-body">
-                                                    <p class="pr-review-txt"><%# Eval("ReviewText") %></p>
+                                                    <p class="pr-review-txt">
+                                                        <%# Eval("ReviewText") %>
+                                                    </p>
                                                 </div>
-                                                
+
                                                 <div class="pr-footer">
                                                     <span class="pr-date-time">
-                                                        <%# Convert.ToDateTime(Eval("ReviewDate")).ToString("yyyy-MM-dd HH:mm:ss") %>
+                                                        <%# Convert.ToDateTime(Eval("ReviewDate")).ToString("yyyy-MM-dd
+                                                            HH:mm:ss") %>
                                                     </span>
-                                                    
+
                                                     <div class="pr-helpful-btn">
                                                         🔥 Helpful (0)
                                                     </div>
@@ -660,7 +730,7 @@
             // Apply initial wishlist icon state on page load
             (function initWishIcon() {
                 const circle = document.querySelector('.js-wish-heart');
-                const icon   = circle ? circle.querySelector('i') : null;
+                const icon = circle ? circle.querySelector('i') : null;
                 if (!icon) return;
                 if (wishlistState) {
                     icon.className = 'fas fa-heart';
@@ -703,7 +773,7 @@
                 const siblings = el.parentNode.children;
                 for (let s of siblings) s.classList.remove('active');
                 el.classList.add('active');
-                
+
                 if (type === 'size') {
                     const variantStock = el.getAttribute('data-stock');
                     if (variantStock) {
@@ -741,7 +811,7 @@
                 }
 
                 const qty = document.getElementById('txtQty').value;
-                
+
                 const sizeVal = activeSize ? activeSize.innerText.trim() : '';
                 const colorVal = activeColor ? activeColor.getAttribute('title') || '' : '';
 
@@ -751,8 +821,8 @@
                 btn.style.pointerEvents = 'none';
 
                 let url = 'AddToCart.ashx?pid=' + prodId + '&qty=' + qty;
-                if(sizeVal) url += '&size=' + encodeURIComponent(sizeVal);
-                if(colorVal) url += '&color=' + encodeURIComponent(colorVal);
+                if (sizeVal) url += '&size=' + encodeURIComponent(sizeVal);
+                if (colorVal) url += '&color=' + encodeURIComponent(colorVal);
 
                 fetch(url)
                     .then(r => r.json())
@@ -784,14 +854,14 @@
                     let h = Math.floor(timeLimit / 3600);
                     let m = Math.floor((timeLimit % 3600) / 60);
                     let s = timeLimit % 60;
-                    
+
                     const th = document.getElementById('timer-h');
                     const tm = document.getElementById('timer-m');
                     const ts = document.getElementById('timer-s');
-                    if(th) th.innerText = String(h).padStart(2, '0');
-                    if(tm) tm.innerText = String(m).padStart(2, '0');
-                    if(ts) ts.innerText = String(s).padStart(2, '0');
-                    
+                    if (th) th.innerText = String(h).padStart(2, '0');
+                    if (tm) tm.innerText = String(m).padStart(2, '0');
+                    if (ts) ts.innerText = String(s).padStart(2, '0');
+
                     timeLimit--;
                 }, 1000);
             }
@@ -799,7 +869,7 @@
             // 7. Wishlist Toggle
             function addToWishlist() {
                 const circle = document.querySelector('.js-wish-heart');
-                const icon   = circle ? circle.querySelector('i') : null;
+                const icon = circle ? circle.querySelector('i') : null;
                 if (!icon) return;
 
                 // Optimistic UI update while request is in flight

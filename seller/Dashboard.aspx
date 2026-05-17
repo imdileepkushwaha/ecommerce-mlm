@@ -6,6 +6,19 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     
+    <!-- STANDARD PAGE ACTION HEADER -->
+    <div class="page-action-bar" style="margin-bottom: 24px;">
+        <div class="welcome-title">
+            <h1><i class="fas fa-chart-pie" style="color: var(--accent); margin-right: 8px;"></i>Merchant Dashboard</h1>
+            <p>Real-time analytics, sales projections, and inventory catalogs for your commercial storefront.</p>
+        </div>
+        <div class="action-btn-group">
+            <a href="AddEditProduct.aspx" class="add-prod-btn">
+                <i class="fas fa-plus-circle" style="margin-right: 6px;"></i> Add Products
+            </a>
+        </div>
+    </div>
+
     <asp:Panel ID="pnlKycBlocker" runat="server" CssClass="kyc-banner-locked kyc-banner-dashboard" Visible="false">
         <i class="fas fa-circle-exclamation dash-banner-ico"></i>
         <div>
@@ -53,38 +66,66 @@
         </div>
     </section>
 
-    <!-- CORE WORKSPACE GRID -->
-    <div class="workspace-card">
-        <div class="card-header">
-            <h2>Recent Sale Invoices</h2>
-            <span style="font-size:0.85rem; font-weight:700; color:#6366f1; background: #eff6ff; padding: 5px 15px; border-radius:20px; border:1px solid #bfdbfe;">
-                Live Logs
-            </span>
+    <!-- CORE WORKSPACE GRID (UPGRADED TO CATALOGUE-WRAPPER DESIGN SYSTEM) -->
+    <div class="catalogue-wrapper">
+        <!-- Flexible Header / Search Toolbar -->
+        <div class="cat-toolbar">
+            <div class="cat-heading-group">
+                <h2>Recent Sale Invoices</h2>
+                <span>Live logs and fulfillment registry.</span>
+            </div>
+
+            <div class="cat-actions-right">
+                <!-- Status filter dropdown -->
+                <div class="cat-filter-date">
+                    <span>Status</span>
+                    <select class="cat-select" id="ddlStatusFilter" onchange="filterWorkspaceOrders()">
+                        <option value="all">All statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <!-- Instant Search Input -->
+                <div class="cat-search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="cat-search-input" id="tblSearchInput"
+                        placeholder="Search invoice, date, item..." onkeyup="filterWorkspaceOrders()" autocomplete="off" />
+                </div>
+            </div>
         </div>
         
-        <div style="overflow-x: auto;">
+        <div style="overflow-x: auto; width: 100%;">
             <asp:Repeater ID="rptRecentOrders" runat="server">
                 <HeaderTemplate>
-                    <table class="custom-tbl">
+                    <table class="cat-table" id="tblWorkspaceOrders">
                         <thead>
                             <tr>
-                                <th>INVOICE #</th>
+                                <th style="width: 140px;">INVOICE #</th>
                                 <th>DATE</th>
                                 <th>ITEM / DESCRIPTION</th>
-                                <th>QTY</th>
-                                <th>SUM</th>
-                                <th>STATUS</th>
+                                <th style="width: 100px;">QTY</th>
+                                <th style="width: 130px;">SUM</th>
+                                <th style="width: 150px;">STATUS</th>
                             </tr>
                         </thead>
                         <tbody>
                 </HeaderTemplate>
                 <ItemTemplate>
                     <tr>
+                        <!-- Invoice # -->
                         <td style="font-weight:700; color:var(--accent);">#INV-<%# Eval("OrderId") %></td>
+                        <!-- Date -->
                         <td style="color:#64748b;"><%# Eval("CreatedAt", "{0:dd MMM yyyy}") %></td>
+                        <!-- Product Name -->
                         <td style="font-weight:700; color:#334155;"><%# Eval("ProductName") %></td>
+                        <!-- Quantity -->
                         <td><%# Eval("Quantity") %> Units</td>
+                        <!-- Sum -->
                         <td style="font-weight:800; color:#0f172a;">₹<%# Convert.ToDecimal(Eval("UnitPrice")) * Convert.ToInt32(Eval("Quantity")) %></td>
+                        <!-- Status Badge -->
                         <td>
                             <span class='badge <%# GetStatusClass(Eval("Status")) %>'>
                                 <%# Eval("Status") %>
@@ -105,7 +146,65 @@
                     <p style="font-size:0.85rem;">As buyers purchase products from your inventory, live logs will populate here.</p>
                 </div>
             </asp:PlaceHolder>
+
+            <!-- Client-Side Filter Empty State -->
+            <div id="workspaceEmptyState" class="empty-vector" style="display:none; padding: 40px 20px;">
+                <i class="fas fa-search" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 15px;"></i>
+                <h4 style="font-weight:700; color:#334155; margin-bottom:5px;">No Matching Records Found</h4>
+                <p style="font-size:0.85rem;">Try adjusting your status filter or typing a different search query.</p>
+            </div>
         </div>
     </div>
 
+    <!-- Client-Side Live Filters JavaScript -->
+    <script type="text/javascript">
+        function filterWorkspaceOrders() {
+            var searchInput = document.getElementById("tblSearchInput");
+            var statusSelect = document.getElementById("ddlStatusFilter");
+            
+            if (!searchInput || !statusSelect) return;
+            
+            var query = searchInput.value.toLowerCase().trim();
+            var statusFilter = statusSelect.value.toLowerCase().trim();
+            
+            var table = document.getElementById("tblWorkspaceOrders");
+            if (!table) return;
+            
+            var tbody = table.getElementsByTagName("tbody")[0];
+            if (!tbody) return;
+            
+            var rows = tbody.getElementsByTagName("tr");
+            var visibleCount = 0;
+            
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                
+                var invoiceText = row.cells[0].textContent.toLowerCase();
+                var dateText = row.cells[1].textContent.toLowerCase();
+                var itemText = row.cells[2].textContent.toLowerCase();
+                
+                var statusBadge = row.cells[5].querySelector(".badge");
+                var statusText = statusBadge ? statusBadge.textContent.toLowerCase().trim() : "";
+                
+                var matchesSearch = invoiceText.indexOf(query) > -1 || 
+                                    dateText.indexOf(query) > -1 || 
+                                    itemText.indexOf(query) > -1;
+                                    
+                var matchesStatus = statusFilter === "all" || statusText === statusFilter;
+                
+                if (matchesSearch && matchesStatus) {
+                    row.style.display = "";
+                    visibleCount++;
+                } else {
+                    row.style.display = "none";
+                }
+            }
+            
+            // Toggle empty state placeholder
+            var emptyState = document.getElementById("workspaceEmptyState");
+            if (emptyState) {
+                emptyState.style.display = (visibleCount === 0) ? "block" : "none";
+            }
+        }
+    </script>
 </asp:Content>

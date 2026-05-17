@@ -18,42 +18,81 @@
     </asp:ContentPlaceHolder>
 </head>
 <body>
+    <!-- Immediate Theme State Loader -->
+    <script type="text/javascript">
+        (function () {
+            var savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "dark") {
+                document.body.classList.add("dark-theme");
+            }
+        })();
+    </script>
     <form id="form1" runat="server">
         
         <!-- 1. SIDEBAR NAVIGATION CANVAS -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebarMenu">
             <div class="sb-brand">
-                <i class="fas fa-store"></i> MLM <span>MERCHANT</span>
+                <i class="fas fa-store"></i> Seller <span> Panel</span>
+                <button type="button" class="sb-close-btn" onclick="toggleSidebarMenu()" title="Close Menu">
+                    <i class="fas fa-xmark"></i>
+                </button>
             </div>
             
             <nav class="sb-nav">
                 <div class="sb-nav-label">Analytics Hub</div>
                 <a href="Dashboard.aspx" class="nav-link">
-                    <i class="fas fa-chart-pie"></i> Dashboard
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M13 15.4c0-2.074 0-3.111.659-3.756S15.379 11 17.5 11s3.182 0 3.841.644C22 12.29 22 13.326 22 15.4v2.2c0 2.074 0 3.111-.659 3.756S19.621 22 17.5 22s-3.182 0-3.841-.644C13 20.71 13 19.674 13 17.6z" opacity=".5"></path><path fill="currentColor" d="M2 8.6c0 2.074 0 3.111.659 3.756S4.379 13 6.5 13s3.182 0 3.841-.644C11 11.71 11 10.674 11 8.6V6.4c0-2.074 0-3.111-.659-3.756S8.621 2 6.5 2s-3.182 0-3.841.644C2 3.29 2 4.326 2 6.4zm11-3.1c0-1.087 0-1.63.171-2.06a2.3 2.3 0 0 1 1.218-1.262C14.802 2 15.327 2 16.375 2h2.25c1.048 0 1.573 0 1.986.178c.551.236.99.69 1.218 1.262c.171.43.171.973.171 2.06s0 1.63-.171 2.06a2.3 2.3 0 0 1-1.218 1.262C20.198 9 19.673 9 18.625 9h-2.25c-1.048 0-1.573 0-1.986-.178a2.3 2.3 0 0 1-1.218-1.262C13 7.13 13 6.587 13 5.5"></path><path fill="currentColor" d="M2 18.5c0 1.087 0 1.63.171 2.06a2.3 2.3 0 0 0 1.218 1.262c.413.178.938.178 1.986.178h2.25c1.048 0 1.573 0 1.986-.178c.551-.236.99-.69 1.218-1.262c.171-.43.171-.973.171-2.06s0-1.63-.171-2.06a2.3 2.3 0 0 0-1.218-1.262C9.198 15 8.673 15 7.625 15h-2.25c-1.048 0-1.573 0-1.986.178c-.551.236-.99.69-1.218 1.262C2 16.87 2 17.413 2 18.5" opacity=".5"></path></svg>
+                     Dashboard
                 </a>
                 
                 <div class="sb-nav-label">Catalog & Warehouse</div>
                 <a href="Products.aspx" class="nav-link">
-                    <i class="fas fa-boxes"></i> My Products
+                    <svg width="20" height="20" viewBox="0 0 24 24"><g fill="none"><path fill="currentColor" fill-rule="evenodd" d="M17.192 6H6.808c-1.688 0-2.531 0-3.175.33A3 3 0 0 0 2.33 7.633C2 8.277 2 9.12 2 10.808c0 .429 0 .643.073.824a1 1 0 0 0 .3.404c.153.122.358.183.77.307L8.5 13.95v1.213c0 .765.46 1.471 1.187 1.767l.56.227a4.65 4.65 0 0 0 3.506 0l.56-.227a1.91 1.91 0 0 0 1.187-1.767V13.95l5.358-1.607c.41-.124.616-.185.768-.307a1 1 0 0 0 .3-.404c.074-.18.074-.395.074-.824c0-1.688 0-2.531-.33-3.175a3 3 0 0 0-1.303-1.303C19.723 6 18.88 6 17.192 6M13.6 13h-3.2c-.22 0-.4.182-.4.406v1.757c0 .166.1.315.251.377l.56.228c.764.31 1.614.31 2.377 0l.56-.228a.41.41 0 0 0 .252-.377v-1.757a.403.403 0 0 0-.4-.406" clip-rule="evenodd"></path><path fill="currentColor" d="m20.958 12.313l-.034.01L15.5 13.95v1.213c0 .765-.46 1.471-1.187 1.767l-.56.227a4.65 4.65 0 0 1-3.506 0l-.56-.227A1.91 1.91 0 0 1 8.5 15.163V13.95L3 12.3c0 3.675.035 7.388 1.318 8.528C5.636 22 7.758 22 12 22s6.364 0 7.682-1.172c1.283-1.14 1.317-4.853 1.318-8.528z" opacity=".5"></path><path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M9.17 4a3.001 3.001 0 0 1 5.66 0" opacity=".5"></path></g></svg>
+                     My Products
                 </a>
                 <a href="Inventory.aspx" class="nav-link">
-                    <i class="fas fa-boxes-stacked"></i> Manage Inventory
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M8.422 20.618C10.178 21.54 11.056 22 12 22V12L2.638 7.073l-.04.067C2 8.154 2 9.417 2 11.942v.117c0 2.524 0 3.787.597 4.801c.598 1.015 1.674 1.58 3.825 2.709z"></path><path fill="currentColor" d="m17.577 4.432l-2-1.05C13.822 2.461 12.944 2 12 2c-.945 0-1.822.46-3.578 1.382l-2 1.05C4.318 5.536 3.242 6.1 2.638 7.072L12 12l9.362-4.927c-.606-.973-1.68-1.537-3.785-2.641" opacity=".7"></path><path fill="currentColor" d="m21.403 7.14l-.041-.067L12 12v10c.944 0 1.822-.46 3.578-1.382l2-1.05c2.151-1.129 3.227-1.693 3.825-2.708c.597-1.014.597-2.277.597-4.8v-.117c0-2.525 0-3.788-.597-4.802" opacity=".5"></path><path fill="currentColor" d="m6.323 4.484l.1-.052l1.493-.784l9.1 5.005l4.025-2.011q.205.232.362.498c.15.254.262.524.346.825L17.75 9.964V13a.75.75 0 0 1-1.5 0v-2.286l-3.5 1.75v9.44A3 3 0 0 1 12 22c-.248 0-.493-.032-.75-.096v-9.44l-8.998-4.5c.084-.3.196-.57.346-.824q.156-.266.362-.498l9.04 4.52l3.387-1.693z"></path></svg>
+                     Manage Inventory
                 </a>
                 
                 <div class="sb-nav-label">Sales & Customer</div>
                 <a href="Orders.aspx" class="nav-link">
-                    <i class="fas fa-receipt"></i> Orders
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M4.083 11.894c.439-2.34.658-3.511 1.491-4.203C6.408 7 7.598 7 9.98 7h4.04c2.383 0 3.573 0 4.407.691c.833.692 1.052 1.862 1.491 4.203l.75 4c.617 3.292.926 4.938.026 6.022S18.12 23 14.771 23H9.23c-3.349 0-5.024 0-5.923-1.084c-.9-1.084-.591-2.73.026-6.022z" opacity=".5"></path><path fill="currentColor" d="M9.75 5.985a2.25 2.25 0 0 1 4.5 0v1c.566 0 1.062.002 1.5.015V5.985a3.75 3.75 0 1 0-7.5 0V7c.438-.013.934-.015 1.5-.015zm.128 9.765a2.251 2.251 0 0 0 4.245 0a.75.75 0 1 1 1.414.5a3.751 3.751 0 0 1-7.073 0a.75.75 0 0 1 1.414-.5"></path></svg>
+                     Orders
                 </a>
                 <a href="ManageReviews.aspx" class="nav-link">
-                    <i class="fas fa-comments"></i> Customer Reviews
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"></path><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502s-.556-.167-1.01-.502"></path></svg>
+                     Customer Reviews
+                </a>
+
+                <div class="sb-nav-label">Finance</div>
+                <a href="earnings.aspx" class="nav-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 15.998v-6c0-2.828 0-4.242-.879-5.121C19.353 4.109 18.175 4.012 16 4H8c-2.175.012-3.353.109-4.121.877C3 5.756 3 7.17 3 9.998v6c0 2.829 0 4.243.879 5.122c.878.878 2.293.878 5.121.878h6c2.828 0 4.243 0 5.121-.878c.879-.88.879-2.293.879-5.122" opacity=".5"></path><path fill="currentColor" d="M8 3.5A1.5 1.5 0 0 1 9.5 2h5A1.5 1.5 0 0 1 16 3.5v1A1.5 1.5 0 0 1 14.5 6h-5A1.5 1.5 0 0 1 8 4.5z"></path><path fill="currentColor" fill-rule="evenodd" d="M6.25 10.5A.75.75 0 0 1 7 9.75h.5a.75.75 0 0 1 0 1.5H7a.75.75 0 0 1-.75-.75m3.5 0a.75.75 0 0 1 .75-.75H17a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1-.75-.75M6.25 14a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5H7a.75.75 0 0 1-.75-.75m3.5 0a.75.75 0 0 1 .75-.75H17a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1-.75-.75m-3.5 3.5a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5H7a.75.75 0 0 1-.75-.75m3.5 0a.75.75 0 0 1 .75-.75H17a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1-.75-.75" clip-rule="evenodd"></path></svg>
+                    Earnings
+                </a>
+                
+                <a href="Withdrawal.aspx" class="nav-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 20.028V18H8v2.028c0 .277 0 .416.095.472s.224-.006.484-.13l1.242-.593c.088-.042.132-.063.179-.063s.091.02.179.063l1.242.593c.26.124.39.186.484.13c.095-.056.095-.195.095-.472" opacity=".5"></path><path fill="currentColor" d="M8 18h-.574c-1.084 0-1.462.006-1.753.068c-.513.11-.96.347-1.285.667c-.11.108-.164.161-.291.505s-.107.489-.066.78l.022.15c.11.653.31.998.616 1.244c.307.246.737.407 1.55.494c.837.09 1.946.092 3.536.092h4.43c1.59 0 2.7-.001 3.536-.092c.813-.087 1.243-.248 1.55-.494s.506-.591.616-1.243c.091-.548.11-1.241.113-2.171h-8v2.028c0 .277 0 .416-.095.472s-.224-.006-.484-.13l-1.242-.593c-.088-.042-.132-.063-.179-.063s-.091.02-.179.063l-1.242.593c-.26.124-.39.186-.484.13C8 20.444 8 20.305 8 20.028z"></path><path fill="currentColor" d="M4.727 2.733c.306-.308.734-.508 1.544-.618C7.105 2.002 8.209 2 9.793 2h4.414c1.584 0 2.688.002 3.522.115c.81.11 1.238.31 1.544.618c.305.308.504.74.613 1.557c.112.84.114 1.955.114 3.552V18H7.426c-1.084 0-1.462.006-1.753.068c-.513.11-.96.347-1.285.667c-.11.108-.164.161-.291.505A1.3 1.3 0 0 0 4 19.7V7.842c0-1.597.002-2.711.114-3.552c.109-.816.308-1.249.613-1.557" opacity=".5"></path><path fill="currentColor" d="M7.25 7A.75.75 0 0 1 8 6.25h8a.75.75 0 0 1 0 1.5H8A.75.75 0 0 1 7.25 7M8 9.75a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5z"></path></svg>
+                    Withdrawal
+                </a>
+
+                <a href="transactions.aspx" class="nav-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12" opacity=".5"></path><path fill="currentColor" d="M10.543 7.517a.75.75 0 1 0-1.086-1.034l-2.314 2.43l-.6-.63a.75.75 0 1 0-1.086 1.034l1.143 1.2a.75.75 0 0 0 1.086 0zM13 8.25a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5zm-2.457 6.267a.75.75 0 1 0-1.086-1.034l-2.314 2.43l-.6-.63a.75.75 0 1 0-1.086 1.034l1.143 1.2a.75.75 0 0 0 1.086 0zM13 15.25a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5z"></path></svg>
+                    Transactions
                 </a>
 
                 <div class="sb-nav-label">Settings & Profile</div>
                 <a href="Kyc.aspx" class="nav-link">
-                    <i class="fas fa-id-card-clip"></i> KYC & Bank
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 20.028V18H8v2.028c0 .277 0 .416.095.472s.224-.006.484-.13l1.242-.593c.088-.042.132-.063.179-.063s.091.02.179.063l1.242.593c.26.124.39.186.484.13c.095-.056.095-.195.095-.472" opacity=".5"></path><path fill="currentColor" d="M8 18h-.574c-1.084 0-1.462.006-1.753.068c-.513.11-.96.347-1.285.667c-.11.108-.164.161-.291.505s-.107.489-.066.78l.022.15c.11.653.31.998.616 1.244c.307.246.737.407 1.55.494c.837.09 1.946.092 3.536.092h4.43c1.59 0 2.7-.001 3.536-.092c.813-.087 1.243-.248 1.55-.494s.506-.591.616-1.243c.091-.548.11-1.241.113-2.171h-8v2.028c0 .277 0 .416-.095.472s-.224-.006-.484-.13l-1.242-.593c-.088-.042-.132-.063-.179-.063s-.091.02-.179.063l-1.242.593c-.26.124-.39.186-.484.13C8 20.444 8 20.305 8 20.028z"></path><path fill="currentColor" d="M4.727 2.733c.306-.308.734-.508 1.544-.618C7.105 2.002 8.209 2 9.793 2h4.414c1.584 0 2.688.002 3.522.115c.81.11 1.238.31 1.544.618c.305.308.504.74.613 1.557c.112.84.114 1.955.114 3.552V18H7.426c-1.084 0-1.462.006-1.753.068c-.513.11-.96.347-1.285.667c-.11.108-.164.161-.291.505A1.3 1.3 0 0 0 4 19.7V7.842c0-1.597.002-2.711.114-3.552c.109-.816.308-1.249.613-1.557" opacity=".5"></path><path fill="currentColor" d="M7.25 7A.75.75 0 0 1 8 6.25h8a.75.75 0 0 1 0 1.5H8A.75.75 0 0 1 7.25 7M8 9.75a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5z"></path></svg> KYC & Bank
+
                 </a>
                 <a href="Profile.aspx" class="nav-link">
-                    <i class="fas fa-user-gear"></i> Profile
+                    <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="10" cy="6.75" r="4" fill="currentColor"></circle><ellipse cx="10" cy="17.75" fill="currentColor" opacity=".5" rx="7" ry="4"></ellipse><path fill="currentColor" fill-rule="evenodd" d="M18.357 2.364a.75.75 0 0 1 1.029-.257L19 2.75l.386-.643h.001l.002.002l.004.002l.01.006l.113.076c.07.049.166.12.277.212c.222.185.512.462.802.838c.582.758 1.155 1.914 1.155 3.507s-.573 2.75-1.155 3.507c-.29.376-.58.653-.802.838a4 4 0 0 1-.363.27l-.028.018l-.01.006l-.003.002l-.002.001s-.001.001-.387-.642l.386.643a.75.75 0 0 1-.776-1.283l.005-.004l.041-.027q.06-.042.177-.136c.152-.128.362-.326.573-.6c.417-.542.844-1.386.844-2.593s-.427-2.05-.844-2.593a3.8 3.8 0 0 0-.573-.6a3 3 0 0 0-.218-.163l-.005-.003a.75.75 0 0 1-.253-1.027" clip-rule="evenodd"></path><path fill="currentColor" fill-rule="evenodd" d="M16.33 4.415a.75.75 0 0 1 1.006-.336L17 4.75l.336-.67h.001l.002.001l.004.002l.008.004l.022.012a2 2 0 0 1 .233.153c.136.102.31.254.48.467c.349.436.664 1.099.664 2.031s-.316 1.595-.664 2.031a2.7 2.7 0 0 1-.654.586l-.06.034l-.02.012l-.01.004l-.003.002l-.002.001l-.33-.657l.329.658a.75.75 0 0 1-.685-1.335l.003-.001l.052-.036c.052-.04.13-.106.209-.205c.15-.189.335-.526.335-1.094s-.184-.905-.335-1.094a1.2 1.2 0 0 0-.261-.24l-.003-.002a.75.75 0 0 1-.322-1" clip-rule="evenodd"></path></svg>
+                     Profile
+                </a>
+                <a href="Settings.aspx" class="nav-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.279 2.152C13.909 2 13.439 2 12.5 2s-1.408 0-1.779.152a2 2 0 0 0-1.09 1.083c-.094.223-.13.484-.145.863a1.62 1.62 0 0 1-.796 1.353a1.64 1.64 0 0 1-1.579.008c-.338-.178-.583-.276-.825-.308a2.03 2.03 0 0 0-1.49.396c-.318.242-.553.646-1.022 1.453c-.47.807-.704 1.21-.757 1.605c-.07.526.074 1.058.4 1.479c.148.192.357.353.68.555c.477.297.783.803.783 1.361s-.306 1.064-.782 1.36c-.324.203-.533.364-.682.556a2 2 0 0 0-.399 1.479c.053.394.287.798.757 1.605s.704 1.21 1.022 1.453c.424.323.96.465 1.49.396c.242-.032.487-.13.825-.308a1.64 1.64 0 0 1 1.58.008c.486.28.774.795.795 1.353c.015.38.051.64.145.863c.204.49.596.88 1.09 1.083c.37.152.84.152 1.779.152s1.409 0 1.779-.152a2 2 0 0 0 1.09-1.083c.094-.223.13-.483.145-.863c.02-.558.309-1.074.796-1.353a1.64 1.64 0 0 1 1.579-.008c.338.178.583.276.825.308c.53.07 1.066-.073 1.49-.396c.318-.242.553-.646 1.022-1.453c.47-.807.704-1.21.757-1.605a2 2 0 0 0-.4-1.479c-.148-.192-.357-.353-.68-.555c-.477-.297-.783-.803-.783-1.361s.306-1.064.782-1.36c.324-.203.533-.364.682-.556a2 2 0 0 0 .399-1.479c-.053-.394-.287-.798-.757-1.605s-.704-1.21-1.022-1.453a2.03 2.03 0 0 0-1.49-.396c-.242.032-.487.13-.825.308a1.64 1.64 0 0 1-1.58-.008a1.62 1.62 0 0 1-.795-1.353c-.015-.38-.051-.64-.145-.863a2 2 0 0 0-1.09-1.083" clip-rule="evenodd" opacity=".5"></path><path fill="currentColor" d="M15.523 12c0 1.657-1.354 3-3.023 3s-3.023-1.343-3.023-3S10.83 9 12.5 9s3.023 1.343 3.023 3"></path></svg>
+                     Settings
                 </a>
                 
                 <!-- LOGOUT ENGINE -->
@@ -66,19 +105,98 @@
         <!-- 2. PRIMARY DATA VIEWPORT -->
         <main class="content-panel">
             
-            <!-- GLOBAL MERCHANT HEADER -->
+            <!-- DYNAMIC TOP BAR HEADER (PREMIUM ATTACHMENT STRUCTURE) -->
             <header class="hdr-region">
-                <div class="welcome-title">
-                    <h1>Welcome back, <asp:Literal ID="litWelcomeName" runat="server">Merchant</asp:Literal>!</h1>
-                    <p>Real-time analytics and metrics for your commercial storefront.</p>
-                </div>
+                <button type="button" class="hdr-hamburger-btn" onclick="toggleSidebarMenu()" title="Toggle Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
                 
-                <div class="seller-pill">
-                    <div class="seller-icon">
-                        <asp:Literal ID="litAvatarLetter" runat="server">M</asp:Literal>
+                <!-- Left: Global Search Wrapper -->
+                <div class="hdr-search-box">
+                    <i class="fas fa-search search-ico"></i>
+                    <input type="text" id="globalNavSearch" placeholder="Search users, orders, sellers..." onkeyup="filterHubSearch()" autocomplete="off" />
+                    <div id="searchAutoCompleteMenu" class="search-autocomplete-popup"></div>
+                </div>
+
+                <!-- Right: Action Anchors & Profile Pill -->
+                <div class="hdr-actions-group">
+                    <!-- Fullscreen Toggle -->
+                    <button type="button" class="hdr-action-btn" onclick="toggleDashboardFullscreen()" title="Toggle Fullscreen">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <!-- Theme Toggle -->
+                    <button type="button" class="hdr-action-btn" onclick="toggleDashboardTheme()" title="Toggle Theme">
+                        <i class="far fa-moon" id="themeMoonIcon"></i>
+                    </button>
+                    
+                    <!-- Bell Notifications with Red Dot Badge -->
+                    <div class="hdr-bell-wrapper">
+                        <button type="button" class="hdr-action-btn" onclick="toggleNotificationsMenu()" title="Notifications" style="position: relative;">
+                            <i class="far fa-bell"></i>
+                            <span class="bell-dot-indicator" id="bellDot"></span>
+                        </button>
+                        <!-- Notifications Popup -->
+                        <div class="notifications-dropdown-popup" id="notificationsDropdown">
+                            <div class="notif-dropdown-header">
+                                <h3>Store Alerts</h3>
+                                <button type="button" onclick="clearAllNotifications()">Clear All</button>
+                            </div>
+                            <div class="notif-dropdown-body" id="notifList">
+                                <div class="notif-item unread">
+                                    <i class="fas fa-circle-check notif-item-icon success"></i>
+                                    <div class="notif-item-content">
+                                        <p>KYC Portfolio verified successfully.</p>
+                                        <span>2 hours ago</span>
+                                    </div>
+                                </div>
+                                <div class="notif-item unread">
+                                    <i class="fas fa-circle-exclamation notif-item-icon warning"></i>
+                                    <div class="notif-item-content">
+                                        <p>Inventory level low for custom item class.</p>
+                                        <span>5 hours ago</span>
+                                    </div>
+                                </div>
+                                <div class="notif-item">
+                                    <i class="fas fa-box notif-item-icon info"></i>
+                                    <div class="notif-item-content">
+                                        <p>Global shipping policies synchronized.</p>
+                                        <span>Yesterday</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="seller-label">
-                        <asp:Literal ID="litSellerEmail" runat="server"></asp:Literal>
+                    
+                    
+                    <!-- Profile Capsule Pill -->
+                    <div class="hdr-profile-capsule" onclick="toggleProfileDropdown()">
+                        <div class="hdr-profile-avatar" id="avatarBgLetter" style="background: #8b5cf6; color: #fff; box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);">
+                            <asp:Literal ID="litAvatarLetter" runat="server">M</asp:Literal>
+                        </div>
+                        <div class="hdr-profile-info">
+                            <div class="hdr-profile-name">
+                                <asp:Literal ID="litWelcomeName" runat="server">Merchant</asp:Literal>
+                            </div>
+                            <div class="hdr-profile-role">Store Merchant</div>
+                        </div>
+                        
+                        <!-- Profile Dropdown popup menu -->
+                        <div class="profile-dropdown-menu" id="profileDropdown">
+                            <div class="profile-dropdown-header">
+                                <div class="profile-dropdown-name">
+                                    <asp:Literal ID="litDropdownName" runat="server">Merchant</asp:Literal>
+                                </div>
+                                <div class="profile-dropdown-email">
+                                    <asp:Literal ID="litSellerEmail" runat="server"></asp:Literal>
+                                </div>
+                            </div>
+                            <a href="Profile.aspx"><i class="fas fa-user-circle"></i> View Profile</a>
+                            <a href="Settings.aspx"><i class="fas fa-sliders-h"></i> Settings</a>
+                            <div class="profile-dropdown-divider"></div>
+                            <asp:LinkButton ID="btnHdrLogout" runat="server" OnClick="btnLogout_Click" CausesValidation="false">
+                                <i class="fas fa-sign-out-alt"></i> Sign Out
+                            </asp:LinkButton>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -92,11 +210,11 @@
         </main>
     </form>
 
-    <!-- Active Nav Link Selector JS -->
-    <script>
+    <!-- Interactive Dashboards JS Engine -->
+    <script type="text/javascript">
+        // 1. Sidebar Active States
         document.addEventListener("DOMContentLoaded", function () {
             var path = window.location.pathname.split("/").pop().toLowerCase();
-            // Fallback for root dir navigation
             if (!path) path = "dashboard.aspx";
 
             var links = document.querySelectorAll('.sb-nav a.nav-link');
@@ -108,6 +226,159 @@
                 }
             });
         });
+
+        // 2. Fullscreen API
+        function toggleDashboardFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log("Error attempting to enable fullscreen:", err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // 3. Dark Theme System
+        function toggleDashboardTheme() {
+            const body = document.body;
+            const moonIcon = document.getElementById("themeMoonIcon");
+            body.classList.toggle("dark-theme");
+            const isDark = body.classList.contains("dark-theme");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+
+            if (isDark) {
+                moonIcon.className = "fas fa-sun";
+            } else {
+                moonIcon.className = "far fa-moon";
+            }
+        }
+
+        // Initialize Theme Mode
+        document.addEventListener("DOMContentLoaded", function() {
+            const savedTheme = localStorage.getItem("theme");
+            const moonIcon = document.getElementById("themeMoonIcon");
+            if (savedTheme === "dark") {
+                document.body.classList.add("dark-theme");
+                if (moonIcon) moonIcon.className = "fas fa-sun";
+            }
+        });
+
+        // 4. Notifications popover
+        function toggleNotificationsMenu() {
+            const dropdown = document.getElementById("notificationsDropdown");
+            const profileDropdown = document.getElementById("profileDropdown");
+            
+            if (profileDropdown) profileDropdown.style.display = "none";
+            
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+        }
+
+        function clearAllNotifications() {
+            const notifList = document.getElementById("notifList");
+            const bellDot = document.getElementById("bellDot");
+            
+            if (notifList) {
+                notifList.innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #94a3b8; font-size: 0.8rem;">
+                        <i class="far fa-bell-slash" style="font-size: 1.5rem; margin-bottom: 8px; display: block; color: #cbd5e1;"></i>
+                        No new alerts detected.
+                    </div>
+                `;
+            }
+            if (bellDot) bellDot.style.display = "none";
+        }
+
+        // 5. User Profile capsule popover
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById("profileDropdown");
+            const notifDropdown = document.getElementById("notificationsDropdown");
+            
+            if (notifDropdown) notifDropdown.style.display = "none";
+            
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+        }
+
+        // 6. Global Search dropdown list filtration
+        function filterHubSearch() {
+            const input = document.getElementById("globalNavSearch");
+            const popup = document.getElementById("searchAutoCompleteMenu");
+            const query = input.value.toLowerCase().trim();
+            
+            if (!query) {
+                popup.style.display = "none";
+                popup.innerHTML = "";
+                return;
+            }
+            
+            const navLinks = document.querySelectorAll(".sb-nav a.nav-link");
+            let resultsHtml = "";
+            let matchCount = 0;
+            
+            navLinks.forEach(lnk => {
+                const text = lnk.textContent.replace(/[\s\n]+/g, " ").trim();
+                const href = lnk.getAttribute("href");
+                
+                if (text.toLowerCase().includes(query)) {
+                    const svgHtml = lnk.querySelector("svg") ? lnk.querySelector("svg").outerHTML : '<i class="fas fa-link"></i>';
+                    resultsHtml += `
+                        <a href="${href}" class="search-result-item">
+                            ${svgHtml}
+                            <span>${text}</span>
+                        </a>
+                    `;
+                    matchCount++;
+                }
+            });
+            
+            if (matchCount > 0) {
+                popup.innerHTML = resultsHtml;
+                popup.style.display = "block";
+            } else {
+                popup.innerHTML = `
+                    <div style="padding: 12px 14px; color: #94a3b8; font-size: 0.78rem; text-align: center;">
+                        No matches for "${input.value}"
+                    </div>
+                `;
+                popup.style.display = "block";
+            }
+        }
+
+        // 7. Click Outside dropdown dismissals
+        document.addEventListener("click", function(e) {
+            const searchPopup = document.getElementById("searchAutoCompleteMenu");
+            const notifPopup = document.getElementById("notificationsDropdown");
+            const profilePopup = document.getElementById("profileDropdown");
+            
+            const searchBox = document.querySelector(".hdr-search-box");
+            const bellWrapper = document.querySelector(".hdr-bell-wrapper");
+            const profileCapsule = document.querySelector(".hdr-profile-capsule");
+            
+            if (searchPopup && searchBox && !searchBox.contains(e.target)) {
+                searchPopup.style.display = "none";
+            }
+            if (notifPopup && bellWrapper && !bellWrapper.contains(e.target)) {
+                notifPopup.style.display = "none";
+            }
+            if (profilePopup && profileCapsule && !profileCapsule.contains(e.target)) {
+                profilePopup.style.display = "none";
+            }
+        });
+
+        // 8. Toggle Sidebar Menu (Mobile)
+        function toggleSidebarMenu() {
+            var sidebar = document.getElementById("sidebarMenu");
+            if (sidebar) {
+                sidebar.classList.toggle("show-sidebar");
+            }
+        }
     </script>
 </body>
 </html>

@@ -5,11 +5,11 @@
     <!-- 1. EXECUTIVE ORDERS HEADER REDESIGN -->
     <div class="page-action-bar">
         <div class="welcome-title">
-            <h1 style="font-size: 1.6rem;"><i class="fas fa-receipt" style="color: var(--accent); margin-right: 8px;"></i>Orders Management</h1>
+            <h1 class="ord-welcome-h1"><i class="fas fa-receipt ord-welcome-i"></i>Orders Management</h1>
             <p>Monitor order fulfillment, manage shipment logistics, and track sales in real-time.</p>
         </div>
         <div class="ord-header-right">
-            <a href="#" class="add-prod-btn" style="background: linear-gradient(135deg, #059669, #10b981); text-shadow:none; border:none;">
+            <a href="#" class="add-prod-btn ord-earnings-btn">
                 <i class="fas fa-wallet"></i> View Earnings
             </a>
         </div>
@@ -53,7 +53,7 @@
         <div class="ord-metric-card ord-card-emerald">
             <div class="ord-metric-meta">
                 <span class="ord-meta-lbl">DELIVERED</span>
-                <div class="ord-meta-val">
+                <div class="ord-metric-meta">
                     <asp:Literal ID="litDelivered" runat="server">0</asp:Literal>
                 </div>
                 <span class="ord-meta-desc">Completed deliveries</span>
@@ -121,7 +121,7 @@
             
             <div class="ord-hdr-filters">
                 <span class="ord-filter-date-lbl">Date</span>
-                <asp:DropDownList ID="ddlDateFilter" runat="server" CssClass="ord-select" AutoPostBack="true" OnSelectedIndexChanged="ddlDateFilter_SelectedIndexChanged" style="cursor:pointer;">
+                <asp:DropDownList ID="ddlDateFilter" runat="server" CssClass="ord-select ord-select-pointer" AutoPostBack="true" OnSelectedIndexChanged="ddlDateFilter_SelectedIndexChanged">
                     <asp:ListItem Value="all" Text="All time"></asp:ListItem>
                     <asp:ListItem Value="24h" Text="Last 24 hours"></asp:ListItem>
                     <asp:ListItem Value="7d" Text="Last 7 days"></asp:ListItem>
@@ -134,7 +134,7 @@
                 </div>
                 
                 <label class="ord-auto-box" for="chkAutoRefresh">
-                    <input type="checkbox" id="chkAutoRefresh" style="accent-color:#6366f1; cursor:pointer;" onchange="toggleAutoRefresh()" />
+                    <input type="checkbox" id="chkAutoRefresh" class="ord-chk-auto" onchange="toggleAutoRefresh()" />
                     <span>Auto (5s)</span>
                 </label>
                 
@@ -205,13 +205,13 @@
                                 </asp:LinkButton>
 
                                 <asp:HyperLink ID="lnkReturnWorkflow" runat="server" NavigateUrl='<%# "ViewOrder.aspx?id=" + Eval("Id") %>' 
-                                    CssClass="ord-act-btn ord-act-revert" style="background:#fdf2f8; border-color:#fbcfe8; color:#db2777;"
+                                    CssClass="ord-act-btn ord-act-revert ord-act-revert-badge"
                                     Visible='<%# IsReturnButtonVisible(Eval("Status")) %>' title="Inspect Return Lifecycle Workflow">
                                     <i class="fas fa-reply" style="transform: scaleX(-1);"></i>
                                 </asp:HyperLink>
 
                                 <a href='ViewOrder.aspx?id=<%# Eval("Id") %>' class="ord-act-btn ord-act-view" title="Inspect Order Details & Full Manifest">
-                                    <i class="fas fa-eye"></i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M9 4.46A9.8 9.8 0 0 1 12 4c4.182 0 7.028 2.5 8.725 4.704C21.575 9.81 22 10.361 22 12c0 1.64-.425 2.191-1.275 3.296C19.028 17.5 16.182 20 12 20s-7.028-2.5-8.725-4.704C2.425 14.192 2 13.639 2 12c0-1.64.425-2.191 1.275-3.296A14.5 14.5 0 0 1 5 6.821"></path><path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0Z"></path></g></svg>
                                 </a>
                             </div>
                         </td>
@@ -224,17 +224,17 @@
             </asp:Repeater>
 
             <!-- Empty / Zero-Records Canvas -->
-            <div id="divFilterFallback" style="display:none; text-align:center; padding:50px 20px;">
-                <i class="fas fa-magnifying-glass-minus" style="font-size:3rem; color:#cbd5e1; margin-bottom:12px;"></i>
-                <h4 style="font-weight:800; color:#475569; margin-bottom:4px;">No Matching Records</h4>
-                <p style="font-size:0.82rem; color:#94a3b8;">Modify search keywords to query from current dataset view.</p>
+            <div id="divFilterFallback" class="ord-fallback-div">
+                <i class="fas fa-magnifying-glass-minus ord-fallback-i"></i>
+                <h4 class="ord-fallback-h4">No Matching Records</h4>
+                <p class="ord-fallback-p">Modify search keywords to query from current dataset view.</p>
             </div>
 
             <asp:PlaceHolder ID="phEmptyOrders" runat="server" Visible="false">
-                <div style="text-align:center; padding:70px 20px;">
-                    <i class="fas fa-inbox" style="font-size:4rem; color:#e2e8f0; margin-bottom:15px;"></i>
-                    <h3 style="font-weight:800; color:#1e293b; margin-bottom:6px;">Zero Sales Generated</h3>
-                    <p style="font-size:0.88rem; color:#64748b; max-width:400px; margin:0 auto;">Products must be ordered by customers to render sales manifests inside your Executive Workspace.</p>
+                <div class="ord-empty-div">
+                    <i class="fas fa-inbox ord-empty-i"></i>
+                    <h3 class="ord-empty-h3">Zero Sales Generated</h3>
+                    <p class="ord-empty-p">Products must be ordered by customers to render sales manifests inside your Executive Workspace.</p>
                 </div>
             </asp:PlaceHolder>
         </div>
@@ -246,7 +246,7 @@
             </div>
             <div class="ord-footer-right">
                 <span>Per page</span>
-                <select class="ord-select" style="padding: 4px 8px; min-width:60px; margin: 0 10px;">
+                <select class="ord-select ord-footer-select">
                     <option>25</option>
                 </select>
                 <span>Page 1 of 1</span>

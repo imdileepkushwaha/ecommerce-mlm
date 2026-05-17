@@ -27,7 +27,8 @@
                             </div>
                             <div class="banner-content">
                                 <h1>Join Us Today.</h1>
-                                <p>Start your journey with Kartify. Create a free account and unlock incredible discounts and
+                                <p>Start your journey with Kartify. Create a free account and unlock incredible
+                                    discounts and
                                     networking opportunities.</p>
                             </div>
                         </div>
@@ -40,8 +41,10 @@
                             </div>
                             <div class="auth-form-inner max-w-600">
 
-                                <asp:Label ID="lblMessage" runat="server" CssClass="success-msg" Visible="false"></asp:Label>
-                                <asp:Label ID="lblError" runat="server" CssClass="error-msg" Visible="false"></asp:Label>
+                                <asp:Label ID="lblMessage" runat="server" CssClass="success-msg" Visible="false">
+                                </asp:Label>
+                                <asp:Label ID="lblError" runat="server" CssClass="error-msg" Visible="false">
+                                </asp:Label>
 
                                 <!-- Section 1: Referral Detail -->
                                 <asp:UpdatePanel ID="updPnlSponsor" runat="server">
@@ -70,8 +73,10 @@
                                         </div>
                                         <div class="form-group mt-15 mb-0">
                                             <label class="form-label">Placement Node Position</label>
-                                            <asp:RadioButtonList ID="rblPosition" runat="server" RepeatDirection="Horizontal" CssClass="modern-radio-list">
-                                                <asp:ListItem Text="Left Side Node" Value="Left" Selected="True"></asp:ListItem>
+                                            <asp:RadioButtonList ID="rblPosition" runat="server"
+                                                RepeatDirection="Horizontal" CssClass="modern-radio-list">
+                                                <asp:ListItem Text="Left Side Node" Value="Left" Selected="True">
+                                                </asp:ListItem>
                                                 <asp:ListItem Text="Right Side Node" Value="Right"></asp:ListItem>
                                             </asp:RadioButtonList>
                                         </div>
@@ -152,8 +157,8 @@
                                     </label>
                                 </div>
 
-                                <asp:Button ID="btnRegister" runat="server" Text="Create Free Account" CssClass="auth-btn"
-                                    OnClick="btnRegister_Click" />
+                                <asp:Button ID="btnRegister" runat="server" Text="Create Free Account"
+                                    CssClass="auth-btn" OnClick="btnRegister_Click" />
 
                                 <div class="auth-footer mb-40">
                                     <p>Already have an account? <a href="Login.aspx">Sign In Here</a></p>
@@ -166,28 +171,36 @@
                     <div class="modal-overlay" id="regVerifyModal">
                         <div class="modal-content text-center">
                             <div class="modal-icon"><i class="fa fa-envelope-open-text"></i></div>
-                            
-                            <asp:Label ID="lblModalMsg" runat="server" CssClass="error-msg lbl-inline-error" Visible="false"></asp:Label>
-                            
+
+                            <asp:Label ID="lblModalMsg" runat="server" CssClass="error-msg lbl-inline-error"
+                                Visible="false"></asp:Label>
+
                             <asp:MultiView ID="mvVerify" runat="server" ActiveViewIndex="0">
                                 <!-- Step 1: Enter Verification Code -->
                                 <asp:View ID="vwCodeEntry" runat="server">
                                     <div class="modal-header">
                                         <h3>Verify Your Email</h3>
-                                        <p>To complete registration, please enter the 6-digit security code dispatched to your inbox.</p>
+                                        <p>To complete registration, please enter the 6-digit security code dispatched
+                                            to your inbox.</p>
                                     </div>
                                     <div class="form-group text-left">
                                         <label class="form-label">Security Code</label>
-                                        <asp:TextBox ID="txtRegCode" runat="server" CssClass="form-input otp-input" placeholder="XXXXXX" MaxLength="6"></asp:TextBox>
+                                        <asp:TextBox ID="txtRegCode" runat="server" CssClass="form-input otp-input"
+                                            placeholder="XXXXXX" MaxLength="6"></asp:TextBox>
                                     </div>
-                                    <asp:Button ID="btnVerifyReg" runat="server" Text="Verify & Complete" CssClass="auth-btn" OnClick="btnVerifyReg_Click" />
-                                    
+                                    <asp:Button ID="btnVerifyReg" runat="server" Text="Verify & Complete"
+                                        CssClass="auth-btn" OnClick="btnVerifyReg_Click" />
+
                                     <div class="text-center" style="margin-top: 15px;">
-                                        <span id="resendTimerReg" style="color: #64748b; font-size: 0.85rem;">Resend available in <b id="timeLeftReg">02:00</b></span>
-                                        <asp:LinkButton ID="lnkResendReg" runat="server" CssClass="forgot-link" Text="Resend Code" OnClick="lnkResendReg_Click" style="display: none; font-weight: 600;"></asp:LinkButton>
+                                        <span id="resendTimerReg" style="color:#888888; font-size: 0.85rem;">Resend
+                                            available in <b id="timeLeftReg">02:00</b></span>
+                                        <asp:LinkButton ID="lnkResendReg" runat="server" CssClass="forgot-link"
+                                            Text="Resend Code" OnClick="lnkResendReg_Click"
+                                            style="display: none; font-weight: 600;"></asp:LinkButton>
                                     </div>
 
-                                    <a href="javascript:void(0)" class="forgot-link d-block mt-15" onclick="toggleRegModal(false)">Modify Info</a>
+                                    <a href="javascript:void(0)" class="forgot-link d-block mt-15"
+                                        onclick="toggleRegModal(false)">Modify Info</a>
                                 </asp:View>
 
                                 <!-- Step 2: Finished Successfully -->
@@ -197,7 +210,8 @@
                                         <h3>Congratulations!</h3>
                                         <p>Your email is validated and your account is ready to use.</p>
                                     </div>
-                                    <a href="Login.aspx" class="auth-btn text-center d-block" style="text-decoration: none; color: #fff;">Sign In Now</a>
+                                    <a href="Login.aspx" class="auth-btn text-center d-block"
+                                        style="text-decoration: none; color: #fff;">Sign In Now</a>
                                 </asp:View>
                             </asp:MultiView>
                         </div>
@@ -235,17 +249,17 @@
                 const span = document.getElementById(spanId);
                 const link = document.getElementById(linkId);
                 const valDisplay = document.getElementById(valId);
-                
-                if(!span || !link || !valDisplay) return;
-                
+
+                if (!span || !link || !valDisplay) return;
+
                 span.style.display = 'inline';
                 link.style.display = 'none';
                 valDisplay.style.color = '#22c55e'; // Normal Green initially
-                
+
                 let left = time;
                 clearInterval(resendTimerReg);
-                
-                resendTimerReg = setInterval(function() {
+
+                resendTimerReg = setInterval(function () {
                     let m = parseInt(left / 60, 10);
                     let s = parseInt(left % 60, 10);
                     m = m < 10 ? "0" + m : m;
@@ -257,8 +271,8 @@
                     } else {
                         valDisplay.style.color = '#22c55e'; // Stays Green ordinarily
                     }
-                    
-                    if(--left < 0) {
+
+                    if (--left < 0) {
                         clearInterval(resendTimerReg);
                         span.style.display = 'none';
                         link.style.display = 'inline-block';

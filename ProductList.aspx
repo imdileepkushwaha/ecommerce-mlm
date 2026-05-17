@@ -91,7 +91,7 @@
 
             .results-count {
                 font-weight: 600;
-                color: #64748b;
+                color: #888888;
                 font-size: 14px;
             }
 
@@ -118,7 +118,7 @@
             .empty-pl-msg {
                 text-align: center;
                 padding: 60px 20px;
-                color: #64748b;
+                color: #888888;
             }
 
             .oos-banner {

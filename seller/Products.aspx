@@ -46,7 +46,17 @@
                     </span>
                     <span class="d-desc">Approved + active</span>
                 </div>
-                <div class="d-icon-circle"><i class="fas fa-eye"></i></div>
+                <div class="d-icon-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                        style="width: 20px; height: 20px; color: var(--accent);">
+                        <g fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round"
+                                d="M9 4.46A9.8 9.8 0 0 1 12 4c4.182 0 7.028 2.5 8.725 4.704C21.575 9.81 22 10.361 22 12c0 1.64-.425 2.191-1.275 3.296C19.028 17.5 16.182 20 12 20s-7.028-2.5-8.725-4.704C2.425 14.192 2 13.639 2 12c0-1.64.425-2.191 1.275-3.296A14.5 14.5 0 0 1 5 6.821">
+                            </path>
+                            <path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0Z"></path>
+                        </g>
+                    </svg>
+                </div>
             </div>
 
             <!-- STAT CARD 3: PENDING REVIEW -->
@@ -299,7 +309,7 @@
                             </div>
                             <h4 style="font-weight: 800; color: #1e293b; margin-bottom: 8px;">No Products In Catalog
                             </h4>
-                            <p style="color: #64748b; font-size: 0.9rem; max-width: 400px; margin: 0 auto 24px;">Begin
+                            <p style="color:#888888; font-size: 0.9rem; max-width: 400px; margin: 0 auto 24px;">Begin
                                 building your merchant shelf. Index items to open your store to buyers.</p>
                             <a href="AddEditProduct.aspx" class="act-btn act-btn-edit"
                                 style="width:auto; margin:0 auto; padding: 0 20px; border-radius: 10px; font-weight: 700; height: 38px;">

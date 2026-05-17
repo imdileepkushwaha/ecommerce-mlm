@@ -15,7 +15,7 @@
         <!-- EXECUTIVE HEADER DECK -->
         <div class="prof-header-bar">
             <div class="prof-header-title">
-                <h2>Profile</h2>
+                <h2><i class="fas fa-user-gear"></i> Profile</h2>
                 <p>Yahan <strong>contact & branding</strong> update hoti hai. GST, bank, docs — sab <strong>KYC &
                         Bank</strong> page par.</p>
             </div>

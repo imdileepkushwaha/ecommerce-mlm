@@ -24,6 +24,7 @@ namespace ecommerce_mlm.admin
 
             if (!IsPostBack)
             {
+                hfActiveTab.Value = "MEMBER";
                 BindPayoutGrid();
             }
         }
@@ -63,31 +64,62 @@ namespace ecommerce_mlm.admin
             try
             {
                 string filter = ddlStatusFilter.SelectedValue;
+                bool isSeller = hfActiveTab.Value == "SELLER";
+
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
-                    string sql = @"
-                        SELECT 
-                            p.Id,
-                            p.UserId,
-                            u.FullName,
-                            u.Username,
-                            p.RequestAmount,
-                            p.TdsDeduction,
-                            p.AdminCharges,
-                            p.NetPayable,
-                            p.Status,
-                            p.TransactionId,
-                            p.PaidDate,
-                            p.CreatedAt,
-                            b.BankName,
-                            b.AccountNumber,
-                            b.IFSCCode,
-                            b.AccountHolderName
-                        FROM PayoutRequests p
-                        INNER JOIN Users u ON p.UserId = u.Id
-                        LEFT JOIN UserBankDetails b ON u.Id = b.UserId
-                        WHERE 1=1";
+                    string sql = "";
+
+                    if (isSeller)
+                    {
+                        sql = @"
+                            SELECT 
+                                p.Id,
+                                p.SellerId AS UserId,
+                                u.FullName,
+                                u.StoreName AS Username,
+                                p.RequestAmount,
+                                0.00 AS TdsDeduction,
+                                0.00 AS AdminCharges,
+                                p.RequestAmount AS NetPayable,
+                                p.Status,
+                                p.TransactionId,
+                                p.PaidDate,
+                                p.CreatedAt,
+                                u.BankName,
+                                u.BankAccountNumber AS AccountNumber,
+                                u.BankIFSC AS IFSCCode,
+                                u.BankHolderName AS AccountHolderName
+                            FROM SellerPayoutRequests p
+                            INNER JOIN SellerUsers u ON p.SellerId = u.Id
+                            WHERE 1=1";
+                    }
+                    else
+                    {
+                        sql = @"
+                            SELECT 
+                                p.Id,
+                                p.UserId,
+                                u.FullName,
+                                u.Username,
+                                p.RequestAmount,
+                                p.TdsDeduction,
+                                p.AdminCharges,
+                                p.NetPayable,
+                                p.Status,
+                                p.TransactionId,
+                                p.PaidDate,
+                                p.CreatedAt,
+                                b.BankName,
+                                b.AccountNumber,
+                                b.IFSCCode,
+                                b.AccountHolderName
+                            FROM PayoutRequests p
+                            INNER JOIN Users u ON p.UserId = u.Id
+                            LEFT JOIN UserBankDetails b ON u.Id = b.UserId
+                            WHERE 1=1";
+                    }
 
                     if (filter != "ALL")
                     {
@@ -120,6 +152,22 @@ namespace ecommerce_mlm.admin
 
         protected void ddlStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
+            BindPayoutGrid();
+        }
+
+        protected void btnTabMember_Click(object sender, EventArgs e)
+        {
+            hfActiveTab.Value = "MEMBER";
+            btnTabMember.CssClass = "tab-btn active";
+            btnTabSeller.CssClass = "tab-btn";
+            BindPayoutGrid();
+        }
+
+        protected void btnTabSeller_Click(object sender, EventArgs e)
+        {
+            hfActiveTab.Value = "SELLER";
+            btnTabMember.CssClass = "tab-btn";
+            btnTabSeller.CssClass = "tab-btn active";
             BindPayoutGrid();
         }
 
@@ -156,10 +204,13 @@ namespace ecommerce_mlm.admin
 
             try
             {
+                bool isSeller = hfActiveTab.Value == "SELLER";
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
-                    string sql = "UPDATE PayoutRequests SET Status = 'PAID', TransactionId = @txn, PaidDate = GETDATE() WHERE Id = @id";
+                    string sql = isSeller 
+                        ? "UPDATE SellerPayoutRequests SET Status = 'PAID', TransactionId = @txn, PaidDate = GETDATE() WHERE Id = @id"
+                        : "UPDATE PayoutRequests SET Status = 'PAID', TransactionId = @txn, PaidDate = GETDATE() WHERE Id = @id";
                     using (SqlCommand cmd = new SqlCommand(sql, con))
                     {
                         cmd.Parameters.AddWithValue("@txn", txn);
@@ -190,10 +241,13 @@ namespace ecommerce_mlm.admin
 
             try
             {
+                bool isSeller = hfActiveTab.Value == "SELLER";
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
-                    string sql = "UPDATE PayoutRequests SET Status = 'REJECTED', AdminRemarks = @reason WHERE Id = @id";
+                    string sql = isSeller
+                        ? "UPDATE SellerPayoutRequests SET Status = 'REJECTED', AdminRemarks = @reason WHERE Id = @id"
+                        : "UPDATE PayoutRequests SET Status = 'REJECTED', AdminRemarks = @reason WHERE Id = @id";
                     using (SqlCommand cmd = new SqlCommand(sql, con))
                     {
                         cmd.Parameters.AddWithValue("@reason", reason);

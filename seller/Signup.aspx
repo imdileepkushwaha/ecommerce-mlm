@@ -17,6 +17,15 @@
     </head>
 
     <body>
+        <!-- Immediate Theme State Loader -->
+        <script type="text/javascript">
+            (function () {
+                var savedTheme = localStorage.getItem("theme");
+                if (savedTheme === "dark") {
+                    document.body.classList.add("dark-theme");
+                }
+            })();
+        </script>
         <form id="form1" runat="server">
             <div class="reg-page-wrap">
                 <div class="reg-card">

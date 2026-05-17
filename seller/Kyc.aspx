@@ -8,7 +8,7 @@
 
         <!-- KYC HEADER -->
         <div class="kyc-hero">
-            <h1>KYC & Banking Portal</h1>
+            <h1><i class="fas fa-shield-halved"></i> KYC & Banking Portal</h1>
             <p>Compliance and secure payouts. Please complete your business portfolio verification for commercial
                 eligibility.</p>
         </div>
@@ -116,7 +116,7 @@
             <!-- === SECTION 1: BUSINESS & TAX PROFILE === -->
             <div class="kyc-section">
                 <h3 class="kyc-sec-title">
-                    <i class="fas fa-building-columns" style="color: #6366f1;"></i> Business & Tax
+                    <i class="fas fa-building-columns" style="color: #ec4899;"></i> Business & Tax
                 </h3>
                 <p class="kyc-sec-sub">Legal company identity, tax registrations and verified proof uploads.</p>
 
@@ -179,7 +179,7 @@
             <!-- === SECTION 2: BANK ACCOUNT SETTLEMENT === -->
             <div class="kyc-section">
                 <h3 class="kyc-sec-title">
-                    <i class="fas fa-piggy-bank" style="color: #ec4899;"></i> Settlement Bank Account
+                    <i class="fas fa-piggy-bank" style="color: #10b981 ;"></i> Settlement Bank Account
                 </h3>
                 <p class="kyc-sec-sub">Commercial payouts are synced to this clearance pipeline. Ensure alignment with
                     bank ledger.</p>
