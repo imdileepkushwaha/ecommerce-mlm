@@ -1,24 +1,21 @@
 $connString = "Server=.;Database=ecomm_db;Trusted_Connection=True;"
-$sql = @"
-CREATE OR ALTER PROCEDURE sp_Seller_UpdateOrderStatus
-    @OrderId INT,
-    @Status NVARCHAR(100),
-    @PickupNote NVARCHAR(MAX) = NULL
-AS
-BEGIN
-    SET NOCOUNT ON;
-    UPDATE Orders 
-    SET Status = @Status, 
-        ReturnPickupNote = CASE WHEN @PickupNote IS NOT NULL THEN @PickupNote ELSE ReturnPickupNote END,
-        UpdatedAt = GETDATE() 
-    WHERE Id = @OrderId;
-END
+
+$alterTable = @"
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[Orders]') AND name = 'CouponCode')
+    ALTER TABLE [dbo].[Orders] ADD [CouponCode] VARCHAR(50) NULL;
 "@
+
+$createSp = Get-Content -Raw -Path (Join-Path $PSScriptRoot "sp_Seller_UpdateOrderStatus.sql")
 
 $connection = New-Object System.Data.SqlClient.SqlConnection($connString)
 $connection.Open()
-$command = New-Object System.Data.SqlClient.SqlCommand($sql, $connection)
-$command.ExecuteNonQuery()
+
+$cmd1 = New-Object System.Data.SqlClient.SqlCommand($alterTable, $connection)
+$cmd1.ExecuteNonQuery() | Out-Null
+
+$cmd2 = New-Object System.Data.SqlClient.SqlCommand($createSp, $connection)
+$cmd2.ExecuteNonQuery() | Out-Null
+
 $connection.Close()
 
-Write-Host "sp_Seller_UpdateOrderStatus UPDATED Successfully with @PickupNote parameter!"
+Write-Host "Orders.CouponCode + sp_Seller_UpdateOrderStatus (coupon restore on cancel) deployed."

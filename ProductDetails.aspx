@@ -8,11 +8,11 @@
                 background: #fee2e2;
                 color: #ef4444;
                 border: 1px solid #fecaca;
-                padding: 20px;
+                padding: 10px 20px;
                 border-radius: 12px;
-                font-weight: 800;
+                font-weight: 600;
                 text-align: center;
-                font-size: 1.2rem;
+                font-size: 1rem;
                 letter-spacing: 1px;
                 box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.05);
                 display: flex;
@@ -364,9 +364,7 @@
                                             title='<%# Eval("ColorName") %>'>
                                             <div class='<%# "pd-color-ball" + (Eval("Id").ToString() == productId.ToString() ? " active" : "") %>'
                                                 style='<%# "background-color:" + Eval("ColorCode") %>'>
-                                                <%# Eval("Id").ToString()==productId.ToString() ? "<i class=\" fas
-                                                    fa-check\" style=\"color:#fff; font-size:9px; text-shadow: 0 1px 2px
-                                                    rgba(0,0,0,0.5);\"></i>" : "" %>
+                                                <%# Eval("Id").ToString() == productId.ToString() ? "<i class=\"fas fa-check\" style=\"color:#fff; font-size:9px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);\"></i>" : "" %>
                                             </div>
                                         </a>
                                     </ItemTemplate>
@@ -627,8 +625,7 @@
 
                                                 <div class="pr-footer">
                                                     <span class="pr-date-time">
-                                                        <%# Convert.ToDateTime(Eval("ReviewDate")).ToString("yyyy-MM-dd
-                                                            HH:mm:ss") %>
+                                                        <%# Convert.ToDateTime(Eval("ReviewDate")).ToString("yyyy-MM-dd HH:mm:ss") %>
                                                     </span>
 
                                                     <div class="pr-helpful-btn">

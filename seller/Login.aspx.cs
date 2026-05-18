@@ -29,6 +29,10 @@ namespace EcommerceWebsite
                 {
                     ShowMsg("🎉 Account registered & verified successfully! Access will be active once system administrators complete verification.", false);
                 }
+                else if (Request.QueryString["blocked"] == "1")
+                {
+                    ShowMsg("Your seller session ended. This account may be deleted, suspended, or pending deletion.", true);
+                }
             }
         }
 
@@ -71,7 +75,8 @@ namespace EcommerceWebsite
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
-                    string query = "SELECT Id, FullName, Email, IsActive FROM SellerUsers WHERE Email = @e AND PasswordHash = @p";
+                    string query = @"SELECT Id, FullName, Email, IsActive, ISNULL(DeletionStatus, 'None') AS DeletionStatus
+                        FROM SellerUsers WHERE Email = @e AND PasswordHash = @p";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@e", email);
@@ -81,10 +86,10 @@ namespace EcommerceWebsite
                         {
                             if (dr.Read())
                             {
-                                bool active = Convert.ToBoolean(dr["IsActive"]);
-                                if (!active)
+                                string blockReason;
+                                if (!CanSellerSignIn(dr, out blockReason))
                                 {
-                                    ShowMsg("Your merchant portfolio is currently suspended by system administration.", true);
+                                    ShowMsg(blockReason, true);
                                     return;
                                 }
 
@@ -109,6 +114,32 @@ namespace EcommerceWebsite
             {
                 ShowMsg("Auth Gateway Fault: " + ex.Message, true);
             }
+        }
+
+        private static bool CanSellerSignIn(SqlDataReader dr, out string blockMessage)
+        {
+            blockMessage = "";
+            string del = dr["DeletionStatus"] != DBNull.Value ? dr["DeletionStatus"].ToString().Trim() : "None";
+
+            if (del.Equals("Approved", StringComparison.OrdinalIgnoreCase))
+            {
+                blockMessage = "This seller account has been deleted and can no longer sign in.";
+                return false;
+            }
+            if (del.Equals("Pending", StringComparison.OrdinalIgnoreCase))
+            {
+                blockMessage = "Account deletion is pending. Sign-in is disabled until an administrator resolves it.";
+                return false;
+            }
+
+            bool active = dr["IsActive"] != DBNull.Value && Convert.ToBoolean(dr["IsActive"]);
+            if (!active)
+            {
+                blockMessage = "Your merchant portfolio is currently suspended by system administration.";
+                return false;
+            }
+
+            return true;
         }
 
         private string ComputeSha256Hash(string rawData)
@@ -157,7 +188,8 @@ namespace EcommerceWebsite
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
-                    string query = "SELECT FullName, Email FROM SellerUsers WHERE Email = @email";
+                    string query = @"SELECT FullName, Email, IsActive, ISNULL(DeletionStatus, 'None') AS DeletionStatus
+                        FROM SellerUsers WHERE Email = @email";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@email", resetEmail);
@@ -165,6 +197,13 @@ namespace EcommerceWebsite
                         {
                             if (dr.Read())
                             {
+                                string blockReason;
+                                if (!CanSellerSignIn(dr, out blockReason))
+                                {
+                                    ShowResetMsg(blockReason, true);
+                                    return;
+                                }
+
                                 string fullName = dr["FullName"].ToString();
                                 
                                 // 1. Generate numeric code
@@ -261,6 +300,27 @@ namespace EcommerceWebsite
                 using (SqlConnection con = new SqlConnection(strcon))
                 {
                     con.Open();
+                    string checkQuery = @"SELECT IsActive, ISNULL(DeletionStatus, 'None') AS DeletionStatus
+                        FROM SellerUsers WHERE Email = @email";
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, con))
+                    {
+                        checkCmd.Parameters.AddWithValue("@email", resetEmail);
+                        using (SqlDataReader dr = checkCmd.ExecuteReader())
+                        {
+                            if (!dr.Read())
+                            {
+                                ShowResetMsg("Seller account not found.", true);
+                                return;
+                            }
+                            string blockReason;
+                            if (!CanSellerSignIn(dr, out blockReason))
+                            {
+                                ShowResetMsg(blockReason, true);
+                                return;
+                            }
+                        }
+                    }
+
                     string updateQuery = "UPDATE SellerUsers SET PasswordHash = @hash WHERE Email = @email";
                     using (SqlCommand cmd = new SqlCommand(updateQuery, con))
                     {

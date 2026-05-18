@@ -34,7 +34,7 @@
                             <span class="d-count" style="color: #10b981;">+₹<asp:Literal ID="litTotalCredited" runat="server">0</asp:Literal></span>
                             <span class="d-desc">Income from delivered products</span>
                         </div>
-                        <div class="d-icon-circle rv-ico-approved"><i class="fas fa-arrow-down-left"></i></div>
+                        <div class="d-icon-circle rv-ico-approved"><i class="fas fa-arrow-down"></i></div>
                     </div>
 
                     <!-- Card 2: Total Debits (Payouts) -->
@@ -44,7 +44,7 @@
                             <span class="d-count" style="color: #ef4444;">-₹<asp:Literal ID="litTotalSettled" runat="server">0</asp:Literal></span>
                             <span class="d-desc">Debited/approved payouts</span>
                         </div>
-                        <div class="d-icon-circle rv-ico-pending" style="background: rgba(239, 68, 68, 0.08); color: #ef4444;"><i class="fas fa-arrow-up-right"></i></div>
+                        <div class="d-icon-circle rv-ico-pending" style="background: rgba(239, 68, 68, 0.08); color: #ef4444;"><i class="fas fa-arrow-up"></i></div>
                     </div>
 
                     <!-- Card 3: Net Ledger Balance -->
@@ -54,7 +54,7 @@
                             <span class="d-count">₹<asp:Literal ID="litNetValue" runat="server">0</asp:Literal></span>
                             <span class="d-desc">Total credited minus paid out</span>
                         </div>
-                        <div class="d-icon-circle rv-ico-intake"><i class="fas fa-scale-balanced"></i></div>
+                        <div class="d-icon-circle rv-ico-intake"><i class="fas fa-balance-scale"></i></div>
                     </div>
                 </div>
 
@@ -126,8 +126,8 @@
                                     </td>
                                     <td>
                                         <%# Eval("TxnType").ToString() == "CREDIT" 
-                                            ? "<span class='earn-table-badge badge-delivered' style='padding:4px 8px;'><i class='fas fa-arrow-down-left' style='margin-right:4px;'></i>CREDIT</span>"
-                                            : "<span class='earn-table-badge badge-cancelled' style='padding:4px 8px;'><i class='fas fa-arrow-up-right' style='margin-right:4px;'></i>DEBIT</span>"
+                                            ? "<span class='earn-table-badge badge-delivered' style='padding:4px 8px;'><i class='fas fa-arrow-down' style='margin-right:4px;'></i>CREDIT</span>"
+                                            : "<span class='earn-table-badge badge-cancelled' style='padding:4px 8px;'><i class='fas fa-arrow-up' style='margin-right:4px;'></i>DEBIT</span>"
                                         %>
                                     </td>
                                     <td>

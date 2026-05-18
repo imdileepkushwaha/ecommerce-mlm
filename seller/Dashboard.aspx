@@ -66,6 +66,114 @@
         </div>
     </section>
 
+    <!-- SELLER PORTAL QUICK CONSOLE HUB (SPLIT WORKSPACE) -->
+    <div class="dash-split-container">
+        <!-- LEFT: QUICK OPERATIONS HUB -->
+        <div class="dash-split-left">
+            <div class="dash-card-header">
+                <h3><i class="fas fa-cubes" style="color: var(--accent); margin-right: 6px;"></i> Quick Navigation</h3>
+                <p>Instant shortcuts to manage products, inventory, payouts, and store profile settings.</p>
+            </div>
+            <div class="quick-nav-grid">
+                <a href="Products.aspx" class="quick-nav-card blue-theme">
+                    <div class="qcard-icon-box"><i class="fas fa-cubes"></i></div>
+                    <span>Products</span>
+                </a>
+                <a href="Inventory.aspx" class="quick-nav-card sky-theme">
+                    <div class="qcard-icon-box"><i class="fas fa-warehouse"></i></div>
+                    <span>Inventory</span>
+                </a>
+                <a href="Orders.aspx" class="quick-nav-card teal-theme">
+                    <div class="qcard-icon-box"><i class="fas fa-shopping-cart"></i></div>
+                    <span>Orders</span>
+                </a>
+                <a href="Coupons.aspx" class="quick-nav-card green-theme">
+                    <div class="qcard-icon-box"><i class="fas fa-ticket-alt"></i></div>
+                    <span>Coupons</span>
+                </a>
+                <a href="Settings.aspx" class="quick-nav-card rose-theme">
+                    <div class="qcard-icon-box"><i class="fas fa-truck-fast"></i></div>
+                    <span>Shipping</span>
+                </a>
+                <a href="earnings.aspx" class="quick-nav-card amber-theme">
+                    <div class="qcard-icon-box"><i class="fas fa-wallet"></i></div>
+                    <span>Earnings</span>
+                </a>
+                <a href="Settings.aspx" class="quick-nav-card slate-theme">
+                    <div class="qcard-icon-box"><i class="fas fa-cogs"></i></div>
+                    <span>Settings</span>
+                </a>
+                <a href="Profile.aspx" class="quick-nav-card violet-theme">
+                    <div class="qcard-icon-box"><i class="fas fa-user-circle"></i></div>
+                    <span>Profile</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- RIGHT: STORE SNAPSHOT STATUS HUB -->
+        <div class="dash-split-right">
+            <div class="snapshot-card">
+                <div class="snap-header-row">
+                    <div class="snap-icon-circle">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div class="snap-header-text">
+                        <div class="snap-status-indicator">
+                            <span class="status-dot pulsing"></span>
+                            <span>Live Console</span>
+                        </div>
+                        <h3>Store snapshot</h3>
+                    </div>
+                </div>
+
+                <div class="snap-stats-grid">
+                    <div class="snap-row-item">
+                        <div class="snap-item-left">
+                            <div class="snap-item-icon-box blue-theme">
+                                <i class="fas fa-box-open"></i>
+                            </div>
+                            <span class="snap-item-label">Live products</span>
+                        </div>
+                        <div class="snap-item-badge blue-theme">
+                            <asp:Literal ID="litSnapProducts" runat="server">0</asp:Literal>
+                        </div>
+                    </div>
+
+                    <div class="snap-row-item">
+                        <div class="snap-item-left">
+                            <div class="snap-item-icon-box green-theme">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <span class="snap-item-label">Orders (all time)</span>
+                        </div>
+                        <div class="snap-item-badge green-theme">
+                            <asp:Literal ID="litSnapAllOrders" runat="server">0</asp:Literal>
+                        </div>
+                    </div>
+
+                    <div class="snap-row-item">
+                        <div class="snap-item-left">
+                            <div class="snap-item-icon-box amber-theme">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <span class="snap-item-label">Awaiting confirm</span>
+                        </div>
+                        <div class="snap-item-badge amber-theme">
+                            <asp:Literal ID="litSnapPending" runat="server">0</asp:Literal>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="snap-action-footer">
+                    <a href="Orders.aspx" class="snap-footer-button">
+                        <span>Open order list</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- CORE WORKSPACE GRID (UPGRADED TO CATALOGUE-WRAPPER DESIGN SYSTEM) -->
     <div class="catalogue-wrapper">
         <!-- Flexible Header / Search Toolbar -->

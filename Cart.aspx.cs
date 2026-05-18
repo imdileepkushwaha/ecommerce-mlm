@@ -27,6 +27,13 @@ namespace ecommerce_mlm
                 LoadRuntimeSettings();
                 litShippingVisual.Text = "₹ " + ConfigShippingFee;
                 
+                if (Session["AppliedCouponCode"] != null)
+                {
+                    string code = Session["AppliedCouponCode"].ToString();
+                    hfAppliedCouponCode.Value = code;
+                    PopulateCouponMetadata(code);
+                }
+
                 LoadCartItems();
                 LoadSavedForLater();
             }
@@ -121,9 +128,27 @@ namespace ecommerce_mlm
                             decimal shipFee = 25; decimal.TryParse(ConfigShippingFee, out shipFee);
                             decimal platFee = 5; decimal.TryParse(ConfigPlatformFee, out platFee);
 
+                            // Parse active coupon discount if populated
+                            decimal discount = 0;
+                            string couponCode = hfAppliedCouponCode.Value.Trim().ToUpper();
+                            if (!string.IsNullOrEmpty(couponCode))
+                            {
+                                decimal.TryParse(hfCouponDiscountAmount.Value, out discount);
+                                pnlDiscountRow.Visible = discount > 0;
+                                pnlActiveCoupon.Visible = discount > 0;
+                                litDiscountAmt.Text = discount.ToString("N0");
+                                litActiveCode.Text = couponCode + " (-₹" + discount.ToString("N0") + ")";
+                            }
+                            else
+                            {
+                                pnlDiscountRow.Visible = false;
+                                pnlActiveCoupon.Visible = false;
+                            }
+
                             // Calculate Total with dynamic shipping based on promo threshold 
                             decimal shipping = _subtotal >= minFree ? 0 : shipFee;
-                            decimal finalTotal = _subtotal + shipping + platFee;
+                            decimal finalTotal = _subtotal + shipping + platFee - discount;
+                            if (finalTotal < 0) finalTotal = 0;
                             
                             // Set visual indicator (Green FREE or Currency Amount)
                             if (shipping == 0)
@@ -212,6 +237,228 @@ namespace ecommerce_mlm
             {
                 Response.Redirect("Login.aspx");
             }
+        }
+
+        protected void btnApplyCoupon_Click(object sender, EventArgs e)
+        {
+            lblCouponMsg.Visible = false;
+            string code = txtCouponCode.Text.Trim().ToUpper();
+            if (string.IsNullOrEmpty(code))
+            {
+                lblCouponMsg.Text = "❌ Please enter a coupon code.";
+                lblCouponMsg.CssClass = "text-danger";
+                lblCouponMsg.Visible = true;
+                return;
+            }
+
+            Session["AppliedCouponCode"] = code;
+            hfAppliedCouponCode.Value = code;
+
+            decimal subtotalVal = GetCartSubtotal();
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(strcon))
+                {
+                    con.Open();
+                    string qC = "SELECT * FROM Coupons WHERE CouponCode = @code AND IsActive = 1 AND StartDate <= GETDATE() AND EndDate >= GETDATE()";
+                    using (SqlCommand cmd = new SqlCommand(qC, con))
+                    {
+                        cmd.Parameters.AddWithValue("@code", code);
+                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                decimal minSpend = Convert.ToDecimal(dr["MinOrderAmount"]);
+                                int used = Convert.ToInt32(dr["UsedCount"]);
+                                int limit = Convert.ToInt32(dr["UsageLimit"]);
+
+                                if (subtotalVal < minSpend)
+                                {
+                                    lblCouponMsg.Text = "❌ Minimum spend of ₹" + minSpend.ToString("N0") + " is required to use this coupon.";
+                                    lblCouponMsg.CssClass = "text-danger";
+                                    lblCouponMsg.Visible = true;
+                                    ClearCouponState();
+                                }
+                                else if (used >= limit)
+                                {
+                                    lblCouponMsg.Text = "❌ This coupon limit has been fully redeemed.";
+                                    lblCouponMsg.CssClass = "text-danger";
+                                    lblCouponMsg.Visible = true;
+                                    ClearCouponState();
+                                }
+                                else
+                                {
+                                    string distType = dr["DiscountType"].ToString();
+                                    decimal distVal = Convert.ToDecimal(dr["DiscountValue"]);
+                                    decimal maxCap = dr["MaxDiscountAmount"] != DBNull.Value ? Convert.ToDecimal(dr["MaxDiscountAmount"]) : 0;
+
+                                    hfDiscountType.Value = distType;
+                                    hfDiscountValue.Value = distVal.ToString();
+                                    hfMinOrderAmount.Value = minSpend.ToString();
+                                    hfMaxDiscountAmount.Value = maxCap.ToString();
+
+                                    decimal discount = 0;
+                                    if (distType == "Percentage")
+                                    {
+                                        discount = subtotalVal * (distVal / 100);
+                                        if (maxCap > 0)
+                                        {
+                                            discount = Math.Min(discount, maxCap);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        discount = Math.Min(distVal, subtotalVal);
+                                    }
+
+                                    hfCouponDiscountAmount.Value = discount.ToString("F2");
+                                    litDiscountAmt.Text = discount.ToString("N0");
+                                    pnlDiscountRow.Visible = true;
+                                    pnlActiveCoupon.Visible = true;
+                                    litActiveCode.Text = code + " (-₹" + discount.ToString("N0") + ")";
+
+                                    lblCouponMsg.Text = "🎉 Coupon applied! Saved ₹" + discount.ToString("F0");
+                                    lblCouponMsg.CssClass = "text-success";
+                                    lblCouponMsg.Visible = true;
+                                }
+                            }
+                            else
+                            {
+                                lblCouponMsg.Text = "❌ Invalid, inactive, or expired coupon code.";
+                                lblCouponMsg.CssClass = "text-danger";
+                                lblCouponMsg.Visible = true;
+                                ClearCouponState();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblCouponMsg.Text = "❌ Error applying coupon: " + ex.Message;
+                lblCouponMsg.CssClass = "text-danger";
+                lblCouponMsg.Visible = true;
+                ClearCouponState();
+            }
+
+            LoadCartItems();
+            txtCouponCode.Text = "";
+        }
+
+        protected void btnRemoveCoupon_Click(object sender, EventArgs e)
+        {
+            ClearCouponState();
+            lblCouponMsg.Text = "ℹ️ Coupon code removed.";
+            lblCouponMsg.CssClass = "text-muted";
+            lblCouponMsg.Visible = true;
+
+            LoadCartItems();
+            txtCouponCode.Text = "";
+        }
+
+        private void PopulateCouponMetadata(string code)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(strcon))
+                {
+                    con.Open();
+                    string q = "SELECT * FROM Coupons WHERE CouponCode = @code AND IsActive = 1 AND StartDate <= GETDATE() AND EndDate >= GETDATE()";
+                    using (SqlCommand cmd = new SqlCommand(q, con))
+                    {
+                        cmd.Parameters.AddWithValue("@code", code);
+                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                hfDiscountType.Value = dr["DiscountType"].ToString();
+                                hfDiscountValue.Value = Convert.ToDecimal(dr["DiscountValue"]).ToString();
+                                hfMinOrderAmount.Value = Convert.ToDecimal(dr["MinOrderAmount"]).ToString();
+                                hfMaxDiscountAmount.Value = dr["MaxDiscountAmount"] != DBNull.Value ? Convert.ToDecimal(dr["MaxDiscountAmount"]).ToString() : "0";
+
+                                decimal minSpend = Convert.ToDecimal(dr["MinOrderAmount"]);
+                                decimal subtotalVal = GetCartSubtotal();
+                                if (subtotalVal >= minSpend)
+                                {
+                                    string distType = dr["DiscountType"].ToString();
+                                    decimal distVal = Convert.ToDecimal(dr["DiscountValue"]);
+                                    decimal maxCap = dr["MaxDiscountAmount"] != DBNull.Value ? Convert.ToDecimal(dr["MaxDiscountAmount"]) : 0;
+
+                                    decimal discount = 0;
+                                    if (distType == "Percentage")
+                                    {
+                                        discount = subtotalVal * (distVal / 100);
+                                        if (maxCap > 0) discount = Math.Min(discount, maxCap);
+                                    }
+                                    else
+                                    {
+                                        discount = Math.Min(distVal, subtotalVal);
+                                    }
+
+                                    hfCouponDiscountAmount.Value = discount.ToString("F2");
+                                }
+                                else
+                                {
+                                    ClearCouponState();
+                                }
+                            }
+                            else
+                            {
+                                ClearCouponState();
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                ClearCouponState();
+            }
+        }
+
+        private decimal GetCartSubtotal()
+        {
+            decimal total = 0;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(strcon))
+                {
+                    string query = @"SELECT c.Quantity, p.Price 
+                                     FROM CartItems c 
+                                     INNER JOIN SellerProducts p ON c.ProductId = p.Id 
+                                     WHERE c.SessionId = @sid AND c.IsSavedForLater = 0";
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@sid", Session.SessionID);
+                        con.Open();
+                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        {
+                            while (dr.Read())
+                            {
+                                int qty = Convert.ToInt32(dr["Quantity"]);
+                                decimal price = Convert.ToDecimal(dr["Price"]);
+                                total += (price * qty);
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+            return total;
+        }
+
+        private void ClearCouponState()
+        {
+            Session["AppliedCouponCode"] = null;
+            hfAppliedCouponCode.Value = "";
+            hfCouponDiscountAmount.Value = "0";
+            hfDiscountType.Value = "";
+            hfDiscountValue.Value = "0";
+            hfMinOrderAmount.Value = "0";
+            hfMaxDiscountAmount.Value = "0";
+            pnlDiscountRow.Visible = false;
+            pnlActiveCoupon.Visible = false;
         }
     }
 }

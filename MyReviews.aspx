@@ -43,8 +43,7 @@
                                                                 <!-- Delivered / Order Date -->
                                                                 <span class="order-date-text">
                                                                     <i class="far fa-calendar-alt"></i>
-                                                                    <%# Convert.ToDateTime(Eval("CreatedAt")).ToString("MMM
-                                                                        dd, yyyy") %>
+                                                                    <%# Convert.ToDateTime(Eval("CreatedAt")).ToString("MMM dd, yyyy") %>
                                                                 </span>
                                                             </div>
                                                         </div>

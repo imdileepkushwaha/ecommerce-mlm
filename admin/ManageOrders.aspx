@@ -1,191 +1,214 @@
-<%@ Page Title="Orders Management" Language="C#" MasterPageFile="~/admin/Admin.Master" AutoEventWireup="true"
+<%@ Page Title="Orders" Language="C#" MasterPageFile="~/admin/Admin.Master" AutoEventWireup="true"
     CodeFile="ManageOrders.aspx.cs" Inherits="ecommerce_mlm.admin.ManageOrders" %>
 
-    <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    </asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link rel="stylesheet" href="assets/css/admin-users.css?v=1.2" />
+    <link rel="stylesheet" href="assets/css/admin-orders.css?v=1.1" />
+</asp:Content>
 
-    <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-        <div class="u-mb-30 u-j-between u-a-center">
-            <div>
-                <h1 class="u-txt-lg">All Orders</h1>
-                <p class="u-txt-subtitle u-mt-5">Track, monitor, and progress client fulfillment sequences.</p>
-            </div>
-            <div class="u-d-flex u-gap-10">
-                <div class="u-search-group" id="searchGroup">
-                    <input type="text" id="jsSearchInput" placeholder="Search order ID or buyer..."
-                        onkeyup="filterOrdersTable()" class="u-search-box" />
-                    <i class="fas fa-times u-search-clear" onclick="clearSearch()"></i>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <div class="mu-page">
+        <span class="mu-overline">SHOP</span>
+        <h1 class="mu-title">Orders</h1>
+        <p class="mu-sub">Purchase orders across the store — newest first.</p>
+
+        <asp:Panel ID="pnlFlash" runat="server" Visible="false" CssClass="mu-flash">
+            <i runat="server" id="icoFlash" class="fas fa-check-circle"></i>
+            <asp:Literal ID="litFlash" runat="server" />
+        </asp:Panel>
+
+        <div class="mu-kpi-grid">
+            <div class="mu-kpi-card mu-kpi-blue">
+                <div class="mu-kpi-body">
+                    <label>ALL ORDERS</label>
+                    <strong><asp:Literal ID="litAllOrders" runat="server" Text="0" /></strong>
+                    <span>Store-wide total</span>
                 </div>
+                <div class="mu-kpi-ico"><i class="fas fa-receipt"></i></div>
+            </div>
+            <div class="mu-kpi-card mu-kpi-green">
+                <div class="mu-kpi-body">
+                    <label>NEEDS CONFIRM</label>
+                    <strong><asp:Literal ID="litNeedsConfirm" runat="server" Text="0" /></strong>
+                    <span>Processing — action required</span>
+                </div>
+                <div class="mu-kpi-ico"><i class="fas fa-clock"></i></div>
+            </div>
+            <div class="mu-kpi-card mu-kpi-purple">
+                <div class="mu-kpi-body">
+                    <label>IN TRANSIT</label>
+                    <strong><asp:Literal ID="litInTransit" runat="server" Text="0" /></strong>
+                    <span>Shipped / out for delivery</span>
+                </div>
+                <div class="mu-kpi-ico"><i class="fas fa-truck"></i></div>
+            </div>
+            <div class="mu-kpi-card mu-kpi-indigo">
+                <div class="mu-kpi-body">
+                    <label>DELIVERED</label>
+                    <strong><asp:Literal ID="litDelivered" runat="server" Text="0" /></strong>
+                    <span>Completed deliveries</span>
+                </div>
+                <div class="mu-kpi-ico"><i class="fas fa-check-circle"></i></div>
             </div>
         </div>
 
-        <div class="table-card">
-            <div class="table-header">
-                <h3 class="u-page-title">Purchase Orders</h3>
-                <asp:Label ID="lblCount" runat="server" CssClass="badge u-badge-count">Total: 0</asp:Label>
+        <div class="mu-table-card">
+            <div class="mu-table-toolbar">
+                <div class="mu-table-toolbar-left">
+                    <h3>Purchase Orders</h3>
+                    <p><asp:Literal ID="litTableHint" runat="server" /></p>
+                </div>
+                <div class="mu-search-wrap" id="searchGroup">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="txtSearch" class="mu-search-input" placeholder="Search ref, customer, email, status, total..." autocomplete="off" />
+                    <button type="button" class="mu-search-clear" onclick="clearSearch();" aria-label="Clear search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
-            <div class="table-responsive">
-                <asp:Repeater ID="rptOrders" runat="server" OnItemCommand="rptOrders_ItemCommand">
+
+            <div class="mu-table-scroll">
+                <asp:Repeater ID="rptOrders" runat="server">
                     <HeaderTemplate>
-                        <table class="admin-table">
+                        <table class="mo-orders-table" id="ordersTable">
                             <thead>
                                 <tr>
-                                    <th>TXN # / Time</th>
-                                    <th>Consumer Profile</th>
-                                    <th>Payment Mode</th>
                                     <th>Order Ref</th>
-                                    <th>Total</th>
+                                    <th>Customer</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Total</th>
+                                    <th>Payment</th>
+                                    <th>Shipping</th>
+                                    <th>Date</th>
+                                    <th class="mu-th-actions">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                     </HeaderTemplate>
                     <ItemTemplate>
-                        <tr>
+                        <tr class="mo-order-row">
+                            <td><span class="mo-order-ref"><%# FormatOrderRef(Eval("OrderRef"), Eval("Id")) %></span></td>
                             <td>
-                                <span class="u-order-id">#<%# Eval("Id") %></span>
-                                <div class="u-datetime-stack">
-                                    <div class="u-d-main">
-                                        <i class="far fa-calendar-check"></i> <%# Convert.ToDateTime(Eval("CreatedAt")).ToString("dd MMM, yyyy") %>
+                                <div class="mu-name-cell mo-customer-cell">
+                                    <span class="mu-avatar"><%# GetInitials(Eval("FullName")) %></span>
+                                    <div class="mo-customer-meta">
+                                        <span class="mo-customer-name"><%# Eval("FullName") %></span>
+                                        <span class="mo-customer-email"><%# Eval("Email") %></span>
                                     </div>
-                                    <div class="u-t-sub">
-                                        <%# Convert.ToDateTime(Eval("CreatedAt")).ToString("hh:mm tt") %>
-                                    </div>
                                 </div>
                             </td>
+                            <td><%# FormatStatusBadge(Eval("Status")) %></td>
+                            <td class="mo-total"><%# FormatTotal(Eval("TotalAmount")) %></td>
+                            <td><%# FormatPayment(Eval("PaymentMode")) %></td>
+                            <td><%# FormatShipping(Eval("ShipName"), Eval("StreetAddress"), Eval("City"), Eval("State"), Eval("ZipCode")) %></td>
+                            <td class="mo-date"><%# FormatDate(Eval("CreatedAt")) %></td>
                             <td>
-                                <div class="u-bold-700 u-color-dark">
-                                    <%# Eval("FullName") %>
-                                </div>
-                                <div class="u-txt-gray-sm">
-                                    <%# Eval("Email") %>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="badge badge-payment">
-                                    <i class="fas fa-credit-card u-mr-5"></i>
-                                    <%# Eval("PaymentMode") !=DBNull.Value ? Eval("PaymentMode") : "Standard" %>
-                                </span>
-                            </td>
-                            <td>
-                                <span class="u-txt-085 u-bold-700 u-color-brand">
-                                    <%# Eval("OrderRef") !=DBNull.Value ? Eval("OrderRef") : "PENDING" %>
-                                </span>
-                            </td>
-                            <td>
-                                <div class="u-bold-800 u-color-dark" style="font-size:1.1rem;">
-                                    ₹<%# Convert.ToDecimal(Eval("TotalAmount")).ToString("N0") %>
-                                </div>
-                                <div class="u-txt-gray-sm">
-                                    <%# Eval("ItemCount") %> Unit(s)
-                                </div>
-                            </td>
-                            <td>
-                                <span class='badge <%# GetStatusClass(Eval("Status")) %>'>
-                                    <%# Eval("Status") %>
-                                </span>
-                            </td>
-                            <td class="u-w-auto">
-                                <div class="u-d-flex u-gap-8">
-                                    <!-- View Details placeholder -->
-                                    <a href="#" class="action-btn-circle action-btn-view" title="Open Order Invoice">
-                                        <i class="fas fa-eye"></i>
+                                <div class="mu-actions">
+                                    <a href='ViewOrder.aspx?id=<%# Eval("Id") %>' class="action-btn-circle action-btn-view" title="View order details">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M9 4.46A9.8 9.8 0 0 1 12 4c4.182 0 7.028 2.5 8.725 4.704C21.575 9.81 22 10.361 22 12c0 1.64-.425 2.191-1.275 3.296C19.028 17.5 16.182 20 12 20s-7.028-2.5-8.725-4.704C2.425 14.192 2 13.639 2 12c0-1.64.425-2.191 1.275-3.296A14.5 14.5 0 0 1 5 6.821"></path><path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0Z"></path></g></svg>
                                     </a>
-
-                                    <!-- Quick Ship Action, visible if Pending -->
-                                    <asp:LinkButton runat="server" CommandName="UpdateStatus"
-                                        CommandArgument='<%# Eval("Id") + "|Shipped" %>'
-                                        Visible='<%# Eval("Status").ToString().ToLower() == "pending" %>'
-                                        CssClass="action-btn-circle action-btn-ship" ToolTip="Promote to Shipped">
-                                        <i class="fas fa-truck"></i>
-                                    </asp:LinkButton>
-
-                                    <!-- Quick Deliver Action, visible if Shipped -->
-                                    <asp:LinkButton runat="server" CommandName="UpdateStatus"
-                                        CommandArgument='<%# Eval("Id") + "|Delivered" %>'
-                                        Visible='<%# Eval("Status").ToString().ToLower() == "shipped" %>'
-                                        CssClass="action-btn-circle action-btn-deliver" ToolTip="Complete as Delivered">
-                                        <i class="fas fa-check-double"></i>
-                                    </asp:LinkButton>
                                 </div>
                             </td>
                         </tr>
                     </ItemTemplate>
                     <FooterTemplate>
-                        </tbody>
+                            </tbody>
                         </table>
                     </FooterTemplate>
                 </asp:Repeater>
 
-                <!-- Search Failover Rendering -->
-                <div id="jsEmptyState" class="u-empty-state u-d-none">
-                    <div style="padding:60px; text-align:center;">
-                        <i class="fas fa-search-minus u-empty-icon" style="color:#cbd5e1; font-size:4rem;"></i>
-                        <h3 class="u-color-dark u-mb-15">No Transactions Identified</h3>
-                        <p class="u-txt-subtitle">Refine structural query parameters to isolate specified commerce
-                            records.</p>
+                <asp:Panel ID="pnlEmpty" runat="server" Visible="false" CssClass="mu-empty-state">
+                    <div class="mu-empty-ico mu-empty-ico-muted"><i class="fas fa-receipt"></i></div>
+                    <h4 class="mu-empty-title">No orders yet</h4>
+                    <p class="mu-empty-desc">Customer purchases will appear here once checkout is complete.</p>
+                </asp:Panel>
+
+                <div id="jsEmptyState" class="mu-empty-state u-d-none" aria-live="polite">
+                    <div class="mu-empty-ico"><i class="fas fa-search"></i></div>
+                    <h4 class="mu-empty-title">No matches on this page</h4>
+                    <p class="mu-empty-desc">Nothing matches <strong id="jsEmptyQuery"></strong>. Try another ref, customer, email, or status.</p>
+                    <button type="button" class="mu-empty-btn" onclick="clearSearch();">
+                        <i class="fas fa-times"></i> Clear search
+                    </button>
+                </div>
+            </div>
+
+            <div class="mu-table-foot">
+                <div class="mu-table-foot-left">
+                    <asp:Literal ID="litShowing" runat="server" Text="Showing 0 of 0" />
+                </div>
+                <div class="mu-table-foot-right">
+                    <div class="mu-per-page">
+                        <span>Per page</span>
+                        <asp:DropDownList ID="ddlPageSize" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPageSize_SelectedIndexChanged" ClientIDMode="Static">
+                            <asp:ListItem Text="10" Value="10" Selected="True" />
+                            <asp:ListItem Text="25" Value="25" />
+                            <asp:ListItem Text="50" Value="50" />
+                            <asp:ListItem Text="100" Value="100" />
+                        </asp:DropDownList>
+                    </div>
+                    <asp:Literal ID="litPageInfo" runat="server" Text="Page 1 of 1" />
+                    <div class="mo-pager">
+                        <asp:Literal ID="litPager" runat="server" />
                     </div>
                 </div>
-
-                <asp:Panel ID="pnlEmpty" runat="server" Visible="false" CssClass="u-empty-state">
-                    <i class="fas fa-receipt u-empty-icon"></i>
-                    <h4>Zero transactional records logged within cycle window.</h4>
-                </asp:Panel>
             </div>
         </div>
+    </div>
 
-        <script type='text/javascript'>
-            function filterOrdersTable() {
-                const input = document.getElementById('jsSearchInput');
-                const group = document.getElementById('searchGroup');
-                const filter = input.value.toUpperCase();
+    <script type="text/javascript">
+        (function () {
+            var input = document.getElementById('txtSearch');
+            if (!input) return;
+            input.addEventListener('input', filterOrdersTable);
+        })();
 
-                if (group) {
-                    if (filter.length > 0) group.classList.add('has-val');
-                    else group.classList.remove('has-val');
-                }
+        function filterOrdersTable() {
+            var input = document.getElementById('txtSearch');
+            var group = document.getElementById('searchGroup');
+            var table = document.getElementById('ordersTable');
+            var emptyEl = document.getElementById('jsEmptyState');
+            if (!input || !table) return;
 
-                const tableEl = document.querySelector('.admin-table');
-                const emptyEl = document.getElementById('jsEmptyState');
-                const tbody = tableEl ? tableEl.querySelector('tbody') : null;
+            var filter = input.value.toUpperCase();
+            if (group) {
+                if (filter.length > 0) group.classList.add('has-val');
+                else group.classList.remove('has-val');
+            }
 
-                if (!tbody || !tableEl) return;
+            var tbody = table.querySelector('tbody');
+            if (!tbody) return;
 
-                const rows = tbody.getElementsByTagName('tr');
-                let visibleCount = 0;
-
-                for (let i = 0; i < rows.length; i++) {
-                    const rowText = rows[i].innerText.toUpperCase();
-                    if (rowText.indexOf(filter) > -1) {
-                        rows[i].classList.remove('u-d-none');
-                        visibleCount++;
-                    } else {
-                        rows[i].classList.add('u-d-none');
-                    }
-                }
-
-                if (visibleCount === 0) {
-                    tableEl.classList.add('u-d-none');
-                    if (emptyEl) emptyEl.classList.remove('u-d-none');
+            var rows = tbody.querySelectorAll('.mo-order-row');
+            var visible = 0;
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].innerText.toUpperCase().indexOf(filter) > -1) {
+                    rows[i].style.display = '';
+                    visible++;
                 } else {
-                    tableEl.classList.remove('u-d-none');
-                    if (emptyEl) emptyEl.classList.add('u-d-none');
-                }
-
-                const countBadge = document.getElementById('<%= lblCount.ClientID %>');
-                if (countBadge) {
-                    countBadge.innerText = 'Filtered: ' + visibleCount;
+                    rows[i].style.display = 'none';
                 }
             }
 
-            function clearSearch() {
-                const input = document.getElementById('jsSearchInput');
-                if (input) {
-                    input.value = '';
-                    filterOrdersTable();
-                    input.focus();
-                }
+            var queryEl = document.getElementById('jsEmptyQuery');
+            if (queryEl) queryEl.textContent = input.value ? '"' + input.value + '"' : 'your search';
+
+            if (visible === 0 && rows.length > 0) {
+                table.style.display = 'none';
+                if (emptyEl) emptyEl.classList.remove('u-d-none');
+            } else {
+                table.style.display = '';
+                if (emptyEl) emptyEl.classList.add('u-d-none');
             }
-        </script>
-    </asp:Content>
+        }
+
+        function clearSearch() {
+            var input = document.getElementById('txtSearch');
+            if (input) {
+                input.value = '';
+                filterOrdersTable();
+                input.focus();
+            }
+        }
+    </script>
+</asp:Content>

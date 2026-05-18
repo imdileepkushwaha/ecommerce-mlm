@@ -263,7 +263,7 @@
                                     <i class="fas fa-undo"></i> Return / Replace
                                 </asp:LinkButton>
 
-                                <a href="ProductList.aspx" class="btn-action-pill btn-act-review" runat="server" id="btnWriteReview" Visible="false">
+                                <a href="MyReviews.aspx" class="btn-action-pill btn-act-review" runat="server" id="btnWriteReview" Visible="false">
                                     <i class="fas fa-star"></i> Write Review
                                 </a>
 

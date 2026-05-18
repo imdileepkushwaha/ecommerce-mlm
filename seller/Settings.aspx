@@ -18,8 +18,7 @@
             <!-- 1. PORTAL HEADER -->
             <div class="page-action-bar">
                 <div class="welcome-title">
-                    <h1 style="font-size: 1.6rem;"><i class="fas fa-cogs"
-                            style="color: var(--accent); margin-right: 8px;"></i>Settings</h1>
+                    <h1><i class="fas fa-cogs" style="color: var(--accent); margin-right: 8px;"></i>Settings</h1>
                     <p>Seller account, payouts, shipping aur security — sab sections neeche zones me grouped hain.</p>
                 </div>
                 <div>
