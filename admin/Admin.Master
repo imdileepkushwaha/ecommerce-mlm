@@ -1,105 +1,308 @@
 <%@ Master Language="C#" AutoEventWireup="true" CodeFile="Admin.Master.cs" Inherits="ecommerce_mlm.admin.Admin" %>
 
+
+
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head runat="server">
+
     <meta charset="utf-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title><%: Page.Title %> - Command Center</title>
+
     <link rel="stylesheet" href="../assets/fonts/fontawesome/css/all.min.css" />
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/admin.css?v=1.4" />
+
+    <link rel="stylesheet" href="assets/css/admin.css?v=3.2" />
+
     <asp:ContentPlaceHolder ID="head" runat="server">
+
     </asp:ContentPlaceHolder>
+
 </head>
+
 <body>
+
     <form id="form1" runat="server">
+
         <!-- SIDEBAR -->
+
         <aside class="admin-sidebar">
+
             <div class="sb-logo">
+
                 <i class="fas fa-shield-halved"></i>
+
                 <span>MLM ADMIN</span>
+
             </div>
+
             <nav class="sb-nav">
+
+                <div class="sb-nav-label">Overview</div>
+
                 <a href="AdminDashboard.aspx" class="nav-item" data-page="admindashboard.aspx">
+
                     <i class="fas fa-chart-pie"></i> Dashboard
+
                 </a>
+
+                <div class="sb-nav-label">Marketplace</div>
+
                 <a href="ManageUsers.aspx" class="nav-item" data-page="manageusers.aspx">
+
                     <i class="fas fa-users"></i> Users
+
                 </a>
+
                 <a href="ManageSellers.aspx" class="nav-item" data-page="managesellers.aspx">
+
                     <i class="fas fa-store"></i> Sellers
+
                 </a>
+
                 <a href="KycAudits.aspx" class="nav-item u-j-between" data-page="kycaudits.aspx">
+
                     <div class="u-d-flex u-a-center u-gap-12">
+
                         <i class="fas fa-address-card"></i> KYC Requests
+
                     </div>
+
                     <asp:Literal ID="litKycBadge" runat="server"></asp:Literal>
+
                 </a>
+
+                <div class="sb-nav-label">Shop</div>
+
                 <a href="ManageProducts.aspx" class="nav-item" data-page="manageproducts.aspx">
+
                     <i class="fas fa-box"></i> Products
+
                 </a>
+
                 <a href="ManageOrders.aspx" class="nav-item" data-page="manageorders.aspx">
+
                     <i class="fas fa-receipt"></i> Orders
+
                 </a>
+
+                <div class="sb-nav-label">Finance &amp; Compliance</div>
+
                 <a href="AccountDeletions.aspx" class="nav-item u-j-between" data-page="accountdeletions.aspx">
+
                     <div class="u-d-flex u-a-center u-gap-12"><i class="fas fa-user-minus"></i> Deletion Requests</div>
+
                     <asp:Literal ID="litDelBadge" runat="server"></asp:Literal>
+
                 </a>
+
                 <a href="ManagePayouts.aspx" class="nav-item" data-page="managepayouts.aspx">
+
                     <i class="fas fa-money-check-alt"></i> Payout Requests
+
                 </a>
+
+                <div class="sb-nav-label">Network</div>
+
                 <a href="GenealogyTree.aspx" class="nav-item" data-page="genealogytree.aspx">
+
                     <i class="fas fa-sitemap"></i> Genealogy Tree
+
                 </a>
+
+                <div class="sb-nav-label">System</div>
+
                 <a href="AdminSettings.aspx" class="nav-item" data-page="adminsettings.aspx">
+
                     <i class="fas fa-cog"></i> System Settings
+
                 </a>
+
             </nav>
+
             <div class="sb-bottom-pane">
+
                 <asp:LinkButton ID="lnkLogout" runat="server" CssClass="nav-item nav-item-logout" OnClick="lnkLogout_Click">
+
                     <i class="fas fa-sign-out-alt"></i> Secure Logout
+
                 </asp:LinkButton>
+
             </div>
+
         </aside>
 
+
+
         <!-- MAIN BODY -->
+
         <main class="main-panel">
+
             <header class="admin-hdr">
-                <div class="hdr-left">
-                    <h2>System Core Bridge</h2>
+
+                <div class="hdr-search-wrap">
+
+                    <i class="fas fa-search hdr-search-icon"></i>
+
+                    <input type="text" id="hdrSearchInput" class="hdr-search-input" placeholder="Search users, orders, sellers..." autocomplete="off" />
+
+                    <div id="hdrSearchResults" class="hdr-search-dropdown"></div>
+
                 </div>
-                <div class="hdr-right">
-                    <div class="admin-profile">
-                        <div class="profile-icon"><i class="fas fa-user-shield"></i></div>
-                        <div class="u-admin-info-stack">
-                            <div class="u-admin-name-lbl"><asp:Literal ID="litAdminName" runat="server"></asp:Literal></div>
-                            <div class="u-admin-role-lbl">Super Admin</div>
+
+
+
+                <div class="hdr-actions">
+
+                    <button type="button" id="btnFullscreen" class="hdr-icon-btn" title="Fullscreen">
+
+                        <i class="fas fa-expand"></i>
+
+                    </button>
+
+
+
+                    <div class="hdr-dropdown-wrap">
+
+                        <button type="button" id="btnAppsToggle" class="hdr-icon-btn" title="Quick modules">
+
+                            <i class="fas fa-th"></i>
+
+                        </button>
+
+                        <div id="hdrAppsMenu" class="hdr-dropdown hdr-apps-dropdown">
+
+                            <div class="hdr-drop-title">Quick modules</div>
+
+                            <a href="AdminDashboard.aspx" class="hdr-app-link"><i class="fas fa-chart-pie"></i> Dashboard</a>
+
+                            <a href="ManageUsers.aspx" class="hdr-app-link"><i class="fas fa-users"></i> Users</a>
+
+                            <a href="ManageOrders.aspx" class="hdr-app-link"><i class="fas fa-receipt"></i> Orders</a>
+
+                            <a href="ManageSellers.aspx" class="hdr-app-link"><i class="fas fa-store"></i> Sellers</a>
+
+                            <a href="KycAudits.aspx" class="hdr-app-link"><i class="fas fa-id-card"></i> KYC</a>
+
+                            <a href="AdminSettings.aspx" class="hdr-app-link"><i class="fas fa-cog"></i> Settings</a>
+
                         </div>
+
                     </div>
+
+
+
+                    <div class="hdr-dropdown-wrap">
+
+                        <button type="button" id="btnNotif" class="hdr-icon-btn hdr-notif-btn" title="Notifications">
+
+                            <i class="far fa-bell"></i>
+
+                            <asp:Literal ID="litNotifDot" runat="server"></asp:Literal>
+
+                        </button>
+
+                        <div id="hdrNotifPanel" class="hdr-dropdown hdr-notif-dropdown">
+
+                            <div class="hdr-drop-title">Notifications</div>
+
+                            <asp:Literal ID="litNotifList" runat="server"></asp:Literal>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="hdr-dropdown-wrap">
+
+                        <button type="button" id="btnProfile" class="hdr-profile-pill">
+
+                            <span class="hdr-avatar"><asp:Literal ID="litAdminInitials" runat="server">SA</asp:Literal></span>
+
+                            <span class="hdr-profile-text">
+
+                                <strong><asp:Literal ID="litAdminName" runat="server"></asp:Literal></strong>
+
+                                <span>Administrator</span>
+
+                            </span>
+
+                        </button>
+
+                        <div id="hdrProfileMenu" class="hdr-dropdown hdr-profile-dropdown">
+
+                            <a href="AdminDashboard.aspx" class="hdr-profile-link"><i class="fas fa-chart-pie"></i> Dashboard</a>
+
+                            <a href="AdminSettings.aspx" class="hdr-profile-link"><i class="fas fa-cog"></i> Settings</a>
+
+                            <asp:LinkButton ID="lnkHeaderLogout" runat="server" CssClass="hdr-profile-link hdr-profile-logout" OnClick="lnkLogout_Click">
+
+                                <i class="fas fa-sign-out-alt"></i> Logout
+
+                            </asp:LinkButton>
+
+                        </div>
+
+                    </div>
+
                 </div>
+
             </header>
 
+
+
             <div class="content-wrapper">
+
                 <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+
                 </asp:ContentPlaceHolder>
+
             </div>
+
         </main>
+
     </form>
+
     
+
+    <script src="assets/js/admin-header.js?v=1.1"></script>
+
     <script type="text/javascript">
+
         document.addEventListener("DOMContentLoaded", function() {
+
             const currentPath = window.location.pathname.toLowerCase();
+
             const navItems = document.querySelectorAll('.sb-nav .nav-item');
+
             
+
             navItems.forEach(item => {
-                item.classList.remove('active'); // Clean first
+
+                item.classList.remove('active');
+
                 const targetPage = item.getAttribute('data-page');
+
                 if (targetPage && currentPath.includes(targetPage)) {
+
                     item.classList.add('active');
+
                 }
+
             });
+
         });
+
     </script>
+
 </body>
+
 </html>
+

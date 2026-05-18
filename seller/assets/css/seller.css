@@ -202,14 +202,13 @@ a {
 
 .welcome-title h1 {
     font-size: 1.25rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+    font-weight: 700;
 }
 
 .welcome-title p {
     color: var(--text-secondary);
     margin-top: 4px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 500;
 }
 
@@ -1019,15 +1018,14 @@ a {
 }
 
 .kyc-hero h1 {
-    font-size: 1.75rem;
-    font-weight: 800;
+    font-size: 1.25rem;
+    font-weight: 700;
     color: #0f172a;
-    letter-spacing: -0.8px;
 }
 
 .kyc-hero p {
     color: #888888;
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     margin-top: 6px;
 }
 
@@ -1084,8 +1082,8 @@ a {
 }
 
 .kyc-stat-val {
-    font-size: 1.6rem;
-    font-weight: 800;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: #0f172a;
     line-height: 1.1;
     margin-bottom: 4px;
@@ -1614,18 +1612,18 @@ a {
     background: linear-gradient(135deg, var(--accent), var(--accent-hover));
     color: #fff !important;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     text-decoration: none !important;
-    padding: 12px 24px;
-    border-radius: 12px;
-    /* box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.25); */
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
     transition: all 0.25s ease;
     border: none;
     cursor: pointer;
 }
 
 .add-prod-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     /* box-shadow: 0 12px 20px -3px rgba(99, 102, 241, 0.35); */
 }
 
@@ -2844,15 +2842,15 @@ a {
 }
 
 .prof-header-title h2 {
-    font-size: 1.75rem;
-    font-weight: 800;
+    font-size: 1.25rem;
+    font-weight: 700;
     color: #0f172a;
     margin: 0 0 6px 0;
     letter-spacing: -0.5px;
 }
 
 .prof-header-title p {
-    font-size: 0.88rem;
+    font-size: 0.75rem;
     color: #888888;
     margin: 0;
     font-weight: 500;
@@ -2896,7 +2894,7 @@ a {
     background: #ef4444;
     color: #ffffff;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.80rem;
     padding: 10px 20px;
     border-radius: 10px;
     text-decoration: none;
@@ -3017,14 +3015,14 @@ a {
 }
 
 .prof-sec-head h3 {
-    font-size: 1.15rem;
-    font-weight: 800;
+    font-size: 1rem;
+    font-weight: 700;
     color: #0f172a;
     margin: 0 0 4px 0;
 }
 
 .prof-sec-head p {
-    font-size: 0.82rem;
+    font-size: 0.75rem;
     color: #888888;
     margin: 0;
     font-weight: 500;
@@ -3288,7 +3286,7 @@ a {
     }
 
     .prof-header-title p {
-        font-size: 0.82rem !important;
+        font-size: 0.75rem !important;
         line-height: 1.4 !important;
     }
 
@@ -7806,7 +7804,7 @@ body.dark-theme .empty-variants {
 .inv-db-header {
     padding: 20px 25px;
     border-bottom: 1.5px solid #e2e8f0;
-    background: #fff;
+    background: #fafafa;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -10123,8 +10121,7 @@ body.dark-theme .p-info-block h4 {
    Merchant Earnings Page (earnings.aspx) Core Styles
    ================================================== */
 .earn-header h1 {
-    font-weight: 800;
-    letter-spacing: -0.8px;
+    font-weight: 700;
     color: var(--text-primary);
 }
 
@@ -10455,7 +10452,7 @@ body.dark-theme .earn-btn-cancel:hover {
    Merchant Earnings Page - Shifted Inline CSS & Right-aligned search
    ================================================== */
 .earn-welcome-title h1 {
-    font-size: 1.6rem !important;
+    font-size: 1.25rem !important;
     display: flex;
     align-items: center;
 }
@@ -12024,7 +12021,7 @@ body.dark-theme .hdr-hamburger-btn:hover {
     }
 
     .welcome-title h1 {
-        font-size: 1.15rem !important;
+        font-size: 1rem !important;
     }
 
     .inner-content-wrapper {
@@ -12060,12 +12057,12 @@ body.dark-theme .hdr-hamburger-btn:hover {
     }
 
     .kyc-hero h1 {
-        font-size: 1.45rem !important;
+        font-size: 1rem !important;
         letter-spacing: -0.5px !important;
     }
 
     .kyc-hero p {
-        font-size: 0.82rem !important;
+        font-size: 0.75rem !important;
         line-height: 1.4 !important;
     }
 
@@ -12285,4 +12282,842 @@ body.dark-theme .hdr-hamburger-btn:hover {
         font-size: 0.76rem !important;
         border-radius: 6px !important;
     }
+}
+
+/* ===================================================
+   DASHBOARD SPLIT WORKSPACE CONSOLE AESTHETICS
+   =================================================== */
+.dash-split-container {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.dash-split-left {
+    flex: 2 1 0%;
+    background: #ffffff;
+    border: 1.5px solid rgba(226, 232, 240, 0.8);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.dash-split-right {
+    flex: 1 1 0%;
+}
+
+body.dark-theme .dash-split-left {
+    background: #1e1e24;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dash-card-header {
+    margin-bottom: 20px;
+}
+
+.dash-card-header h3 {
+    margin: 0 0 6px 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+body.dark-theme .dash-card-header h3 {
+    color: #ffffff;
+}
+
+.dash-card-header p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+body.dark-theme .dash-card-header p {
+    color: #94a3b8;
+}
+
+.quick-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* Products Card: Indigo */
+.quick-nav-card.blue-theme {
+    --card-color: #6366f1;
+    --card-bg: #eef2ff;
+    --card-shadow: rgba(99, 102, 241, 0.12);
+}
+
+body.dark-theme .quick-nav-card.blue-theme {
+    --card-bg: rgba(99, 102, 241, 0.12);
+}
+
+/* Inventory Card: Cyan/Sky */
+.quick-nav-card.sky-theme {
+    --card-color: #0ea5e9;
+    --card-bg: #f0f9ff;
+    --card-shadow: rgba(14, 165, 233, 0.12);
+}
+
+body.dark-theme .quick-nav-card.sky-theme {
+    --card-bg: rgba(14, 165, 233, 0.12);
+}
+
+/* Orders Card: Teal */
+.quick-nav-card.teal-theme {
+    --card-color: #0d9488;
+    --card-bg: #f0fdfa;
+    --card-shadow: rgba(13, 148, 136, 0.12);
+}
+
+body.dark-theme .quick-nav-card.teal-theme {
+    --card-bg: rgba(13, 148, 136, 0.12);
+}
+
+/* Coupons Card: Green/Emerald */
+.quick-nav-card.green-theme {
+    --card-color: #10b981;
+    --card-bg: #ecfdf5;
+    --card-shadow: rgba(16, 185, 129, 0.12);
+}
+
+body.dark-theme .quick-nav-card.green-theme {
+    --card-bg: rgba(16, 185, 129, 0.12);
+}
+
+/* Shipping Card: Rose/Pink */
+.quick-nav-card.rose-theme {
+    --card-color: #f43f5e;
+    --card-bg: #fff1f2;
+    --card-shadow: rgba(244, 63, 94, 0.12);
+}
+
+body.dark-theme .quick-nav-card.rose-theme {
+    --card-bg: rgba(244, 63, 94, 0.12);
+}
+
+/* Earnings Card: Amber */
+.quick-nav-card.amber-theme {
+    --card-color: #f59e0b;
+    --card-bg: #fffbeb;
+    --card-shadow: rgba(245, 158, 11, 0.12);
+}
+
+body.dark-theme .quick-nav-card.amber-theme {
+    --card-bg: rgba(245, 158, 11, 0.12);
+}
+
+/* Settings Card: Slate/Gray */
+.quick-nav-card.slate-theme {
+    --card-color: #64748b;
+    --card-bg: #f1f5f9;
+    --card-shadow: rgba(100, 116, 139, 0.12);
+}
+
+body.dark-theme .quick-nav-card.slate-theme {
+    --card-bg: rgba(100, 116, 139, 0.12);
+}
+
+/* Profile Card: Purple/Violet */
+.quick-nav-card.violet-theme {
+    --card-color: #a855f7;
+    --card-bg: #faf5ff;
+    --card-shadow: rgba(168, 85, 247, 0.12);
+}
+
+body.dark-theme .quick-nav-card.violet-theme {
+    --card-bg: rgba(168, 85, 247, 0.12);
+}
+
+.quick-nav-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 12px;
+    background: #ffffff;
+    border: 1.5px solid rgba(226, 232, 240, 0.8);
+    border-radius: 14px;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    min-height: 104px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.01);
+}
+
+body.dark-theme .quick-nav-card {
+    background: #1e1e24;
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.qcard-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    color: var(--card-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    transition: all 0.25s ease;
+}
+
+.quick-nav-card span {
+    font-size: 0.85rem;
+    font-weight: 750;
+    color: #334155;
+    transition: all 0.25s ease;
+}
+
+body.dark-theme .quick-nav-card span {
+    color: #cbd5e1;
+}
+
+/* Hover effects using dynamic variables! */
+.quick-nav-card:hover {
+    border-color: var(--card-color);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px var(--card-shadow);
+}
+
+.quick-nav-card:hover .qcard-icon-box {
+    transform: scale(1.08);
+}
+
+.quick-nav-card:hover span {
+    color: var(--card-color);
+}
+
+.snapshot-card {
+    background: #ffffff;
+    border: 1.5px solid rgba(226, 232, 240, 0.8);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    min-height: 220px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+body.dark-theme .snapshot-card {
+    background: #1e1e24;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.snap-header-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.snap-icon-circle {
+    width: 44px;
+    height: 44px;
+    background: #fef2f2;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-size: 1.25rem;
+}
+
+body.dark-theme .snap-icon-circle {
+    background: rgba(229, 57, 53, 0.12);
+}
+
+.snap-header-text h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+body.dark-theme .snap-header-text h3 {
+    color: #ffffff;
+}
+
+/* Status Indicator Sub-Header */
+.snap-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #10b981;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #10b981;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.pulsing {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    animation: pulse-status 1.8s infinite;
+}
+
+@keyframes pulse-status {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+/* Stats Row System */
+.snap-stats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.snap-row-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 1.5px solid #f1f5f9;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+body.dark-theme .snap-row-item {
+    background: #252529;
+    border-color: rgba(255, 255, 255, 0.04);
+}
+
+.snap-row-item:hover {
+    border-color: rgba(226, 232, 240, 0.8);
+    transform: translateX(2px);
+    background: #ffffff;
+}
+
+body.dark-theme .snap-row-item:hover {
+    background: #1e1e24;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.snap-item-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.snap-item-icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+}
+
+/* Themes for stats row icons */
+.snap-item-icon-box.blue-theme {
+    background: #eff6ff;
+    color: #3b82f6;
+}
+
+body.dark-theme .snap-item-icon-box.blue-theme {
+    background: rgba(59, 130, 246, 0.12);
+}
+
+.snap-item-icon-box.green-theme {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+body.dark-theme .snap-item-icon-box.green-theme {
+    background: rgba(16, 185, 129, 0.12);
+}
+
+.snap-item-icon-box.amber-theme {
+    background: #fffbeb;
+    color: #f59e0b;
+}
+
+body.dark-theme .snap-item-icon-box.amber-theme {
+    background: rgba(245, 158, 11, 0.12);
+}
+
+.snap-item-label {
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: #475569;
+}
+
+body.dark-theme .snap-item-label {
+    color: #cbd5e1;
+}
+
+/* Badge for numbers */
+.snap-item-badge {
+    font-size: 0.86rem;
+    font-weight: 850;
+    padding: 4px 10px;
+    border-radius: 8px;
+    min-width: 28px;
+    text-align: center;
+}
+
+.snap-item-badge.blue-theme {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+body.dark-theme .snap-item-badge.blue-theme {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+}
+
+.snap-item-badge.green-theme {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+body.dark-theme .snap-item-badge.green-theme {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+.snap-item-badge.amber-theme {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+body.dark-theme .snap-item-badge.amber-theme {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+/* Bottom Actions button */
+.snap-footer-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    background: rgba(229, 57, 53, 0.05);
+    color: var(--accent);
+    border: 1.5px solid rgba(229, 57, 53, 0.15);
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 800;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.snap-footer-button i {
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+}
+
+.snap-footer-button:hover {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.15);
+    transform: translateY(-1px);
+}
+
+.snap-footer-button:hover i {
+    transform: translateX(2px);
+}
+
+@media (max-width: 992px) {
+    .quick-nav-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dash-split-container {
+        flex-direction: column !important;
+        gap: 16px !important;
+    }
+
+    .dash-split-left,
+    .dash-split-right {
+        width: 100% !important;
+        flex: none !important;
+    }
+
+    .quick-nav-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .quick-nav-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ==========================================================================
+   PREMIUM DYNAMIC STORE COUPONS SUITE UI & MODAL SYSTEM
+   ========================================================================== */
+
+/* 1. PULSING EMPTY STATE RUN PORTAL */
+.coupon-empty-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 65px 30px;
+    text-align: center;
+    background: #ffffff;
+    border: 2px dashed rgba(139, 92, 246, 0.22);
+    border-radius: 24px;
+    margin: 20px 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+}
+
+body.dark-theme .coupon-empty-container {
+    background: #18181b;
+    border-color: rgba(139, 92, 246, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.coupon-empty-icon-wrapper {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: rgba(139, 92, 246, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    position: relative;
+    animation: couponEmptyPulse 2.5s infinite ease-in-out;
+}
+
+@keyframes couponEmptyPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.25);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 12px rgba(139, 92, 246, 0);
+    }
+}
+
+.coupon-empty-icon-wrapper i {
+    font-size: 2.6rem;
+    color: #8b5cf6;
+}
+
+.coupon-empty-title {
+    font-size: 1.4rem;
+    font-weight: 850;
+    color: #0f172a;
+    margin-bottom: 10px;
+    letter-spacing: -0.4px;
+}
+
+body.dark-theme .coupon-empty-title {
+    color: #f8fafc;
+}
+
+.coupon-empty-desc {
+    font-size: 0.92rem;
+    color: #475569;
+    max-width: 440px;
+    line-height: 1.65;
+    margin-bottom: 28px;
+    font-weight: 500;
+}
+
+body.dark-theme .coupon-empty-desc {
+    color: #94a3b8;
+}
+
+.coupon-empty-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: #ffffff !important;
+    font-weight: 800;
+    font-size: 0.95rem;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.35);
+    text-decoration: none !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.coupon-empty-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.45);
+    filter: brightness(1.06);
+}
+
+.coupon-empty-btn:active {
+    transform: translateY(0);
+}
+
+/* 2. HIGH-FIDELITY MODAL GLASS CARD */
+.coupon-modal-card {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 28px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
+    overflow: hidden;
+    max-width: 530px;
+    width: 95%;
+    transform: translateY(0);
+    animation: couponModalAppear 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    border-top: 6px solid #8b5cf6;
+}
+
+body.dark-theme .coupon-modal-card {
+    background: rgba(24, 24, 27, 0.98);
+    border-color: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+}
+
+@keyframes couponModalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.coupon-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 26px 30px 18px 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.dark-theme .coupon-modal-header {
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+.coupon-modal-title {
+    font-size: 1.3rem;
+    font-weight: 850;
+    color: #0f172a;
+    letter-spacing: -0.4px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+body.dark-theme .coupon-modal-title {
+    color: #f8fafc;
+}
+
+.coupon-modal-title i {
+    color: #8b5cf6;
+    font-size: 1.2rem;
+}
+
+.coupon-modal-close-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+body.dark-theme .coupon-modal-close-btn {
+    background: #27272a;
+    color: #d4d4d8;
+}
+
+.coupon-modal-close-btn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+    transform: rotate(90deg);
+}
+
+body.dark-theme .coupon-modal-close-btn:hover {
+    background: #3f3f46;
+    color: #ffffff;
+}
+
+.coupon-modal-body {
+    padding: 26px 30px 30px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.coupon-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.coupon-form-label {
+    font-size: 0.72rem;
+    font-weight: 850;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+body.dark-theme .coupon-form-label {
+    color: #cbd5e1;
+}
+
+.coupon-form-input {
+    width: 100%;
+    padding: 13px 18px;
+    border-radius: 14px;
+    border: 1.5px solid #cbd5e1;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 0.94rem;
+    font-weight: 700;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+}
+
+body.dark-theme .coupon-form-input {
+    border-color: #3f3f46;
+    background: #18181b;
+    color: #f4f4f5;
+}
+
+.coupon-form-input::placeholder {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.coupon-form-input:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+}
+
+body.dark-theme .coupon-form-input:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.22);
+}
+
+.coupon-input-desc {
+    font-size: 0.72rem;
+    color: #64748b;
+    font-weight: 600;
+    line-height: 1.45;
+    margin-top: 3px;
+}
+
+body.dark-theme .coupon-input-desc {
+    color: #94a3b8;
+}
+
+.coupon-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 480px) {
+    .coupon-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+.coupon-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+body.dark-theme .coupon-checkbox-wrapper {
+    background: #27272a;
+    border-color: #3f3f46;
+}
+
+.coupon-checkbox-wrapper:hover {
+    border-color: #cbd5e1;
+    background: #f1f5f9;
+}
+
+body.dark-theme .coupon-checkbox-wrapper:hover {
+    border-color: #52525b;
+    background: #2e2e33;
+}
+
+.coupon-submit-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 850;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(139, 92, 246, 0.25);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 12px;
+}
+
+.coupon-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.42);
+    filter: brightness(1.05);
+}
+
+.coupon-submit-btn:active {
+    transform: translateY(0);
 }

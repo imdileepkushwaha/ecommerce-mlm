@@ -73,5 +73,23 @@ END
 ELSE BEGIN PRINT 'Index IX_UserIncome_UserId already exists'; END
 GO
 
+-- 8. Coupons: seller dashboard list + global code lookup
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_Coupons_SellerId' AND object_id = OBJECT_ID('Coupons'))
+BEGIN
+    CREATE NONCLUSTERED INDEX IX_Coupons_SellerId ON Coupons(SellerId)
+    INCLUDE (IsActive, UsedCount, CreatedAt, CouponCode, DiscountType, DiscountValue, EndDate, UsageLimit);
+    PRINT 'Created index IX_Coupons_SellerId';
+END
+ELSE BEGIN PRINT 'Index IX_Coupons_SellerId already exists'; END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_Coupons_CouponCode' AND object_id = OBJECT_ID('Coupons'))
+BEGIN
+    CREATE NONCLUSTERED INDEX IX_Coupons_CouponCode ON Coupons(CouponCode);
+    PRINT 'Created index IX_Coupons_CouponCode';
+END
+ELSE BEGIN PRINT 'Index IX_Coupons_CouponCode already exists'; END
+GO
+
 PRINT 'All indexes deployed successfully!';
 GO

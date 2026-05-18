@@ -1,4 +1,4 @@
-<%@ Page Title="Your Shopping Cart" Language="C#" MasterPageFile="~/usersite.Master" AutoEventWireup="true"
+﻿<%@ Page Title="Your Shopping Cart" Language="C#" MasterPageFile="~/usersite.Master" AutoEventWireup="true"
     CodeFile="Cart.aspx.cs" Inherits="ecommerce_mlm.Cart" %>
 
     <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -8,6 +8,13 @@
     </asp:Content>
 
     <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+        <asp:HiddenField ID="hfAppliedCouponCode" runat="server" Value="" />
+        <asp:HiddenField ID="hfCouponDiscountAmount" runat="server" Value="0" />
+        <asp:HiddenField ID="hfDiscountType" runat="server" Value="" />
+        <asp:HiddenField ID="hfDiscountValue" runat="server" Value="0" />
+        <asp:HiddenField ID="hfMinOrderAmount" runat="server" Value="0" />
+        <asp:HiddenField ID="hfMaxDiscountAmount" runat="server" Value="0" />
+
         <script type="text/javascript">
             window.CART_PLATFORM_FEE = <%= ConfigPlatformFee %>;
             window.CART_MIN_FREE_SHIPPING = <%= ConfigMinFreeShipping %>;
@@ -160,11 +167,11 @@
                                 <div class="coupon-label"><i class="fas fa-tag" style="color:#f59e0b;"></i> Apply Coupon
                                 </div>
                                 <div class="coupon-input-group">
-                                    <input type="text" placeholder="Enter code" class="form-control coupon-input" />
-                                    <button type="button" class="btn btn-dark btn-coupon-apply">Apply</button>
+                                    <asp:TextBox ID="txtCouponCode" runat="server" CssClass="form-control coupon-input" placeholder="Enter code" style="text-transform:uppercase;"></asp:TextBox>
+                                    <asp:Button ID="btnApplyCoupon" runat="server" Text="Apply" CssClass="btn btn-dark btn-coupon-apply" OnClick="btnApplyCoupon_Click" CausesValidation="false" />
                                 </div>
-                                <div class="applied-coupon-tags">
-                                    <span class="coupon-tag">SAVE10</span>
+                                <div class="applied-coupon-tags" style="display:flex; flex-direction:column; gap:4px; margin-top:6px;">
+                                    <asp:Label ID="lblCouponMsg" runat="server" Font-Size="11px" Font-Weight="700" Visible="false"></asp:Label><asp:Panel ID="pnlActiveCoupon" runat="server" Visible="false"></asp:Panel>
                                 </div>
                             </div>
 
@@ -218,6 +225,15 @@
                                     <span>Platform Fee</span>
                                     <span class="bill-val">₹ <span id="js-platform-val"><%= ConfigPlatformFee %></span></span>
                                 </div>
+                                <asp:Panel ID="pnlDiscountRow" runat="server" CssClass="billing-row" Visible="false" style="color:#10b981; font-weight:700;">
+                                    <span style="display:flex; align-items:center; gap:8px;">
+                                        <span>Coupon (<span id="js-active-coupon-code" style="color:#f59e0b; text-transform:uppercase;"><asp:Literal ID="litActiveCode" runat="server"></asp:Literal></span>)</span>
+                                        <asp:LinkButton ID="btnRemoveCoupon" runat="server" OnClick="btnRemoveCoupon_Click" ToolTip="Remove Coupon" style="color:#ef4444; font-size:0.85rem; cursor:pointer;" CausesValidation="false">
+                                            <i class="fas fa-times-circle"></i>
+                                        </asp:LinkButton>
+                                    </span>
+                                    <span class="bill-val" style="color:#10b981; font-weight:700;">- ₹ <span id="js-coupon-discount-val"><asp:Literal ID="litDiscountAmt" runat="server">0</asp:Literal></span></span>
+                                </asp:Panel>
                             </div>
                             <hr class="billing-separator" />
                             <div class="billing-row total-row">

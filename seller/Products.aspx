@@ -13,8 +13,7 @@
         <!-- ACTION BAR TOP -->
         <div class="page-action-bar">
             <div class="welcome-title">
-                <h1 style="font-size: 1.6rem;"><i class="fas fa-boxes"
-                        style="color: var(--accent); margin-right: 8px;"></i>Product Catalog</h1>
+                <h1><i class="fas fa-boxes" style="color: var(--accent); margin-right: 8px;"></i>Product Catalog</h1>
                 <p>Monitor active listings, track local inventory reserves, and synchronize pricing structures.</p>
             </div>
 

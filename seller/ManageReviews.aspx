@@ -9,8 +9,8 @@
         <!-- ACTION BAR TOP -->
         <div class="page-action-bar">
             <div class="welcome-title">
-                <h1 style="font-size: 1.6rem;"><i class="fas fa-comments"
-                        style="color: var(--accent); margin-right: 8px;"></i>Customer Reviews</h1>
+                <h1><i class="fas fa-comments" style="color: var(--accent); margin-right: 8px;"></i>Customer Reviews
+                </h1>
                 <p>Moderate product ratings, approve constructive feedback, and drive listing engagement.</p>
             </div>
         </div>

@@ -1,178 +1,229 @@
-<%@ Page Title="Catalog Inventory" Language="C#" MasterPageFile="~/admin/Admin.Master" AutoEventWireup="true" CodeFile="ManageProducts.aspx.cs" Inherits="ecommerce_mlm.admin.ManageProducts" %>
+<%@ Page Title="Product approvals" Language="C#" MasterPageFile="~/admin/Admin.Master" AutoEventWireup="true"
+    CodeFile="ManageProducts.aspx.cs" Inherits="ecommerce_mlm.admin.ManageProducts" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style>
-        .prod-img-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 12px; border: 2px solid #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .prod-price { font-weight: 800; color: #0f172a; font-size: 1rem; }
-        .prod-mrp { text-decoration: line-through; color: #94a3b8; font-size: 0.8rem; margin-left: 5px; }
-    </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="u-mb-30 u-d-flex u-j-between u-a-center">
-
-        <div>
-            <h1 class="u-txt-lg">Inventory Control</h1>
-            <p class="u-txt-subtitle u-mt-5">Govern published merchandise assets across infrastructure.</p>
-        </div>
-        <div class="u-d-flex u-gap-10">
-            <div class="u-search-group" id="searchGroup">
-                <input type="text" id="jsSearchInput" placeholder="Search product name, brand..." onkeyup="filterProductsTable()" class="u-search-box" />
-                <i class="fas fa-times u-search-clear" onclick="clearSearch()"></i>
+    <div class="ms-page mp-page">
+        <div class="ms-page-head">
+            <div class="ms-page-head-left">
+                <span class="ms-overline">CATALOG</span>
+                <h1 class="ms-title">Product approvals</h1>
+                <p class="ms-sub">Review seller submissions before they appear in the shop catalog.</p>
+            </div>
+            <div class="ms-page-head-actions">
+                <a href="ManageSellers.aspx" class="ms-btn ms-btn-outline">Sellers</a>
             </div>
         </div>
-    </div>
 
-    <div class="table-card">
-        <div class="table-header">
-            <h3 class="u-page-title">Inventory Grid</h3>
-            <asp:Label ID="lblCount" runat="server" CssClass="badge u-badge-count">Total: 0</asp:Label>
+        <asp:Panel ID="pnlFlash" runat="server" Visible="false" CssClass="ms-flash">
+            <i runat="server" id="icoFlash" class="fas fa-check-circle"></i>
+            <asp:Literal ID="litFlash" runat="server" />
+        </asp:Panel>
+
+        <div class="ms-kpi-grid">
+            <div class="ms-kpi-card ms-kpi-red">
+                <div class="ms-kpi-body">
+                    <label>PENDING</label>
+                    <strong><asp:Literal ID="litKpiPending" runat="server" Text="0" /></strong>
+                    <span>Needs review</span>
+                </div>
+                <div class="ms-kpi-ico"><i class="fas fa-clock"></i></div>
+            </div>
+            <div class="ms-kpi-card ms-kpi-red">
+                <div class="ms-kpi-body">
+                    <label>REJECTED</label>
+                    <strong><asp:Literal ID="litKpiRejected" runat="server" Text="0" /></strong>
+                    <span>Can be edited &amp; resubmitted</span>
+                </div>
+                <div class="ms-kpi-ico"><i class="fas fa-times"></i></div>
+            </div>
+            <div class="ms-kpi-card ms-kpi-green">
+                <div class="ms-kpi-body">
+                    <label>APPROVED</label>
+                    <strong><asp:Literal ID="litKpiApproved" runat="server" Text="0" /></strong>
+                    <span>Live in shop catalog</span>
+                </div>
+                <div class="ms-kpi-ico"><i class="fas fa-check"></i></div>
+            </div>
+            <div class="ms-kpi-card ms-kpi-purple">
+                <div class="ms-kpi-body">
+                    <label>THIS LIST</label>
+                    <strong><asp:Literal ID="litKpiThisList" runat="server" Text="0" /></strong>
+                    <span><asp:Literal ID="litKpiListSub" runat="server" Text="Showing 0 of 0" /></span>
+                </div>
+                <div class="ms-kpi-ico"><i class="fas fa-list"></i></div>
+            </div>
         </div>
-        <div class="table-responsive">
-            <asp:Repeater ID="rptProducts" runat="server" OnItemCommand="rptProducts_ItemCommand">
-                <HeaderTemplate>
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Product Data</th>
-                                <th>Category</th>
-                                <th>Financials</th>
-                                <th>Volume/Stock</th>
-                                <th>Status</th>
-                                <th>Operations</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                </HeaderTemplate>
-                <ItemTemplate>
-                    <tr>
-                        <td>
-                            <div class="u-d-flex u-a-center u-gap-12">
-                                <img src='<%# ResolveUrl(!string.IsNullOrEmpty(Eval("MainImage").ToString()) ? Eval("MainImage").ToString() : "~/assets/images/no-product.png") %>' class="prod-img-thumb" />
-                                <div>
-                                    <div class="u-bold-700 u-color-dark"><%# Eval("Name") %></div>
-                                    <div class="u-txt-gray-sm"><i class="fas fa-store u-mr-5" style="color:#94a3b8;"></i>Seller: <%# Eval("SellerName") != DBNull.Value ? Eval("SellerName") : "N/A" %></div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="u-mono-block u-txt-085">
-                                <%# Eval("Category") %>
-                            </span>
-                        </td>
-                        <td>
-                            <span class="prod-price">₹<%# Convert.ToDecimal(Eval("Price")).ToString("N0") %></span>
-                            <span class="prod-mrp">₹<%# Convert.ToDecimal(Eval("Mrp")).ToString("N0") %></span>
-                        </td>
-                        <td>
-                            <span class='badge badge-stock'>
-                                <%# Eval("Stock") %> units
-                            </span>
-                        </td>
-                        <td>
-                            <%# GetListingStatusBadge(Eval("ListingStatus"), Eval("IsActive")) %>
-                        </td>
-                        <td>
 
-                            <div class="u-d-flex u-gap-8 u-a-center">
-                                <a href='../ProductDetails.aspx?slug=<%# Eval("Slug") %>' target="_blank" class="action-btn-circle action-btn-view" title="View Product">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                                
-                                <!-- Conditional High-Priority Action for Pending Submissions -->
-                                <asp:PlaceHolder runat="server" Visible='<%# Eval("ListingStatus") != DBNull.Value && Eval("ListingStatus").ToString().Trim().Equals("Pending", StringComparison.OrdinalIgnoreCase) %>'>
-                                    <asp:LinkButton ID="btnApproveDirect" runat="server" CommandName="ApproveProduct" CommandArgument='<%# Eval("Id") %>' 
-                                        CssClass="badge badge-success" style="cursor:pointer; border:none; padding:8px 14px; text-decoration:none; font-weight:800; display:inline-flex; align-items:center;"
-                                        ToolTip="Approve Listing & Go Live">
-                                        <i class="fas fa-circle-check u-mr-5"></i> Approve
-                                    </asp:LinkButton>
-                                </asp:PlaceHolder>
+        <div class="mp-tabs" role="tablist">
+            <asp:HyperLink ID="hlTabPending" runat="server" CssClass="mp-tab">
+                <span class="mp-tab-label">Pending</span>
+                <span class="mp-tab-count"><asp:Literal ID="litTabPending" runat="server" Text="0" /></span>
+            </asp:HyperLink>
+            <asp:HyperLink ID="hlTabRejected" runat="server" CssClass="mp-tab">
+                <span class="mp-tab-label">Rejected</span>
+                <span class="mp-tab-count"><asp:Literal ID="litTabRejected" runat="server" Text="0" /></span>
+            </asp:HyperLink>
+            <asp:HyperLink ID="hlTabApproved" runat="server" CssClass="mp-tab">
+                <span class="mp-tab-label">Recently approved</span>
+                <span class="mp-tab-count"><asp:Literal ID="litTabApproved" runat="server" Text="0" /></span>
+            </asp:HyperLink>
+            <asp:HyperLink ID="hlTabSuspended" runat="server" CssClass="mp-tab">
+                <span class="mp-tab-label">Suspended</span>
+                <span class="mp-tab-count"><asp:Literal ID="litTabSuspended" runat="server" Text="0" /></span>
+            </asp:HyperLink>
+        </div>
 
-                                <!-- Regular Suspension Toggle for Active/Inactive states -->
-                                <asp:PlaceHolder runat="server" Visible='<%# Eval("ListingStatus") == DBNull.Value || !Eval("ListingStatus").ToString().Trim().Equals("Pending", StringComparison.OrdinalIgnoreCase) %>'>
-                                    <asp:LinkButton ID="btnToggleStatus" runat="server" CommandName="ToggleStatus" CommandArgument='<%# Eval("Id") %>' 
-                                        CssClass='<%# Convert.ToBoolean(Eval("IsActive")) ? "action-btn-circle action-btn-block" : "action-btn-circle action-btn-unblock" %>'
-                                        ToolTip='<%# Convert.ToBoolean(Eval("IsActive")) ? "Suspend Listing" : "Activate Listing" %>'>
-                                        <i class='<%# Convert.ToBoolean(Eval("IsActive")) ? "fas fa-ban" : "fas fa-check-circle" %>'></i>
-                                    </asp:LinkButton>
-                                </asp:PlaceHolder>
-                            </div>
-                        </td>
-                    </tr>
-                </ItemTemplate>
-                <FooterTemplate>
-                        </tbody>
-                    </table>
-                </FooterTemplate>
-            </asp:Repeater>
-            
-            <!-- Bulletproof Client-Side Empty State Indicator -->
-            <div id="jsEmptyState" class="u-empty-state u-d-none">
-                <div style="padding:60px; text-align:center;">
-                    <i class="fas fa-box-open u-empty-icon" style="color:#cbd5e1; font-size:4rem;"></i>
-                    <h3 class="u-color-dark u-mb-15">No Match Records</h3>
-                    <p class="u-txt-subtitle">Re-calibrate search vector to access matching catalog metadata.</p>
+        <div class="ms-table-card">
+            <div class="ms-table-toolbar">
+                <div class="ms-table-toolbar-left">
+                    <h3><asp:Literal ID="litTableTitle" runat="server" Text="Recently approved" /></h3>
+                    <p><asp:Literal ID="litTableHint" runat="server" /></p>
+                </div>
+                <div class="ms-search-wrap" id="searchGroup">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="txtSearch" class="ms-search-input" placeholder="Search name, SKU, seller, category..." autocomplete="off" />
+                    <button type="button" class="ms-search-clear" onclick="clearProductSearch();" aria-label="Clear search">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
 
-            <asp:Panel ID="pnlEmpty" runat="server" Visible="false" CssClass="u-empty-state">
-                <i class="fas fa-boxes u-empty-icon"></i>
-                <h4>Zero asset nodes registered within operational grid.</h4>
+            <div class="ms-table-scroll">
+                <asp:Repeater ID="rptProducts" runat="server" OnItemCommand="rptProducts_ItemCommand">
+                    <HeaderTemplate>
+                        <table class="mp-products-table" id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>PRODUCT</th>
+                                    <th>SELLER</th>
+                                    <th>CATEGORY</th>
+                                    <th>PRICE</th>
+                                    <th>STATUS</th>
+                                    <th>ADDED</th>
+                                    <th class="ms-th-actions">ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <tr>
+                            <td><%# FormatProductCell(Eval("Id"), Eval("Name"), Eval("Slug"), Eval("Sku"), Eval("MainImage")) %></td>
+                            <td><%# FormatSellerCell(Eval("SellerId"), Eval("SellerName"), Eval("SellerEmail"), Eval("StoreName")) %></td>
+                            <td><%# FormatCategoryPill(Eval("Category")) %></td>
+                            <td><%# FormatPriceCell(Eval("Price"), Eval("Mrp")) %></td>
+                            <td><%# FormatStatusBadge(Eval("ListingStatus"), Eval("IsActive")) %></td>
+                            <td class="mp-td-muted"><%# FormatAdded(Eval("CreatedAt")) %></td>
+                            <td>
+                                <div class="mp-actions">
+                                    <asp:PlaceHolder runat="server" Visible='<%# ShowPendingActions() %>'>
+                                        <asp:LinkButton runat="server" CommandName="ApproveProduct" CommandArgument='<%# Eval("Id") %>'
+                                            CssClass="mp-btn mp-btn-approve" ToolTip="Approve listing"
+                                            OnClientClick="return confirm('Approve this product for the shop catalog?');">
+                                            <i class="fas fa-check"></i> 
+                                        </asp:LinkButton>
+                                        <asp:LinkButton runat="server" CommandName="RejectProduct" CommandArgument='<%# Eval("Id") %>'
+                                            CssClass="mp-btn mp-btn-reject" ToolTip="Reject listing"
+                                            OnClientClick="return confirm('Reject this product? The seller can edit and resubmit.');">
+                                            <i class="fas fa-times"></i> 
+                                        </asp:LinkButton>
+                                    </asp:PlaceHolder>
+                                    <asp:PlaceHolder runat="server" Visible='<%# ShowApprovedActions() %>'>
+                                        <asp:LinkButton runat="server" CommandName="SuspendProduct" CommandArgument='<%# Eval("Id") %>'
+                                            CssClass="mp-btn mp-btn-suspend" ToolTip="Suspend listing"
+                                            OnClientClick="return confirm('Suspend this product? It will be hidden from the shop until reactivated.');">
+                                            <i class="fas fa-ban"></i> 
+                                        </asp:LinkButton>
+                                    </asp:PlaceHolder>
+                                    <asp:PlaceHolder runat="server" Visible='<%# ShowSuspendedActions() %>'>
+                                        <asp:LinkButton runat="server" CommandName="ReactivateProduct" CommandArgument='<%# Eval("Id") %>'
+                                            CssClass="mp-btn mp-btn-approve" ToolTip="Reactivate listing"
+                                            OnClientClick="return confirm('Reactivate this product in the shop catalog?');">
+                                            <i class="fas fa-check-circle"></i> 
+                                        </asp:LinkButton>
+                                    </asp:PlaceHolder>
+                                    <a href='<%# GetViewUrl(Eval("Slug")) %>' target="_blank" class="mp-btn mp-btn-view" title="View product">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                    </ItemTemplate>
+                    <FooterTemplate></tbody></table></FooterTemplate>
+                </asp:Repeater>
+            </div>
+
+            <asp:Panel ID="pnlEmpty" runat="server" Visible="false" CssClass="ms-empty-state">
+                <div class="ms-empty-ico ms-empty-muted"><i class="fas fa-box-open"></i></div>
+                <h4 class="ms-empty-title"><asp:Literal ID="litEmptyTitle" runat="server" Text="No products" /></h4>
+                <p class="ms-empty-desc"><asp:Literal ID="litEmptyDesc" runat="server" /></p>
             </asp:Panel>
+
+            <div id="jsEmptyState" class="ms-empty-state u-d-none" aria-live="polite">
+                <div class="ms-empty-ico"><i class="fas fa-search"></i></div>
+                <h4 class="ms-empty-title">No matches on this page</h4>
+                <p class="ms-empty-desc">Nothing matches your search on this page.</p>
+                <button type="button" class="ms-empty-btn" onclick="clearProductSearch();">
+                    <i class="fas fa-times"></i> Clear search
+                </button>
+            </div>
+
+            <div class="ms-table-foot">
+                <div class="ms-table-foot-left">
+                    <asp:Literal ID="litShowing" runat="server" Text="Showing 0 of 0" />
+                </div>
+                <div class="ms-table-foot-right">
+                    <div class="ms-per-page">
+                        <span>Per page</span>
+                        <asp:DropDownList ID="ddlPageSize" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPageSize_SelectedIndexChanged" ClientIDMode="Static">
+                            <asp:ListItem Text="10" Value="10" />
+                            <asp:ListItem Text="25" Value="25" Selected="True" />
+                            <asp:ListItem Text="50" Value="50" />
+                            <asp:ListItem Text="100" Value="100" />
+                        </asp:DropDownList>
+                    </div>
+                    <asp:Literal ID="litPageInfo" runat="server" Text="Page 1 of 1" />
+                    <div class="ms-pager">
+                        <asp:Literal ID="litPager" runat="server" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script type='text/javascript'>
+    <script type="text/javascript">
+        (function () {
+            var input = document.getElementById('txtSearch');
+            if (input) input.addEventListener('input', filterProductsTable);
+        })();
+
         function filterProductsTable() {
-            const input = document.getElementById('jsSearchInput');
-            const group = document.getElementById('searchGroup');
-            const filter = input.value.toUpperCase();
-            
-            if(group) {
-                if(filter.length > 0) group.classList.add('has-val');
-                else group.classList.remove('has-val');
+            var input = document.getElementById('txtSearch');
+            var table = document.getElementById('productsTable');
+            var empty = document.getElementById('jsEmptyState');
+            if (!input || !table) return;
+            var q = (input.value || '').toLowerCase().trim();
+            var rows = table.querySelectorAll('tbody tr');
+            var visible = 0;
+            for (var i = 0; i < rows.length; i++) {
+                var text = (rows[i].textContent || '').toLowerCase();
+                var show = !q || text.indexOf(q) !== -1;
+                rows[i].style.display = show ? '' : 'none';
+                if (show) visible++;
             }
-            
-            const tableEl = document.querySelector('.admin-table');
-            const emptyEl = document.getElementById('jsEmptyState');
-            const tbody = tableEl ? tableEl.querySelector('tbody') : null;
-            
-            if (!tbody || !tableEl) return;
-            
-            const rows = tbody.getElementsByTagName('tr');
-            let visibleCount = 0;
-            
-            for (let i = 0; i < rows.length; i++) {
-                const rowText = rows[i].innerText.toUpperCase();
-                if (rowText.indexOf(filter) > -1) {
-                    rows[i].classList.remove('u-d-none');
-                    visibleCount++;
-                } else {
-                    rows[i].classList.add('u-d-none');
-                }
-            }
-            
-            if (visibleCount === 0) {
-                tableEl.classList.add('u-d-none');
-                if(emptyEl) emptyEl.classList.remove('u-d-none');
-            } else {
-                tableEl.classList.remove('u-d-none');
-                if(emptyEl) emptyEl.classList.add('u-d-none');
-            }
-            
-            const countBadge = document.getElementById('<%= lblCount.ClientID %>');
-            if (countBadge) {
-                countBadge.innerText = 'Refined: ' + visibleCount;
-            }
+            if (empty) empty.classList.toggle('u-d-none', visible > 0 || rows.length === 0);
+            var wrap = table.closest('.ms-table-scroll');
+            if (wrap) wrap.style.display = (visible === 0 && rows.length > 0) ? 'none' : '';
         }
 
-        function clearSearch() {
-            const input = document.getElementById('jsSearchInput');
-            if(input) {
-                input.value = '';
-                filterProductsTable();
-                input.focus();
-            }
+        function clearProductSearch() {
+            var input = document.getElementById('txtSearch');
+            if (input) input.value = '';
+            filterProductsTable();
         }
     </script>
 </asp:Content>

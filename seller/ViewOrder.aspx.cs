@@ -189,16 +189,9 @@ namespace EcommerceWebsite
                         }
                     }
 
-                    // 2. Load Items belonging to this seller
-                    string itemsSql = @"
-                        SELECT oi.*, p.MainImage, p.Slug, ISNULL(p.Category, 'General') as Category, ISNULL(p.ColorName, '--') as ColorName, ISNULL(p.ColorCode, '') as ColorCode, o.Status as OrderStatus
-                        FROM OrderItems oi
-                        JOIN SellerProducts p ON oi.ProductId = p.Id
-                        JOIN Orders o ON oi.OrderId = o.Id
-                        WHERE oi.OrderId = @OrderId AND p.SellerId = @SellerId";
-
-                    using (SqlCommand cmdItems = new SqlCommand(itemsSql, con))
+                    using (SqlCommand cmdItems = new SqlCommand("sp_Seller_GetOrderItems", con))
                     {
+                        cmdItems.CommandType = CommandType.StoredProcedure;
                         cmdItems.Parameters.AddWithValue("@OrderId", oId);
                         cmdItems.Parameters.AddWithValue("@SellerId", sellerId);
                         SqlDataAdapter daItems = new SqlDataAdapter(cmdItems);

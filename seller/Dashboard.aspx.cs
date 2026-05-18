@@ -98,6 +98,9 @@ namespace EcommerceWebsite
                                 litPendingOrders.Text = r["PendingOrders"] != DBNull.Value 
                                                         ? r["PendingOrders"].ToString() 
                                                         : "0";
+                                
+                                // Direct bind to Snapshot card
+                                litSnapProducts.Text = litTotalProducts.Text;
                             }
 
                             // === SEGMENT B: RECENT ORDERS GRID (TABLE 1) ===
@@ -122,6 +125,9 @@ namespace EcommerceWebsite
                                 rptRecentOrders.Visible = false;
                                 phEmptyState.Visible = true;
                             }
+
+                            // 3. Load dynamic snapshot counts
+                            LoadSnapshotMetrics(sid);
                         }
                     }
                 }
@@ -131,6 +137,47 @@ namespace EcommerceWebsite
                 // Fail-safe rendering on analytical breakdown
                 rptRecentOrders.Visible = false;
                 phEmptyState.Visible = true;
+            }
+        }
+
+        private void LoadSnapshotMetrics(int sid)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(strcon))
+                {
+                    con.Open();
+
+                    // Query 1: All time unique orders for this seller
+                    string qAllOrders = @"
+                        SELECT COUNT(DISTINCT oi.OrderId) 
+                        FROM OrderItems oi 
+                        JOIN SellerProducts p ON oi.ProductId = p.Id 
+                        WHERE p.SellerId = @sid";
+                    using (SqlCommand cmd = new SqlCommand(qAllOrders, con))
+                    {
+                        cmd.Parameters.AddWithValue("@sid", sid);
+                        litSnapAllOrders.Text = cmd.ExecuteScalar().ToString();
+                    }
+
+                    // Query 2: Pending/needs confirmation unique orders count
+                    string qPendingOrders = @"
+                        SELECT COUNT(DISTINCT oi.OrderId) 
+                        FROM OrderItems oi 
+                        JOIN Orders o ON oi.OrderId = o.Id 
+                        JOIN SellerProducts p ON oi.ProductId = p.Id 
+                        WHERE p.SellerId = @sid AND o.Status IN ('Placed', 'Pending', 'Processing')";
+                    using (SqlCommand cmd = new SqlCommand(qPendingOrders, con))
+                    {
+                        cmd.Parameters.AddWithValue("@sid", sid);
+                        litSnapPending.Text = cmd.ExecuteScalar().ToString();
+                    }
+                }
+            }
+            catch
+            {
+                litSnapAllOrders.Text = "0";
+                litSnapPending.Text = "0";
             }
         }
 

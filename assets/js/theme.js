@@ -1,4 +1,4 @@
-/* ========================================
+﻿/* ========================================
    GLOBAL UTILITIES
    ======================================== */
 window.getFormattedDeliveryRange = function(minDays, maxDays, includeYear = false) {
@@ -507,7 +507,71 @@ document.addEventListener('DOMContentLoaded', function () {
                 platformEl.innerText = cfgPlatFee;
             }
 
-            let finalTotal = subtotal > 0 ? (subtotal + deliveryFee + cfgPlatFee) : 0;
+            // Dynamic Coupon Recalculation Integration
+            const hfCouponCode = document.getElementById('ContentPlaceHolder1_hfAppliedCouponCode') || document.querySelector('[id$=hfAppliedCouponCode]');
+            const hfDiscountType = document.getElementById('ContentPlaceHolder1_hfDiscountType') || document.querySelector('[id$=hfDiscountType]');
+            const hfDiscountValue = document.getElementById('ContentPlaceHolder1_hfDiscountValue') || document.querySelector('[id$=hfDiscountValue]');
+            const hfMinOrderAmount = document.getElementById('ContentPlaceHolder1_hfMinOrderAmount') || document.querySelector('[id$=hfMinOrderAmount]');
+            const hfMaxDiscountAmount = document.getElementById('ContentPlaceHolder1_hfMaxDiscountAmount') || document.querySelector('[id$=hfMaxDiscountAmount]');
+            const hfCouponDiscountAmount = document.getElementById('ContentPlaceHolder1_hfCouponDiscountAmount') || document.querySelector('[id$=hfCouponDiscountAmount]');
+
+            let couponDiscount = 0;
+            if (hfCouponCode && hfCouponCode.value) {
+                const code = hfCouponCode.value;
+                const distType = hfDiscountType ? hfDiscountType.value : 'Percentage';
+                const distVal = parseFloat(hfDiscountValue ? hfDiscountValue.value : 0) || 0;
+                const minSpend = parseFloat(hfMinOrderAmount ? hfMinOrderAmount.value : 0) || 0;
+                const maxCap = parseFloat(hfMaxDiscountAmount ? hfMaxDiscountAmount.value : 0) || 0;
+
+                if (subtotal < minSpend) {
+                    const lblMsg = document.getElementById('ContentPlaceHolder1_lblCouponMsg') || document.querySelector('[id$=lblCouponMsg]');
+                    if (lblMsg) {
+                        lblMsg.innerText = "❌ Minimum spend of ₹" + minSpend.toLocaleString('en-IN') + " is required for this coupon.";
+                        lblMsg.className = "text-danger";
+                        lblMsg.style.display = "block";
+                    }
+                    const discountRow = document.getElementById('ContentPlaceHolder1_pnlDiscountRow') || document.querySelector('[id$=pnlDiscountRow]');
+                    if (discountRow) discountRow.style.display = 'none';
+                    const activeCoupon = document.getElementById('ContentPlaceHolder1_pnlActiveCoupon') || document.querySelector('[id$=pnlActiveCoupon]');
+                    if (activeCoupon) activeCoupon.style.display = 'none';
+                    if (hfCouponDiscountAmount) hfCouponDiscountAmount.value = '0';
+                } else {
+                    if (distType === 'Percentage') {
+                        couponDiscount = subtotal * (distVal / 100);
+                        if (maxCap > 0) {
+                            couponDiscount = Math.min(couponDiscount, maxCap);
+                        }
+                    } else {
+                        couponDiscount = Math.min(distVal, subtotal);
+                    }
+
+                    const discLit = document.getElementById('js-coupon-discount-val');
+                    if (discLit) discLit.innerText = couponDiscount.toFixed(0);
+
+                    const activeLit = document.getElementById('js-active-coupon-code');
+                    if (activeLit) activeLit.innerText = code;
+
+                    const discountRow = document.getElementById('ContentPlaceHolder1_pnlDiscountRow') || document.querySelector('[id$=pnlDiscountRow]');
+                    if (discountRow) discountRow.style.display = 'flex';
+
+                    const lblMsg = document.getElementById('ContentPlaceHolder1_lblCouponMsg') || document.querySelector('[id$=lblCouponMsg]');
+                    if (lblMsg) {
+                        lblMsg.innerText = "🎉 Coupon applied! Saved ₹" + couponDiscount.toFixed(0);
+                        lblMsg.className = "text-success";
+                        lblMsg.style.display = "block";
+                    }
+
+                    if (hfCouponDiscountAmount) hfCouponDiscountAmount.value = couponDiscount.toFixed(2);
+                }
+            } else {
+                const discountRow = document.getElementById('ContentPlaceHolder1_pnlDiscountRow') || document.querySelector('[id$=pnlDiscountRow]');
+                if (discountRow) discountRow.style.display = 'none';
+                const activeCoupon = document.getElementById('ContentPlaceHolder1_pnlActiveCoupon') || document.querySelector('[id$=pnlActiveCoupon]');
+                if (activeCoupon) activeCoupon.style.display = 'none';
+            }
+
+            let finalTotal = subtotal > 0 ? (subtotal + deliveryFee + cfgPlatFee - couponDiscount) : 0;
+            if (finalTotal < 0) finalTotal = 0;
 
             const finalEl = document.getElementById('js-final-total');
             if (finalEl) finalEl.innerText = finalTotal.toLocaleString('en-IN');

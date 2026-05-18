@@ -1,0 +1,315 @@
+/* Manage Orders — extends admin-users layout */
+
+.mo-orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1040px;
+}
+
+.mo-customer-cell {
+    min-width: 200px;
+}
+
+.mo-customer-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.mo-customer-name {
+    font-weight: 700;
+    color: #111827;
+    font-size: 0.80rem;
+    line-height: 1.3;
+}
+
+.mo-customer-email {
+    font-size: 0.75rem;
+    color: #64748b;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.mo-orders-table thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: #6b7280;
+    text-transform: uppercase;
+    background: #fafbfc;
+    border-bottom: 1px solid #eef0f2;
+    white-space: nowrap;
+}
+
+.mo-orders-table tbody td {
+    padding: 12px 15px;
+    font-size: 0.75rem;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.mo-orders-table tbody tr:hover {
+    background: #fafbfc;
+}
+
+.mo-orders-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.mo-order-ref {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 0.75rem;
+    letter-spacing: 0.01em;
+}
+
+.mo-email {
+    color: #475569;
+    font-size: 0.82rem;
+}
+
+.mo-total {
+    font-weight: 800;
+    color: #111827;
+    white-space: nowrap;
+}
+
+.mo-shipping {
+    max-width: 200px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #64748b;
+}
+
+.mo-shipping strong {
+    display: block;
+    color: #334155;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+}
+
+.mo-date {
+    white-space: nowrap;
+    font-size: 0.8rem;
+    color: #475569;
+}
+
+.mo-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.mo-status-delivered { background: #dcfce7; color: #166534; }
+.mo-status-cancelled { background: #fee2e2; color: #991b1b; }
+.mo-status-processing,
+.mo-status-pending,
+.mo-status-placed,
+.mo-status-confirmed { background: #fef3c7; color: #b45309; }
+.mo-status-shipped,
+.mo-status-dispatched,
+.mo-status-out { background: #ede9fe; color: #6d28d9; }
+.mo-status-default { background: #f1f5f9; color: #475569; }
+
+.mo-pay {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: #f1f5f9;
+    color: #64748b;
+    white-space: nowrap;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mo-pay-online {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.mo-pager {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mo-pager a,
+.mo-pager span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #475569;
+}
+
+.mo-pager a:hover {
+    border-color: #cbd5e1;
+    color: #111827;
+    background: #f8fafc;
+}
+
+.mo-pager .disabled {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.mo-pager .current {
+    background: #111827;
+    border-color: #111827;
+    color: #fff;
+}
+
+.mo-orders-table .mu-actions .action-btn-circle {
+    width: 34px;
+    height: 34px;
+    font-size: 0.9rem;
+}
+
+/* View order detail */
+.mo-vo-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #64748b;
+    text-decoration: none;
+}
+
+.mo-vo-back:hover { color: #dc2626; }
+
+.mo-vo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.mo-vo-card {
+    background: #fff;
+    border: 1px solid #e8eaed;
+    border-radius: 14px;
+    padding: 18px 20px;
+}
+
+.mo-vo-card h4 {
+    margin: 0 0 14px;
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #111827;
+}
+
+.mo-vo-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.84rem;
+}
+
+.mo-vo-row:last-child { border-bottom: none; }
+
+.mo-vo-row span:first-child {
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.mo-vo-row span:last-child {
+    color: #1e293b;
+    font-weight: 700;
+    text-align: right;
+}
+
+.mo-vo-items {
+    background: #fff;
+    border: 1px solid #e8eaed;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.mo-vo-items table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.mo-vo-items th {
+    padding: 12px 16px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6b7280;
+    background: #fafbfc;
+    border-bottom: 1px solid #eef0f2;
+    text-align: left;
+}
+
+.mo-vo-items td {
+    padding: 12px 16px;
+    font-size: 0.84rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.mo-vo-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 16px 20px;
+    background: #fff;
+    border: 1px solid #e8eaed;
+    border-radius: 14px;
+}
+
+.mo-vo-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #334155;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.mo-vo-btn-primary {
+    background: #111827;
+    border-color: #111827;
+    color: #fff;
+}
+
+.mo-vo-btn-primary:hover { background: #1f2937; color: #fff; }
+
+@media (max-width: 900px) {
+    .mo-vo-grid { grid-template-columns: 1fr; }
+}
